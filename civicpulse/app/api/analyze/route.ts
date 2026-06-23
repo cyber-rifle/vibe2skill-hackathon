@@ -2,8 +2,8 @@ import { GoogleGenAI } from "@google/genai";
 import { NextRequest, NextResponse } from "next/server";
 
 const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY! });
-const MODEL = "gemini-3.5-flash";
-const FALLBACK_MODEL = "gemini-2.0-flash";
+const MODEL = "gemini-2.5-flash";
+const FALLBACK_MODEL = "gemini-2.0-flash-001";
 
 function haversine(lat1: number, lon1: number, lat2: number, lon2: number) {
   const R = 6371000;
@@ -129,7 +129,9 @@ Sentence 1: Describe the issue and its exact nature with specific details.
 Sentence 2: State the potential impact on citizens and public safety.
 Sentence 3: Recommend specific action and urgency for the ${department} department.
 
-Formal tone. No markdown. No bullet points. Plain paragraph only.`;
+Formal tone. No markdown. No bullet points. Plain paragraph only.
+
+IMPORTANT: Always return a complete 3-sentence report. Never return an empty response.`;
 
     console.log("[step3+4] running severity + report in parallel...");
 
@@ -140,7 +142,7 @@ Formal tone. No markdown. No bullet points. Plain paragraph only.`;
           const res = await ai.models.generateContent({
             model: MODEL,
             contents: [{ role: "user", parts: [{ text: severityPrompt }] }],
-            config: { tools: [{ googleSearch: {} }] },
+            config: { tools: [{ googleSearch: {} }], toolConfig: { functionCallingConfig: { mode: "AUTO" } } },
           });
           const parts = res.candidates?.[0]?.content?.parts ?? [];
           const text = parts
@@ -182,7 +184,7 @@ Formal tone. No markdown. No bullet points. Plain paragraph only.`;
             model: MODEL,
             contents: [{ role: "user", parts: [{ text: reportPrompt }] }],
           });
-          const text = res.candidates?.[0]?.content?.parts?.[0]?.text ?? "";
+          const text = (res.candidates?.[0]?.content?.parts ?? []).map((p: {text?: string}) => p.text ?? "").join("").trim();
           console.log("[step4] report result:", text?.slice(0, 160));
           if (text) return text;
           throw new Error("Empty report response");
