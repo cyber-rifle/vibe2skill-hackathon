@@ -57,11 +57,9 @@ export function CivicMap({ reports, selectedId, onMarkerClick }: CivicMapProps) 
     })
 
     return () => {
-      if (mapRef.current) {
-        mapRef.current.remove()
-        mapRef.current = null
-        markersRef.current = {}
-      }
+      mapRef.current?.remove()
+      mapRef.current = null
+      markersRef.current = {}
     }
   }, [])
 
