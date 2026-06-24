@@ -24,7 +24,7 @@ const CivicMap = dynamic(
 export default function MapPage() {
   const { confirmedReports } = useReports()
   const [selectedId, setSelectedId] = useState<string | null>(null)
-  const [reports] = useState(seedReports)
+  const allReports = [...seedReports, ...confirmedReports]
 
   return (
     <div className="flex min-h-screen flex-col bg-[#FAF7F2]">
@@ -58,10 +58,10 @@ export default function MapPage() {
         <div className="w-80 flex flex-col border-l border-[#E8E4DB] bg-white overflow-hidden">
           <div className="flex-shrink-0 border-b border-[#E8E4DB] px-4 py-4">
             <h2 className="text-sm font-semibold text-[#1A1208]">Active Reports</h2>
-            <p className="text-xs text-[#7A6A58] mt-1">{reports.length} reports in Hyderabad</p>
+            <p className="text-xs text-[#7A6A58] mt-1">{allReports.length} reports in Hyderabad</p>
           </div>
           <div className="flex-1 overflow-y-auto p-4 space-y-3">
-            {reports.map((report) => (
+            {allReports.map((report) => (
               <ReportCard
                 key={report.id}
                 report={report}

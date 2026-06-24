@@ -6,6 +6,24 @@ import { ReasoningReveal } from "@/components/ReasoningReveal";
 import { useReports, severityLabel } from "@/lib/report-context";
 import { Textarea } from "@/components/ui/textarea";
 
+const NEIGHBORHOODS: Record<string, { lat: number; lon: number }> = {
+  "Banjara Hills":  { lat: 17.4156, lon: 78.4480 },
+  "Jubilee Hills":  { lat: 17.4325, lon: 78.4071 },
+  "Hitech City":    { lat: 17.4435, lon: 78.3772 },
+  "Madhapur":       { lat: 17.4418, lon: 78.3912 },
+  "Gachibowli":     { lat: 17.4401, lon: 78.3489 },
+  "Kondapur":       { lat: 17.4600, lon: 78.3615 },
+  "Kukatpally":     { lat: 17.4849, lon: 78.3985 },
+  "Secunderabad":   { lat: 17.4399, lon: 78.4983 },
+  "Ameerpet":       { lat: 17.4374, lon: 78.4487 },
+  "Begumpet":       { lat: 17.4432, lon: 78.4681 },
+  "LB Nagar":       { lat: 17.3483, lon: 78.5468 },
+  "Dilsukhnagar":   { lat: 17.3684, lon: 78.5247 },
+  "Uppal":          { lat: 17.4051, lon: 78.5595 },
+  "Kompally":       { lat: 17.5406, lon: 78.4869 },
+  "Shamirpet":      { lat: 17.5355, lon: 78.5644 },
+}
+
 const DEFAULT_LAT = 17.385
 const DEFAULT_LON = 78.487
 
@@ -28,6 +46,11 @@ export function UploadSection() {
   const [analysisError, setAnalysisError] = useState<string | null>(null);
   const [editedReportText, setEditedReportText] = useState<string>("");
   const [showConfirmPanel, setShowConfirmPanel] = useState<boolean>(false);
+  const [locationInput, setLocationInput] = useState("")
+  const [showSuggestions, setShowSuggestions] = useState(false)
+  const [activeLat, setActiveLat] = useState(DEFAULT_LAT)
+  const [activeLon, setActiveLon] = useState(DEFAULT_LON)
+  const [locationConfirmed, setLocationConfirmed] = useState(false)
   const inputRef   = useRef<HTMLInputElement>(null);
   const timeoutIds = useRef<ReturnType<typeof setTimeout>[]>([]);
 
@@ -84,8 +107,8 @@ export function UploadSection() {
         body: JSON.stringify({
           imageBase64,
           mimeType: selectedFile.type,
-          lat: DEFAULT_LAT,
-          lon: DEFAULT_LON,
+          lat: activeLat,
+          lon: activeLon,
           existingReports: [],
         }),
       });
@@ -209,8 +232,8 @@ export function UploadSection() {
 
     const newReport = {
       id: crypto.randomUUID(),
-      lat: DEFAULT_LAT,
-      lon: DEFAULT_LON,
+      lat: activeLat,
+      lon: activeLon,
       category: step1Result?.category ?? 'other',
       description: editedReportText,
       severity: severityLabel(step3Result?.urgencyScore ?? 3),
@@ -232,6 +255,11 @@ export function UploadSection() {
     setSelectedFile(null)
     setPreview(null)
     setAnalysisError(null)
+    setLocationInput("")
+    setActiveLat(DEFAULT_LAT)
+    setActiveLon(DEFAULT_LON)
+    setLocationConfirmed(false)
+    setShowSuggestions(false)
   }
 
   return (
@@ -261,9 +289,51 @@ export function UploadSection() {
 
           <div className="mt-5">
             <label htmlFor="location" className="font-mono text-xs uppercase tracking-[0.15em] text-ink-muted">Location</label>
-            <div className="mt-2 flex items-center gap-2 rounded-xl border border-border bg-background px-4 py-3">
-              <MapPin className="h-4 w-4 shrink-0 text-ink-muted" aria-hidden="true" />
-              <input id="location" type="text" placeholder="Enter address or drop a pin" className="w-full bg-transparent font-sans text-sm text-ink placeholder:text-ink-muted focus:outline-none" />
+            <div className="relative">
+              <input
+                type="text"
+                value={locationInput}
+                onChange={(e) => {
+                  setLocationInput(e.target.value)
+                  setShowSuggestions(true)
+                  setLocationConfirmed(false)
+                  setActiveLat(DEFAULT_LAT)
+                  setActiveLon(DEFAULT_LON)
+                }}
+                onBlur={() => setTimeout(() => setShowSuggestions(false), 150)}
+                onFocus={() => locationInput.length >= 2 && setShowSuggestions(true)}
+                placeholder="Enter area in Hyderabad..."
+                className="w-full rounded-lg border border-[#E6DDCF] bg-white px-4 py-2 font-mono text-sm text-[#1A1208] placeholder-[#5A6A58] focus:border-[#5BBFBF] focus:outline-none focus:ring-1 focus:ring-[#5BBFBF]"
+              />
+              {locationConfirmed && (
+                <p className="mt-1 font-mono text-xs text-[#5BBFBF]">
+                  📍 {locationInput}
+                </p>
+              )}
+              {showSuggestions && locationInput.length >= 2 && (
+                <ul className="absolute z-50 mt-1 w-full rounded-lg border border-[#E6DDCF] bg-white shadow-md max-h-48 overflow-y-auto">
+                  {Object.keys(NEIGHBORHOODS)
+                    .filter((name) =>
+                      name.toLowerCase().includes(locationInput.toLowerCase())
+                    )
+                    .slice(0, 5)
+                    .map((name) => (
+                      <li
+                        key={name}
+                        onMouseDown={() => {
+                          setLocationInput(name)
+                          setActiveLat(NEIGHBORHOODS[name].lat)
+                          setActiveLon(NEIGHBORHOODS[name].lon)
+                          setLocationConfirmed(true)
+                          setShowSuggestions(false)
+                        }}
+                        className="cursor-pointer px-4 py-2 font-mono text-sm text-[#1A1208] hover:bg-[#F0EBE3]"
+                      >
+                        {name}
+                      </li>
+                    ))}
+                </ul>
+              )}
             </div>
           </div>
 

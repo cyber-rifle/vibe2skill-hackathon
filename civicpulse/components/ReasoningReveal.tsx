@@ -37,7 +37,16 @@ export function ReasoningReveal({ steps }: { steps: Step[] }) {
                 <div className="mt-2 text-xs text-[#1A1208]" style={{ fontFamily: "DM Sans, sans-serif" }}>
                   {typeof s.result === "string"
                     ? <p>{s.result}</p>
-                    : <pre className="whitespace-pre-wrap break-words">{JSON.stringify(s.result, null, 2)}</pre>}
+                    : <pre className="whitespace-pre-wrap break-words">
+                        {JSON.stringify(
+                          (() => {
+                            const { sources, debugError, ...rest } =
+                              s.result as Record<string, unknown>
+                            return rest
+                          })(),
+                          null, 2
+                        )}
+                      </pre>}
                   {typeof s.result === 'object' && s.result && Array.isArray((s.result as any).sources) && (s.result as any).sources.length > 0 ? (
                     <div className="mt-2 space-y-1">
                       {(s.result as any).sources.slice(0, 3).map((source: any, i: number) => (
