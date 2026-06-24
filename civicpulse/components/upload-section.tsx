@@ -1,7 +1,10 @@
 "use client";
 import { useState, useRef, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import { UploadCloud, MapPin } from "lucide-react";
 import { ReasoningReveal } from "@/components/ReasoningReveal";
+import { useReports } from "@/lib/report-context";
+import { Textarea } from "@/components/ui/textarea";
 
 interface Step { step: string; result: unknown; }
 
@@ -13,11 +16,15 @@ const PLACEHOLDER_STEPS = [
 ];
 
 export function UploadSection() {
+  const router = useRouter();
+  const { addConfirmedReport } = useReports();
   const [selectedFile, setSelectedFile]   = useState<File | null>(null);
   const [preview, setPreview]             = useState<string | null>(null);
   const [isAnalyzing, setIsAnalyzing]     = useState(false);
   const [analysisSteps, setAnalysisSteps] = useState<Step[]>([]);
   const [analysisError, setAnalysisError] = useState<string | null>(null);
+  const [editedReportText, setEditedReportText] = useState<string>("");
+  const [showConfirmPanel, setShowConfirmPanel] = useState<boolean>(false);
   const inputRef   = useRef<HTMLInputElement>(null);
   const timeoutIds = useRef<ReturnType<typeof setTimeout>[]>([]);
 
@@ -149,6 +156,14 @@ export function UploadSection() {
                   }
                   // For canonical steps, upsert so we preserve ordering and allow replacement
                   upsertStep(event.step, event.result)
+
+                  if (event.step === 'final_report') {
+                    const finalReportText = (event.result as any)?.report?.text
+                    if (typeof finalReportText === 'string') {
+                      setEditedReportText(finalReportText)
+                      setShowConfirmPanel(true)
+                    }
+                  }
                 }
               } catch {
                 // Ignore malformed interim payloads
@@ -182,6 +197,36 @@ export function UploadSection() {
       setAnalysisError(String(err))
       setIsAnalyzing(false)
     }
+  }
+
+  const handleConfirmReport = () => {
+    const step1Result = analysisSteps.find((s) => s.step === 'classify')?.result as any
+    const step3Result = analysisSteps.find((s) => s.step === 'severity_assessment')?.result as any
+    const step4Result = analysisSteps.find((s) => s.step === 'final_report')?.result as any
+
+    const newReport = {
+      id: crypto.randomUUID(),
+      lat: 17.385,
+      lon: 78.487,
+      category: step1Result?.category ?? 'other',
+      description: editedReportText,
+      severity: step3Result?.urgencyScore ?? 3,
+      status: 'reported' as const,
+      department: step4Result?.report?.department ?? 'Municipal Corporation',
+      createdAt: new Date().toISOString(),
+    }
+
+    addConfirmedReport(newReport)
+    router.push('/map')
+  }
+
+  const handleDiscard = () => {
+    setShowConfirmPanel(false)
+    setEditedReportText("")
+    setAnalysisSteps([])
+    setSelectedFile(null)
+    setPreview(null)
+    setAnalysisError(null)
   }
 
   return (
@@ -238,7 +283,47 @@ export function UploadSection() {
       <div className="mt-12">
         <p className="font-mono text-xs uppercase tracking-[0.2em] text-teal">Agent Analysis</p>
         {analysisSteps.length > 0 ? (
-          <ReasoningReveal steps={analysisSteps} />
+          <>
+            <ReasoningReveal steps={analysisSteps} />
+            {showConfirmPanel && analysisSteps.length === 4 && (
+              <div className="mt-8 border border-[#5BBFBF] rounded-xl p-6 bg-[#FAF7F2]">
+
+                <p className="font-mono text-xs uppercase tracking-widest text-[#5BBFBF] mb-4">
+                  AI-assisted draft, review before submitting
+                </p>
+
+                <div className="flex flex-wrap gap-4 mb-4 text-sm font-mono text-[#7A6A58]">
+                  <span>Category: <strong className="text-[#1A1208]">{(analysisSteps.find((s) => s.step === 'classify')?.result as any)?.category}</strong></span>
+                  <span>Severity: <strong className="text-[#1A1208]">{(analysisSteps.find((s) => s.step === 'severity_assessment')?.result as any)?.urgencyScore}/5</strong></span>
+                  <span>Department: <strong className="text-[#1A1208]">{(analysisSteps.find((s) => s.step === 'final_report')?.result as any)?.report?.department}</strong></span>
+                </div>
+
+                <Textarea
+                  value={editedReportText}
+                  onChange={(e) => setEditedReportText(e.target.value)}
+                  className="w-full min-h-[120px] mb-4 font-mono text-sm bg-white border-[#C9A84C] focus:ring-[#5BBFBF]"
+                  placeholder="Edit the AI-drafted report before submitting..."
+                />
+
+                <div className="flex gap-3">
+                  <button
+                    type="button"
+                    onClick={handleConfirmReport}
+                    className="flex-1 py-2 px-4 rounded-lg text-sm font-medium text-white bg-gradient-to-r from-[#5BBFBF] to-[#C9A84C] hover:opacity-90 transition-opacity"
+                  >
+                    Confirm and Add to Map
+                  </button>
+                  <button
+                    type="button"
+                    onClick={handleDiscard}
+                    className="py-2 px-4 rounded-lg text-sm font-medium text-[#7A6A58] border border-[#7A6A58] hover:bg-[#F0EBE3] transition-colors"
+                  >
+                    Discard
+                  </button>
+                </div>
+              </div>
+            )}
+          </>
         ) : (
           <ol className="mt-5 flex flex-col gap-3">
             {PLACEHOLDER_STEPS.map((step, index) => (

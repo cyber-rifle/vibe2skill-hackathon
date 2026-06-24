@@ -7,6 +7,7 @@ import { Navbar } from '@/components/navbar'
 import { MapLegend } from '@/components/map-legend'
 import { ReportCard } from '@/components/report-card'
 import { seedReports } from '@/lib/seed-reports'
+import { useReports } from '@/lib/report-context'
 
 const CivicMap = dynamic(
   () => import('@/components/civic-map').then((m) => m.CivicMap),
@@ -21,6 +22,7 @@ const CivicMap = dynamic(
 )
 
 export default function MapPage() {
+  const { confirmedReports } = useReports()
   const [selectedId, setSelectedId] = useState<string | null>(null)
   const [reports] = useState(seedReports)
 
@@ -49,7 +51,7 @@ export default function MapPage() {
 
       <div className="flex flex-1 overflow-hidden" style={{ height: 'calc(100vh - 140px)' }}>
         <div className="relative flex-1">
-          <CivicMap reports={reports} selectedId={selectedId} onMarkerClick={setSelectedId} />
+          <CivicMap reports={[...seedReports, ...confirmedReports] as any} selectedId={selectedId} onMarkerClick={setSelectedId} />
           <MapLegend />
         </div>
 
