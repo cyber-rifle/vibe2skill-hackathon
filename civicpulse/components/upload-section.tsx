@@ -3,10 +3,13 @@ import { useState, useRef, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { UploadCloud, MapPin } from "lucide-react";
 import { ReasoningReveal } from "@/components/ReasoningReveal";
-import { useReports } from "@/lib/report-context";
+import { useReports, severityLabel } from "@/lib/report-context";
 import { Textarea } from "@/components/ui/textarea";
 
-interface Step { step: string; result: unknown; }
+const DEFAULT_LAT = 17.385
+const DEFAULT_LON = 78.487
+
+interface Step { step: string; result: any; }
 
 const PLACEHOLDER_STEPS = [
   { label: "Classifying issue...",           hint: "Identifying the category from the photo." },
@@ -81,8 +84,8 @@ export function UploadSection() {
         body: JSON.stringify({
           imageBase64,
           mimeType: selectedFile.type,
-          lat: 17.385,
-          lon: 78.487,
+          lat: DEFAULT_LAT,
+          lon: DEFAULT_LON,
           existingReports: [],
         }),
       });
@@ -147,18 +150,18 @@ export function UploadSection() {
                 if (event?.step && event?.result !== undefined) {
                   // Handle retry events inline instead of adding as numbered steps
                   if (event.step === 'severity_retry') {
-                    upsertStep('severity_assessment', { __retryMessage: (event.result as any)?.message })
+                    upsertStep('severity_assessment', { __retryMessage: event.result?.message })
                     continue
                   }
                   if (event.step === 'report_retry') {
-                    upsertStep('final_report', { __retryMessage: (event.result as any)?.message })
+                    upsertStep('final_report', { __retryMessage: event.result?.message })
                     continue
                   }
                   // For canonical steps, upsert so we preserve ordering and allow replacement
                   upsertStep(event.step, event.result)
 
                   if (event.step === 'final_report') {
-                    const finalReportText = (event.result as any)?.report?.text
+                    const finalReportText = event.result?.report?.text
                     if (typeof finalReportText === 'string') {
                       setEditedReportText(finalReportText)
                       setShowConfirmPanel(true)
@@ -200,17 +203,19 @@ export function UploadSection() {
   }
 
   const handleConfirmReport = () => {
-    const step1Result = analysisSteps.find((s) => s.step === 'classify')?.result as any
-    const step3Result = analysisSteps.find((s) => s.step === 'severity_assessment')?.result as any
-    const step4Result = analysisSteps.find((s) => s.step === 'final_report')?.result as any
+    const step1Result = analysisSteps.find((s) => s.step === 'classify')?.result
+    const step3Result = analysisSteps.find((s) => s.step === 'severity_assessment')?.result
+    const step4Result = analysisSteps.find((s) => s.step === 'final_report')?.result
 
     const newReport = {
       id: crypto.randomUUID(),
-      lat: 17.385,
-      lon: 78.487,
+      lat: DEFAULT_LAT,
+      lon: DEFAULT_LON,
       category: step1Result?.category ?? 'other',
       description: editedReportText,
-      severity: step3Result?.urgencyScore ?? 3,
+      severity: severityLabel(step3Result?.urgencyScore ?? 3),
+      report: editedReportText,
+      timeAgo: 'Just now',
       status: 'reported' as const,
       department: step4Result?.report?.department ?? 'Municipal Corporation',
       createdAt: new Date().toISOString(),
@@ -293,9 +298,9 @@ export function UploadSection() {
                 </p>
 
                 <div className="flex flex-wrap gap-4 mb-4 text-sm font-mono text-[#7A6A58]">
-                  <span>Category: <strong className="text-[#1A1208]">{(analysisSteps.find((s) => s.step === 'classify')?.result as any)?.category}</strong></span>
-                  <span>Severity: <strong className="text-[#1A1208]">{(analysisSteps.find((s) => s.step === 'severity_assessment')?.result as any)?.urgencyScore}/5</strong></span>
-                  <span>Department: <strong className="text-[#1A1208]">{(analysisSteps.find((s) => s.step === 'final_report')?.result as any)?.report?.department}</strong></span>
+                  <span>Category: <strong className="text-[#1A1208]">{analysisSteps.find((s) => s.step === 'classify')?.result?.category}</strong></span>
+                  <span>Severity: <strong className="text-[#1A1208]">{analysisSteps.find((s) => s.step === 'severity_assessment')?.result?.urgencyScore}/5</strong></span>
+                  <span>Department: <strong className="text-[#1A1208]">{analysisSteps.find((s) => s.step === 'final_report')?.result?.report?.department}</strong></span>
                 </div>
 
                 <Textarea

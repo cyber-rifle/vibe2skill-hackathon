@@ -51,7 +51,7 @@ export default function MapPage() {
 
       <div className="flex flex-1 overflow-hidden" style={{ height: 'calc(100vh - 140px)' }}>
         <div className="relative flex-1">
-          <CivicMap reports={[...seedReports, ...confirmedReports] as any} selectedId={selectedId} onMarkerClick={setSelectedId} />
+          <CivicMap reports={[...seedReports, ...confirmedReports]} selectedId={selectedId} onMarkerClick={setSelectedId} />
           <MapLegend />
         </div>
 

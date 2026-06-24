@@ -2,15 +2,25 @@
 
 import React, { createContext, useContext, useState } from 'react'
 
+export type ReportSeverity = 'low' | 'medium' | 'high'
+
+export function severityLabel(n: number): ReportSeverity {
+  if (n <= 2) return 'low'
+  if (n === 3) return 'medium'
+  return 'high'
+}
+
 export type Report = {
   id: string
   lat: number
   lon: number
   category: 'pothole' | 'water_leakage' | 'streetlight' | 'waste_management' | 'other'
   description: string
-  severity: number
-  status: 'reported' | 'verified' | 'in_progress' | 'resolved'
+  severity: ReportSeverity
   department: string
+  timeAgo: string
+  report: string
+  status: 'reported' | 'verified' | 'in_progress' | 'resolved'
   createdAt: string
 }
 
