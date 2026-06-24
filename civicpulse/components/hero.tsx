@@ -33,7 +33,7 @@ export function Hero() {
               Report an Issue
             </a>
             <a
-              href="#"
+              href="/map"
               className="inline-flex items-center gap-2 rounded-full border border-[#1A1208] bg-transparent px-7 py-3 font-sans text-sm font-medium text-[#1A1208] transition-colors hover:bg-[#1A1208] hover:text-[#FAF7F2]"
             >
               <MapIcon className="h-4 w-4" aria-hidden="true" />

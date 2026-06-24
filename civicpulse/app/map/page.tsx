@@ -1,5 +1,6 @@
 'use client'
 
+import Link from 'next/link'
 import { useState } from 'react'
 import dynamic from 'next/dynamic'
 import { Navbar } from '@/components/navbar'
@@ -28,11 +29,21 @@ export default function MapPage() {
       <Navbar />
 
       <div className="border-b border-[#E8E4DB] bg-[#FAF7F2] px-6 py-5">
-        <div className="mx-auto max-w-7xl">
-          <h1 className="text-4xl font-light text-[#1A1208] mb-1" style={{ fontFamily: 'Cormorant Garamond' }}>
-            Community Reports
-          </h1>
-          <p className="text-sm text-[#7A6A58]">View and track civic issues reported in Hyderabad</p>
+        <div className="mx-auto flex max-w-7xl flex-col gap-3 md:flex-row md:items-center md:justify-between">
+          <div>
+            <h1 className="text-4xl font-light text-[#1A1208] mb-1" style={{ fontFamily: 'Cormorant Garamond' }}>
+              Community Reports
+            </h1>
+            <p className="text-sm text-[#7A6A58]">View and track civic issues reported in Hyderabad</p>
+          </div>
+          <div>
+            <Link
+              href="/#upload"
+              className="shimmer-btn rounded-full px-5 py-2 font-sans text-sm font-medium shadow-sm"
+            >
+              Report an Issue
+            </Link>
+          </div>
         </div>
       </div>
 
