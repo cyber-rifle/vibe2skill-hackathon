@@ -72,20 +72,26 @@ export function CivicMap({ reports, selectedId, onMarkerClick }: CivicMapProps) 
   }, [reports, onMarkerClick])
 
   useEffect(() => {
-    import('leaflet').then(() => {
-      Object.entries(markersRef.current).forEach(([id, marker]) => {
-        const isSelected = id === selectedId
-        marker.setStyle({
-          radius: isSelected ? 14 : 10,
-          weight: isSelected ? 3 : 2,
-          color: isSelected ? '#1A1208' : '#fff',
-        } as Parameters<typeof marker.setStyle>[0])
-        if (isSelected) {
+    if (!selectedId || !mapRef.current) return
+
+    Object.entries(markersRef.current).forEach(([id, marker]) => {
+      const isSelected = id === selectedId
+      marker.setStyle({
+        radius: isSelected ? 14 : 10,
+        weight: isSelected ? 3 : 2,
+        color: isSelected ? '#1A1208' : '#fff',
+      } as Parameters<typeof marker.setStyle>[0])
+
+      if (isSelected) {
+        const r = reports.find((rep) => rep.id === id)
+        if (r && mapRef.current) {
+          mapRef.current.setView([r.lat, r.lon], mapRef.current.getZoom(), {
+            animate: true,
+            duration: 0.5,
+          })
           marker.openPopup()
-          const r = reports.find((rep) => rep.id === id)
-          if (r && mapRef.current) mapRef.current.panTo([r.lat, r.lon])
         }
-      })
+      }
     })
   }, [selectedId, reports])
 
