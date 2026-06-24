@@ -32,14 +32,27 @@ export function CivicMap({ reports, selectedId, onMarkerClick }: CivicMapProps) 
         iconUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png',
         shadowUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png',
       })
-
       const map = L.map(containerRef.current!).setView([17.4474, 78.3762], 12)
       mapRef.current = map
-
       L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '© OpenStreetMap contributors',
         maxZoom: 19,
       }).addTo(map)
+    })
+
+    return () => {
+      mapRef.current?.remove()
+      mapRef.current = null
+      markersRef.current = {}
+    }
+  }, [])
+
+  useEffect(() => {
+    if (!mapRef.current) return
+
+    import('leaflet').then((L) => {
+      Object.values(markersRef.current).forEach((m) => m.remove())
+      markersRef.current = {}
 
       reports.forEach((r) => {
         const marker = L.circleMarker([r.lat, r.lon], {
@@ -50,20 +63,13 @@ export function CivicMap({ reports, selectedId, onMarkerClick }: CivicMapProps) 
           opacity: 1,
           fillOpacity: 0.9,
         })
-          .addTo(map)
+          .addTo(mapRef.current!)
           .bindPopup(`<b>${r.department}</b><br/>${r.description}`)
-
         marker.on('click', () => onMarkerClick(r.id))
         markersRef.current[r.id] = marker
       })
     })
-
-    return () => {
-      mapRef.current?.remove()
-      mapRef.current = null
-      markersRef.current = {}
-    }
-  }, [reports])
+  }, [reports, onMarkerClick])
 
   useEffect(() => {
     import('leaflet').then(() => {
