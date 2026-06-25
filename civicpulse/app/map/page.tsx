@@ -27,7 +27,7 @@ export default function MapPage() {
   const allReports = [...seedReports, ...confirmedReports]
 
   return (
-    <div className="flex min-h-screen flex-col bg-[#FAF7F2]">
+    <div className="flex h-screen flex-col bg-[#FAF7F2] overflow-hidden">
       <Navbar />
 
       <div className="border-b border-[#E8E4DB] bg-[#FAF7F2] px-6 py-5">
@@ -49,9 +49,9 @@ export default function MapPage() {
         </div>
       </div>
 
-      <div className="flex flex-1 overflow-hidden" style={{ height: 'calc(100vh - 140px)' }}>
+      <div className="flex flex-1 overflow-hidden min-h-0">
         <div className="relative flex-1">
-          <CivicMap reports={[...seedReports, ...confirmedReports]} selectedId={selectedId} onMarkerClick={setSelectedId} />
+          <CivicMap reports={allReports} selectedId={selectedId} onMarkerClick={setSelectedId} />
           <MapLegend />
         </div>
 

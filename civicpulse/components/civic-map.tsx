@@ -77,16 +77,7 @@ export function CivicMap({ reports, selectedId, onMarkerClick }: CivicMapProps) 
   }, [])
 
   useEffect(() => {
-    if (!mapRef.current) {
-      // Map not ready — wait for mapready event then build
-      const container = containerRef.current
-      const onReady = () => buildMarkers()
-      container?.addEventListener('mapready', onReady, { once: true })
-      return () => container?.removeEventListener('mapready', onReady)
-    }
-
-    buildMarkers()
-
+    // Define buildMarkers at the top of the effect so it's in scope everywhere
     function buildMarkers() {
       import('leaflet').then((L) => {
         if (!mapRef.current) return
@@ -134,6 +125,17 @@ export function CivicMap({ reports, selectedId, onMarkerClick }: CivicMapProps) 
         }
       })
     }
+
+    // If map already ready, build immediately
+    if (mapRef.current) {
+      buildMarkers()
+      return
+    }
+
+    // Map still initializing — wait for mapready event
+    const container = containerRef.current
+    container?.addEventListener('mapready', buildMarkers, { once: true })
+    return () => container?.removeEventListener('mapready', buildMarkers)
   }, [reports, selectedId])
 
   return <div ref={containerRef} className="h-full w-full" />
