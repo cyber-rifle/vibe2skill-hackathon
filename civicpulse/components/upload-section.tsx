@@ -360,7 +360,7 @@ export function UploadSection() {
         {analysisSteps.length > 0 ? (
           <>
             <ReasoningReveal steps={analysisSteps} />
-            {showConfirmPanel && analysisSteps.length === 4 && (
+            {showConfirmPanel && (
               <div className="mt-8 border border-[#5BBFBF] rounded-xl p-6 bg-[#FAF7F2]">
 
                 <p className="font-mono text-xs uppercase tracking-widest text-[#5BBFBF] mb-4">
