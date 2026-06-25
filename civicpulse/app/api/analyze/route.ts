@@ -250,16 +250,17 @@ Respond ONLY with valid JSON, no markdown, no code blocks, no extra text:
       : `This appears to be a first-time report for this location.`;
 
     const severityPrompt = `A civic issue has been reported in an Indian city.
-Category: ${classification.category}
-Description: ${classification.description}
-Confidence: ${Math.round(classification.confidence * 100)}%
-Recurrence context: ${duplicateContext}
-Department this will be routed to: ${department}
+  Category: ${classification.category}
+  Description: ${classification.description}
+  Confidence: ${Math.round(classification.confidence * 100)}%
+  Recurrence context: ${duplicateContext}
+  Department this will be routed to: ${department}
 
-Assess the urgency of this issue on a scale of 1 to 5 where 1 = minor inconvenience and 5 = immediate safety hazard.
-Start your response with exactly "Urgency: X/5" on the first line.
+  Assess the urgency of this issue on a scale of 1 to 5 where 1 = minor inconvenience and 5 = immediate safety hazard.
+  Start your response with exactly "Urgency: X/5" on the first line.
 
-Then, in 2-3 sentences, explain the severity, factoring in recurrence if applicable. Specifically reference the CURRENT complaint-resolution timeframe or recent reported backlog for ${department} in its relevant Indian city (e.g. BBMP Bengaluru, BMC Mumbai, GHMC Hyderabad) — find this using current information rather than a general estimate. Mention the timeframe in plain language as part of your explanation, without listing sources or URLs separately.`;
+  Then, in 2-3 sentences, explain the severity, factoring in recurrence if applicable. Specifically reference the CURRENT complaint-resolution timeframe or recent reported backlog for ${department} in its relevant Indian city (e.g. BBMP Bengaluru, BMC Mumbai, GHMC Hyderabad) — find this using current information rather than a general estimate. Mention the timeframe in plain language as part of your explanation, without listing sources or URLs separately.
+  Also provide a brief resolution time estimate (e.g. '3–5 business days', '24–48 hours') as a separate line at the very end of your response in exactly this format: ResolutionTime: <your estimate>`;
 
     const encoder = new TextEncoder();
     const stream = new ReadableStream({
@@ -369,7 +370,19 @@ Then, in 2-3 sentences, explain the severity, factoring in recurrence if applica
             };
           }
         }
-        sendStep("severity_assessment", severityResult);
+        // extract resolution time estimate if provided as a structured line
+        const resolutionMatch = severityResult?.assessment?.match(/ResolutionTime:\s*(.+)/i);
+        const resolutionTimeEstimate = resolutionMatch ? resolutionMatch[1].trim() : null;
+
+        // strip the ResolutionTime line from the assessment text so it doesn't show in prose
+        if (severityResult?.assessment) {
+          severityResult.assessment = severityResult.assessment.replace(/ResolutionTime:\s*.+/i, "").trim();
+        }
+
+        sendStep("severity_assessment", {
+          ...severityResult,
+          resolutionTimeEstimate,
+        });
 
         const urgencyLine = severityResult?.assessment?.split("\n")[0] ?? "Urgency: 3/5";
         const urgencyTone = (() => {
