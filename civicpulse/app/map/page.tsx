@@ -53,13 +53,13 @@ export default function MapPage() {
         </div>
       </div>
 
-      <div className="flex flex-1 overflow-hidden min-h-0">
-        <div className="relative flex-1">
+      <div className="flex flex-1 flex-col overflow-hidden min-h-0 md:flex-row">
+        <div className="relative flex-1 min-h-[50vh] md:min-h-0">
           <CivicMap reports={allReports} selectedId={selectedId} onMarkerClick={setSelectedId} />
           <MapLegend />
         </div>
 
-        <div className="w-80 flex flex-col border-l border-[#E8E4DB] bg-white overflow-hidden">
+        <div className="w-full md:w-80 flex flex-col border-t md:border-t-0 md:border-l border-[#E8E4DB] bg-white overflow-hidden max-h-[40vh] md:max-h-none">
           <div className="flex-shrink-0 border-b border-[#E8E4DB] px-4 py-4">
             <h2 className="text-sm font-semibold text-[#1A1208]">Active Reports</h2>
             <p className="text-xs text-[#7A6A58] mt-1">{allReports.length} reports in Hyderabad</p>

@@ -240,7 +240,10 @@ export function UploadSection() {
       lon: activeLon,
       category: step1Result?.category ?? 'other',
       description: editedReportText,
-      severity: severityLabel(step3Result?.urgencyScore ?? 3),
+      severity: severityLabel(
+        step3Result?.urgencyScore ??
+        parseInt(step3Result?.assessment?.match(/(\d)\/5/)?.[1] ?? "3", 10)
+      ),
       report: editedReportText,
       timeAgo: 'Just now',
       status: 'reported' as const,

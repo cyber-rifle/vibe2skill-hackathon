@@ -83,8 +83,7 @@ const SeverityCard = (result: unknown) => {
   const sources = (result as any)?.sources ?? [];
   const urgencyMatch = assessment.match(/(\d)\/5/);
   const urgency = urgencyMatch ? parseInt(urgencyMatch[1], 10) : 3;
-  const resolutionMatch = assessment.match(/(\d[^.]*(?:day|week|hour)[^.]*)/i);
-  const resolutionText = resolutionMatch ? resolutionMatch[0] : null;
+  const resolutionTimeEstimate = (result as any)?.resolutionTimeEstimate ?? null;
   const severityColor = getSeverityColor(urgency);
 
   const getSourceLabel = (source: any) => {
@@ -130,9 +129,11 @@ const SeverityCard = (result: unknown) => {
           ))}
         </div>
       </div>
-      {resolutionText ? (
-        <p className="text-sm text-[#1A1208]/80">Expected resolution: {resolutionText}</p>
-      ) : null}
+      {resolutionTimeEstimate ? (
+        <p className="text-sm text-[#1A1208]/80">Expected resolution: {resolutionTimeEstimate}</p>
+      ) : (
+        <p className="text-xs text-[#7A6A58]/80 italic">Timeline varies by department</p>
+      )}
       <p className="text-xs text-[#7A6A58] leading-relaxed mt-1">{assessment}</p>
       {grounded && Array.isArray(sources) && sources.length > 0 ? (
         <div className="flex flex-wrap gap-2 pt-1">

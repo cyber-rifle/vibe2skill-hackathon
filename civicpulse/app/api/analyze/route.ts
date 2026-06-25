@@ -72,6 +72,7 @@ export async function POST(req: NextRequest) {
             {
               step: "severity_assessment",
               result: {
+                urgencyScore: 4,
                 assessment: "Urgency: 4/5\nSevere pothole posing safety risk. GHMC Roads typically resolves high-severity potholes within 3–5 business days.",
                 grounded: true,
                 resolutionTimeEstimate: null,
