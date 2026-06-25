@@ -2,6 +2,7 @@
 import { useState, useRef, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { UploadCloud, MapPin } from "lucide-react";
+import { motion } from "framer-motion";
 import { ReasoningReveal } from "@/components/ReasoningReveal";
 import { useReports, severityLabel } from "@/lib/report-context";
 import { Textarea } from "@/components/ui/textarea";
@@ -268,7 +269,12 @@ export function UploadSection() {
 
   return (
     <section id="upload" className="mx-auto max-w-3xl px-5 pb-24">
-      <div className="iridescent-border rounded-2xl">
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, delay: 0.3, ease: "easeOut" }}
+      >
+        <div className="iridescent-border rounded-2xl">
         <div className="rounded-2xl bg-white p-6 md:p-8">
           <h2 className="mt-3 font-display text-3xl font-light text-ink">Show us what needs fixing</h2>
 
@@ -446,6 +452,7 @@ export function UploadSection() {
           </ol>
         )}
       </div>
+  </motion.div>
     </section>
   );
 }

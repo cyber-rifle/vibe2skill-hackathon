@@ -10,6 +10,7 @@ export interface CivicReport {
   report: string
   status?: 'reported' | 'verified' | 'in_progress' | 'resolved'
   createdAt?: string
+  resolutionTimeEstimate?: string
 }
 
 export const seedReports: CivicReport[] = [
@@ -23,6 +24,7 @@ export const seedReports: CivicReport[] = [
     lon: 78.4071,
     timeAgo: '2 hours ago',
     report: 'A large pothole has been identified near Jubilee Hills road posing significant safety risk to motorists. Immediate repair is recommended by Roads and Infrastructure department.',
+    resolutionTimeEstimate: '3–5 business days',
   },
   {
     id: '2',
@@ -34,6 +36,7 @@ export const seedReports: CivicReport[] = [
     lon: 78.4347,
     timeAgo: '5 hours ago',
     report: 'A non-functional streetlight has been reported on Banjara Hills road creating unsafe conditions after dark. Electrical department should replace the unit within standard SLA.',
+    resolutionTimeEstimate: '7–10 business days',
   },
   {
     id: '3',
@@ -45,6 +48,7 @@ export const seedReports: CivicReport[] = [
     lon: 78.3908,
     timeAgo: '1 hour ago',
     report: 'A burst water pipe on Madhapur main road is causing significant waterlogging and traffic disruption. Water Board must dispatch repair crew urgently.',
+    resolutionTimeEstimate: '24–48 hours',
   },
   {
     id: '4',
@@ -56,6 +60,7 @@ export const seedReports: CivicReport[] = [
     lon: 78.3615,
     timeAgo: '3 hours ago',
     report: 'An overflowing garbage bin near Kondapur market is creating unhygienic conditions for local residents. Sanitation department should schedule immediate collection.',
+    resolutionTimeEstimate: '1–2 business days',
   },
   {
     id: '5',
@@ -67,6 +72,7 @@ export const seedReports: CivicReport[] = [
     lon: 78.3489,
     timeAgo: '4 hours ago',
     report: 'Multiple potholes on the Gachibowli flyover approach road are causing severe vehicle damage and accident risk. Roads department must prioritize emergency patching.',
+    resolutionTimeEstimate: '2–4 business days',
   },
   {
     id: '6',
@@ -78,6 +84,7 @@ export const seedReports: CivicReport[] = [
     lon: 78.3762,
     timeAgo: '1 day ago',
     report: 'Damaged and uneven footpath tiles near Hitech City metro station present a trip hazard for daily commuters. Municipal Corporation should schedule resurfacing.',
+    resolutionTimeEstimate: '2–3 weeks',
   },
   {
     id: '7',
@@ -91,6 +98,7 @@ export const seedReports: CivicReport[] = [
     status: 'reported',
     createdAt: '2026-06-16T09:40:00Z',
     report: 'A buried water main leak near Kukatpally bus depot is causing local street flooding and softening pavements. Water Board should inspect and repair immediately.',
+    resolutionTimeEstimate: '3–7 business days',
   },
   {
     id: '8',
@@ -104,6 +112,7 @@ export const seedReports: CivicReport[] = [
     status: 'verified',
     createdAt: '2026-06-16T18:15:00Z',
     report: 'A flickering streetlight on Erragadda main road has been verified by the electrical team and needs replacement to restore safe pedestrian visibility.',
+    resolutionTimeEstimate: '10–14 business days',
   },
   {
     id: '9',
@@ -117,6 +126,7 @@ export const seedReports: CivicReport[] = [
     status: 'in_progress',
     createdAt: '2026-06-15T13:05:00Z',
     report: 'An illegal waste dump near the Dilsukhnagar bus stop is attracting stray animals and blocking the sidewalk. Sanitation crews are currently on site for cleanup.',
+    resolutionTimeEstimate: '24–72 hours',
   },
   {
     id: '10',
@@ -130,5 +140,6 @@ export const seedReports: CivicReport[] = [
     status: 'resolved',
     createdAt: '2026-06-15T07:50:00Z',
     report: 'A temporary vendor stall blocking the pavement near LB Nagar metro exits was reported and resolved after Municipal Corporation intervention to clear pedestrian access.',
+    resolutionTimeEstimate: '4–8 hours',
   },
 ]

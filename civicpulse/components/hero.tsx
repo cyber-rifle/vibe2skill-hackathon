@@ -14,7 +14,12 @@ export function Hero() {
       />
 
       <div className="mx-auto max-w-6xl px-5 pb-20 pt-20 md:pb-28 md:pt-28">
-        <div className="max-w-3xl">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, ease: "easeOut" }}
+          className="max-w-3xl"
+        >
           <p className="font-mono text-xs uppercase tracking-[0.2em] text-[#5BBFBF]">
             Powered by Google AI Studio
           </p>
@@ -54,7 +59,7 @@ export function Hero() {
             <StatCounter value={89} suffix="%" label="Resolved in 7 Days" duration={1800} />
             <StatCounter value={14} suffix="+" label="Departments Linked" duration={1400} />
           </motion.div>
-        </div>
+        </motion.div>
       </div>
     </section>
   )

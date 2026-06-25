@@ -7,8 +7,8 @@ const NAV_LINKS = [
 
 export function Navbar() {
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-border/60 bg-[rgba(250,247,242,0.92)] backdrop-blur-md">
-      <nav className="mx-auto flex h-16 max-w-6xl items-center justify-between px-5">
+    <header className="sticky top-0 z-50 w-full">
+      <nav className="backdrop-blur-md bg-background/80 border-b border-border/50 mx-auto flex h-16 max-w-6xl items-center justify-between px-5">
         <a href="/" className="iridescent-text font-display text-2xl font-medium tracking-tight">
           CivicPulse
         </a>

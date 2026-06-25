@@ -100,6 +100,7 @@ export function CivicMap({ reports, selectedId, onMarkerClick }: CivicMapProps) 
               <div style="font-family:'DM Sans',sans-serif;min-width:190px;padding:4px 2px">
                 <div style="font-size:10px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:#7A6A58;margin-bottom:6px;font-family:'JetBrains Mono',monospace">${r.category.replace(/_/g, ' ')}</div>
                 <div style="font-size:14px;font-weight:600;color:#1A1208;margin-bottom:6px;line-height:1.3">${r.department}</div>
+                ${r.resolutionTimeEstimate ? `<div style="font-size:11px;color:#1A1208;margin-bottom:8px"><span style="color:#7A6A58">Expected resolution:</span> <strong>${r.resolutionTimeEstimate}</strong></div>` : '<div style="font-size:11px;color:#7A6A58;margin-bottom:8px;font-style:italic">Timeline varies by department</div>'}
                 <div style="font-size:12px;color:#7A6A58;line-height:1.6;margin-bottom:10px;border-top:1px solid #E8E4DB;padding-top:8px">${r.description}</div>
                 <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap">
                   <span style="font-size:10px;font-family:'JetBrains Mono',monospace;background:#FAF7F2;border:1px solid #E8E4DB;border-radius:4px;padding:2px 7px;color:#1A1208;font-weight:500">severity ${r.severity}/5</span>
