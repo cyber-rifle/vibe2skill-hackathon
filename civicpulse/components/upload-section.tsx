@@ -267,6 +267,8 @@ export function UploadSection() {
     setShowSuggestions(false)
   }
 
+  const step3Result = analysisSteps.find((s) => s.step === 'severity_assessment')?.result
+
   return (
     <section id="upload" className="mx-auto max-w-3xl px-5 pb-24">
       <motion.div
@@ -274,14 +276,14 @@ export function UploadSection() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, delay: 0.3, ease: "easeOut" }}
       >
-        <div className="iridescent-border rounded-2xl">
-        <div className="rounded-2xl bg-white p-6 md:p-8">
-          <h2 className="mt-3 font-display text-3xl font-light text-ink">Show us what needs fixing</h2>
+        <div className="iridescent-border rounded-2xl p-[2px]">
+          <div className="rounded-2xl bg-white p-6 md:p-8">
+            <h2 className="mt-3 font-display text-3xl font-light text-ink">Show us what needs fixing</h2>
 
-          <div
-            className="mt-6 flex flex-col items-center justify-center rounded-xl border-2 border-dashed border-teal/50 bg-ivory-deep/40 px-6 py-12 text-center transition-colors hover:border-teal cursor-pointer"
-            onClick={() => inputRef.current?.click()}
-          >
+            <div
+              className="mt-6 flex flex-col items-center justify-center rounded-xl border-2 border-dashed border-teal/50 bg-ivory-deep/40 px-6 py-12 text-center transition-colors hover:border-teal cursor-pointer"
+              onClick={() => inputRef.current?.click()}
+            >
             {preview ? (
               <div style={{ position: "relative", display: "inline-block" }}>
                 {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -412,6 +414,16 @@ export function UploadSection() {
                   <span>Department: <strong className="text-[#1A1208]">{analysisSteps.find((s) => s.step === 'final_report')?.result?.report?.department}</strong></span>
                 </div>
 
+                {step3Result?.resolutionTimeEstimate ? (
+                  <p className="text-sm text-foreground/80 mt-1">
+                    <span className="font-medium">Expected resolution:</span> {step3Result.resolutionTimeEstimate}
+                  </p>
+                ) : (
+                  <p className="text-xs text-muted-foreground mt-1 italic">
+                    Timeline varies by department
+                  </p>
+                )}
+
                 <Textarea
                   value={editedReportText}
                   onChange={(e) => setEditedReportText(e.target.value)}
@@ -452,7 +464,7 @@ export function UploadSection() {
           </ol>
         )}
       </div>
-  </motion.div>
+    </motion.div>
     </section>
   );
 }

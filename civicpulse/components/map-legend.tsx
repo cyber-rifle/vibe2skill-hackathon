@@ -6,7 +6,7 @@ export function MapLegend() {
   ]
 
   return (
-    <div className="absolute bottom-6 left-6 z-[1000] rounded-lg border border-[#E8E4DB] bg-white p-4 shadow-lg">
+    <div className="absolute bottom-4 left-4 z-[1000] max-w-[140px] rounded-lg border border-[#E8E4DB] bg-white p-4 shadow-lg sm:bottom-auto sm:top-4 sm:max-w-none">
       <h3 className="mb-3 text-xs font-semibold uppercase tracking-wider text-[#1A1208]"
         style={{ fontFamily: 'JetBrains Mono' }}>
         Severity

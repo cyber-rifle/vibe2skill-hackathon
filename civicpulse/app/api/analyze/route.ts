@@ -74,6 +74,7 @@ export async function POST(req: NextRequest) {
               result: {
                 assessment: "Urgency: 4/5\nSevere pothole posing safety risk. GHMC Roads typically resolves high-severity potholes within 3–5 business days.",
                 grounded: true,
+                resolutionTimeEstimate: null,
                 sources: [{ uri: "https://ghmc.gov.in/roads", title: "GHMC Road Repair Policy" }],
               },
             },
