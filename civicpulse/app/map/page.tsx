@@ -1,7 +1,7 @@
 'use client'
 
 import Link from 'next/link'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import dynamic from 'next/dynamic'
 import { Navbar } from '@/components/navbar'
 import { MapLegend } from '@/components/map-legend'
@@ -22,6 +22,10 @@ const CivicMap = dynamic(
 )
 
 export default function MapPage() {
+  useEffect(() => {
+    try { sessionStorage.removeItem('civicpulse_confirmed') } catch {}
+  }, [])
+
   const { confirmedReports } = useReports()
   const [selectedId, setSelectedId] = useState<string | null>(null)
   const allReports = [...seedReports, ...confirmedReports]
