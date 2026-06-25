@@ -7,6 +7,7 @@ import { ReasoningReveal } from "@/components/ReasoningReveal";
 import { useReports, severityLabel } from "@/lib/report-context";
 import { Textarea } from "@/components/ui/textarea";
 import BoundingBoxOverlay from "@/components/BoundingBoxOverlay";
+import { SeverityBadge } from "@/components/severity-badge";
 
 const NEIGHBORHOODS: Record<string, { lat: number; lon: number }> = {
   "Banjara Hills":  { lat: 17.4156, lon: 78.4480 },
@@ -411,12 +412,18 @@ export function UploadSection() {
               <div className="mt-8 border border-[#5BBFBF] rounded-xl p-6 bg-[#FAF7F2]">
 
                 <p className="font-mono text-xs uppercase tracking-widest text-[#5BBFBF] mb-4">
-                  AI-assisted draft, review before submitting
+                  Human-in-the-loop review — confirm before submitting
                 </p>
 
-                <div className="flex flex-wrap gap-4 mb-4 text-sm font-mono text-[#7A6A58]">
+                <div className="flex flex-wrap items-center gap-4 mb-4 text-sm font-mono text-[#7A6A58]">
                   <span>Category: <strong className="text-[#1A1208]">{analysisSteps.find((s) => s.step === 'classify')?.result?.category}</strong></span>
-                  <span>Severity: <strong className="text-[#1A1208]">{analysisSteps.find((s) => s.step === 'severity_assessment')?.result?.assessment?.match(/(\d)/)?.[1] ?? '3'}/5</strong></span>
+                  <span className="flex items-center gap-2">
+                    Severity:
+                    <SeverityBadge severity={severityLabel(
+                      step3Result?.urgencyScore ??
+                      parseInt(step3Result?.assessment?.match(/(\d)\/5/)?.[1] ?? "3", 10)
+                    )} />
+                  </span>
                   <span>Department: <strong className="text-[#1A1208]">{analysisSteps.find((s) => s.step === 'final_report')?.result?.report?.department}</strong></span>
                 </div>
 
