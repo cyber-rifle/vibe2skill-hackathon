@@ -188,7 +188,7 @@ export function UploadSection() {
                   upsertStep(event.step, event.result)
 
                   if (event.step === 'final_report') {
-                    const finalReportText = event.result?.report?.text
+                    const finalReportText = event.result?.report?.reportText ?? event.result?.report?.text
                     if (typeof finalReportText === 'string') {
                       setEditedReportText(finalReportText)
                       setShowConfirmPanel(true)
@@ -232,6 +232,7 @@ export function UploadSection() {
   const handleConfirmReport = () => {
     const step1Result = analysisSteps.find((s) => s.step === 'classify')?.result
     const step3Result = analysisSteps.find((s) => s.step === 'severity_assessment')?.result
+    const step4ResultForUrgency = analysisSteps.find((s) => s.step === 'final_report')?.result
     const step4Result = analysisSteps.find((s) => s.step === 'final_report')?.result
 
     const newReport = {
@@ -242,12 +243,14 @@ export function UploadSection() {
       description: editedReportText,
       severity: severityLabel(
         step3Result?.urgencyScore ??
+        step4ResultForUrgency?.urgencyScore ??
         parseInt(step3Result?.assessment?.match(/(\d)\/5/)?.[1] ?? "3", 10)
       ),
       report: editedReportText,
       timeAgo: 'Just now',
       status: 'reported' as const,
       department: step4Result?.report?.department ?? 'Municipal Corporation',
+      resolutionTimeEstimate: step3Result?.resolutionTimeEstimate ?? undefined,
       createdAt: new Date().toISOString(),
     }
 
