@@ -277,7 +277,7 @@ export function UploadSection() {
   const step3Result = analysisSteps.find((s) => s.step === 'severity_assessment')?.result
 
   return (
-    <section id="upload" className="mx-auto max-w-3xl px-5 pb-24">
+    <section id="upload" className="mx-auto max-w-3xl px-5 py-20">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
