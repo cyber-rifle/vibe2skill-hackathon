@@ -131,7 +131,14 @@ export async function POST(req: NextRequest) {
     }
 
     console.log("[step1] classifying image...");
-    let classification: any = {
+    let classification: {
+      category: string;
+      description: string;
+      confidence: number;
+      severity?: number;
+      boundingBox?: { ymin: number; xmin: number; ymax: number; xmax: number };
+      debugError?: string;
+    } = {
       category: "other",
       description: "Unable to classify",
       confidence: 0,
@@ -272,102 +279,106 @@ Respond ONLY with valid JSON, no markdown, no code blocks, no extra text:
         sendStep("classify", classification);
         sendStep("duplicate_check", { duplicatesFound: duplicates.length, nearbyReports: duplicates });
 
-        console.log("[step3] calling Gemini with googleSearch grounding...");
+        console.log("[step3] calling Gemini with googleSearch grounding (streaming)...");
         let severityResult: { assessment: string; grounded: boolean; sources: { uri: string; title?: string }[]; debugError?: string } = {
           assessment: "Urgency: 3/5\nModerate severity requiring prompt attention.",
           grounded: false,
           sources: [],
         };
         try {
-          const res = await withTimeout(
-            ai.models.generateContent({
+          // STREAMING PATH — accumulate tokens and send intermediate events
+          let streamingFullText = "";
+          let streamingGroundingChunks: { web?: { uri?: string; title?: string } }[] = [];
+          const streamingResponse = await withTimeout(
+            ai.models.generateContentStream({
               model: MODEL,
               contents: [{ role: "user", parts: [{ text: severityPrompt }] }],
               config: { tools: [{ googleSearch: {} }] },
             }),
             9000,
-            "grounded severity call"
+            "grounded severity stream"
           );
-          // DEBUG: log raw groundingMetadata to inspect any server-side tool signals
-          try {
-            console.log("[step3] raw groundingMetadata:", JSON.stringify(res.candidates?.[0]?.groundingMetadata, null, 2));
-          } catch (e) {
-            console.error("[step3] failed to stringify groundingMetadata:", e);
+          for await (const chunk of streamingResponse) {
+            const chunkText = chunk.candidates?.[0]?.content?.parts
+              ?.filter((p: { text?: string }) => typeof p.text === "string")
+              ?.map((p: { text?: string }) => p.text)
+              ?.join("") ?? "";
+            if (chunkText) {
+              streamingFullText += chunkText;
+              sendStep("severity_streaming", { token: chunkText, full_text: streamingFullText });
+            }
+            // capture grounding from any chunk that has it
+            const chunkGrounding = chunk.candidates?.[0]?.groundingMetadata?.groundingChunks;
+            if (chunkGrounding?.length) streamingGroundingChunks = chunkGrounding;
           }
-          const parts = res.candidates?.[0]?.content?.parts ?? [];
-          const text = parts
-            .filter((p: { text?: string }) => typeof p.text === "string")
-            .map((p: { text?: string }) => p.text)
-            .join("")
-            .trim();
-          const urgencyCount = (text.match(/Urgency:/g) || []).length;
+          const urgencyCount = (streamingFullText.match(/Urgency:/g) || []).length;
           const dedupedText = urgencyCount > 1
-            ? "Urgency:" + text.split("Urgency:").filter(Boolean)[0].trimEnd()
-            : text;
-          const groundingMetadata = res.candidates?.[0]?.groundingMetadata;
-          const groundingChunks = groundingMetadata?.groundingChunks ?? [];
-          const sources = groundingChunks
+            ? "Urgency:" + streamingFullText.split("Urgency:").filter(Boolean)[0].trimEnd()
+            : streamingFullText;
+          const sources = streamingGroundingChunks
             .map((c: { web?: { uri?: string; title?: string } }) => c.web)
             .filter((w: { uri?: string } | undefined): w is { uri: string; title?: string } => !!w?.uri)
             .map((w: { uri: string; title?: string }) => ({ uri: w.uri, title: w.title ?? w.uri }));
-          const isActuallyGrounded = groundingChunks.length > 0;
-          console.log("[step3] grounded result:", dedupedText?.slice(0, 160), "| isActuallyGrounded:", isActuallyGrounded);
-          if (!dedupedText) throw new Error("Empty grounded response");
+          const isActuallyGrounded = streamingGroundingChunks.length > 0;
+          console.log("[step3] stream complete:", dedupedText?.slice(0, 160), "| grounded:", isActuallyGrounded);
+          if (!dedupedText) throw new Error("Empty grounded stream response");
           severityResult = { assessment: dedupedText, grounded: isActuallyGrounded, sources };
         } catch (groundedErr) {
-          console.error("[step3] grounded call failed or timed out, will try fallback models:", groundedErr);
+          console.error("[step3] streaming failed, falling back to generateContent:", groundedErr);
           sendStep("severity_retry", { message: "Retrying with backup model..." });
+          // CRITICAL FALLBACK — streaming failure must never break Step 3
           let lastErr: unknown = groundedErr;
           let fallbackSucceeded = false;
-          for (const fallbackModel of FALLBACK_MODELS) {
-            console.log(`[step3] trying fallback model: ${fallbackModel}`);
-            try {
-              const fallbackRes = await withTimeout(
-                ai.models.generateContent({
-                  model: fallbackModel,
-                  contents: [{ role: "user", parts: [{ text: severityPrompt }] }],
-                  config: { tools: [{ googleSearch: {} }] },
-                }),
-                8000,
-                `fallback grounded severity call ${fallbackModel}`
-              );
-
-              const parts = fallbackRes.candidates?.[0]?.content?.parts ?? [];
-              const text = parts
-                .filter((p: { text?: string }) => typeof p.text === "string")
-                .map((p: { text?: string }) => p.text)
-                .join("")
-                .trim();
-              const groundingMetadata = fallbackRes.candidates?.[0]?.groundingMetadata;
-              const groundingChunks = groundingMetadata?.groundingChunks ?? [];
-              const sources = groundingChunks
-                .map((c: { web?: { uri?: string; title?: string } }) => c.web)
-                .filter((w: { uri?: string } | undefined): w is { uri: string; title?: string } => !!w?.uri)
-                .map((w: { uri: string; title?: string }) => ({ uri: w.uri, title: w.title ?? w.uri }));
-              const isActuallyGrounded = groundingChunks.length > 0;
-              console.log(`[step3] fallback ${fallbackModel} grounded: ${isActuallyGrounded}`);
-
-              severityResult = {
-                assessment: text || "Urgency: 3/5\nModerate severity requiring prompt attention.",
-                grounded: isActuallyGrounded,
-                sources,
-              };
-              fallbackSucceeded = true;
-              break;
-            } catch (err) {
-              console.error(`[step3] fallback ${fallbackModel} failed:`, err);
-              lastErr = err;
-              continue;
+          // First try original model non-streaming
+          try {
+            const res = await withTimeout(
+              ai.models.generateContent({
+                model: MODEL,
+                contents: [{ role: "user", parts: [{ text: severityPrompt }] }],
+                config: { tools: [{ googleSearch: {} }] },
+              }),
+              9000,
+              "non-streaming severity fallback"
+            );
+            const parts = res.candidates?.[0]?.content?.parts ?? [];
+            const text = parts.filter((p: { text?: string }) => typeof p.text === "string").map((p: { text?: string }) => p.text).join("").trim();
+            const urgencyCount = (text.match(/Urgency:/g) || []).length;
+            const dedupedText = urgencyCount > 1 ? "Urgency:" + text.split("Urgency:").filter(Boolean)[0].trimEnd() : text;
+            const groundingChunks = res.candidates?.[0]?.groundingMetadata?.groundingChunks ?? [];
+            const sources = groundingChunks.map((c: { web?: { uri?: string; title?: string } }) => c.web).filter((w: { uri?: string } | undefined): w is { uri: string; title?: string } => !!w?.uri).map((w: { uri: string; title?: string }) => ({ uri: w.uri, title: w.title ?? w.uri }));
+            if (!dedupedText) throw new Error("Empty fallback response");
+            severityResult = { assessment: dedupedText, grounded: groundingChunks.length > 0, sources };
+            fallbackSucceeded = true;
+          } catch (nonStreamErr) {
+            lastErr = nonStreamErr;
+          }
+          // Then try fallback models
+          if (!fallbackSucceeded) {
+            for (const fallbackModel of FALLBACK_MODELS) {
+              try {
+                const fallbackRes = await withTimeout(
+                  ai.models.generateContent({
+                    model: fallbackModel,
+                    contents: [{ role: "user", parts: [{ text: severityPrompt }] }],
+                    config: { tools: [{ googleSearch: {} }] },
+                  }),
+                  8000,
+                  `fallback grounded severity call ${fallbackModel}`
+                );
+                const parts = fallbackRes.candidates?.[0]?.content?.parts ?? [];
+                const text = parts.filter((p: { text?: string }) => typeof p.text === "string").map((p: { text?: string }) => p.text).join("").trim();
+                const groundingChunks = fallbackRes.candidates?.[0]?.groundingMetadata?.groundingChunks ?? [];
+                const sources = groundingChunks.map((c: { web?: { uri?: string; title?: string } }) => c.web).filter((w: { uri?: string } | undefined): w is { uri: string; title?: string } => !!w?.uri).map((w: { uri: string; title?: string }) => ({ uri: w.uri, title: w.title ?? w.uri }));
+                severityResult = { assessment: text || "Urgency: 3/5\nModerate severity requiring prompt attention.", grounded: groundingChunks.length > 0, sources };
+                fallbackSucceeded = true;
+                break;
+              } catch (err) {
+                lastErr = err;
+              }
             }
           }
           if (!fallbackSucceeded) {
-            console.error("[step3] all fallback models failed; using default severity and recording last error");
-            severityResult = {
-              assessment: "Urgency: 3/5\nModerate severity requiring prompt attention.",
-              grounded: false,
-              sources: [],
-              debugError: String(lastErr),
-            };
+            severityResult = { assessment: "Urgency: 3/5\nModerate severity requiring prompt attention.", grounded: false, sources: [], debugError: String(lastErr) };
           }
         }
         // extract resolution time estimate if provided as a structured line
@@ -423,7 +434,7 @@ Respond ONLY with valid JSON, no markdown, no code blocks, no extra text:
           if (text.includes('[') && text.includes(']')) {
             try {
               console.warn('[step4] possible placeholder leakage detected in report text', text.slice(0, 400));
-            } catch (e) {
+            } catch {
               console.warn('[step4] possible placeholder leakage detected (unable to stringify)')
             }
           }

@@ -1,7 +1,7 @@
 "use client";
 import { useState, useRef, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { UploadCloud, MapPin } from "lucide-react";
+import { UploadCloud } from "lucide-react";
 import { motion } from "framer-motion";
 import { ReasoningReveal } from "@/components/ReasoningReveal";
 import { useReports, severityLabel } from "@/lib/report-context";
@@ -39,6 +39,15 @@ const PLACEHOLDER_STEPS = [
   { label: "Drafting report and routing...", hint: "Preparing the case for the right department." },
 ];
 
+const ESCALATION_MAP: Record<string, { body: string; escalation: string }> = {
+  "GHMC Roads Department":      { body: "GHMC",         escalation: "GHMC Commissioner" },
+  "GHMC Electrical Department": { body: "GHMC",         escalation: "GHMC Commissioner" },
+  "Electrical/Streetlighting":  { body: "GHMC",         escalation: "GHMC Commissioner" },
+  "HMWSSB":                     { body: "HMWSSB Board", escalation: "MD HMWSSB" },
+  "GHMC Sanitation":            { body: "GHMC",         escalation: "Zonal Commissioner" },
+};
+const DEFAULT_ESCALATION = { body: "Municipal Corporation", escalation: "Commissioner" };
+
 export function UploadSection() {
   const router = useRouter();
   const { addConfirmedReport } = useReports();
@@ -49,6 +58,7 @@ export function UploadSection() {
   const [analysisError, setAnalysisError] = useState<string | null>(null);
   const [editedReportText, setEditedReportText] = useState<string>("");
   const [showConfirmPanel, setShowConfirmPanel] = useState<boolean>(false);
+  const [streamingText, setStreamingText] = useState<string>("");
   const [locationInput, setLocationInput] = useState("")
   const [showSuggestions, setShowSuggestions] = useState(false)
   const [activeLat, setActiveLat] = useState(DEFAULT_LAT)
@@ -185,8 +195,15 @@ export function UploadSection() {
                     upsertStep('final_report', { __retryMessage: event.result?.message })
                     continue
                   }
+                  if (event.step === 'severity_streaming') {
+                    setStreamingText(event.result?.full_text ?? "")
+                    continue
+                  }
                   // For canonical steps, upsert so we preserve ordering and allow replacement
                   upsertStep(event.step, event.result)
+                  if (event.step === 'severity_assessment') {
+                    setStreamingText("") // clear streaming text when final arrives
+                  }
 
                   if (event.step === 'final_report') {
                     const finalReportText = event.result?.report?.reportText ?? event.result?.report?.text
@@ -287,9 +304,22 @@ export function UploadSection() {
           <div className="rounded-2xl bg-white p-6 md:p-8">
             <h2 className="mt-3 font-display text-3xl font-light text-ink">Show us what needs fixing</h2>
 
-            <div
-              className="mt-6 flex flex-col items-center justify-center rounded-xl border-2 border-dashed border-teal/50 bg-ivory-deep/40 px-6 py-12 text-center transition-colors hover:border-teal cursor-pointer"
+            <label
+              htmlFor="file-upload"
               onClick={() => inputRef.current?.click()}
+              className="mt-6 flex flex-col items-center justify-center rounded-xl border-2 border-dashed border-teal/50 bg-ivory-deep/40 px-6 py-12 text-center transition-colors hover:border-teal cursor-pointer"
+              onDragOver={(e) => { e.preventDefault(); e.stopPropagation(); }}
+              onDrop={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                const file = e.dataTransfer.files?.[0];
+                if (!file) return;
+                setSelectedFile(file);
+                setPreview(URL.createObjectURL(file));
+                setAnalysisSteps([]);
+                setAnalysisError(null);
+                clearPendingTimeouts();
+              }}
             >
             {preview ? (
               <div style={{ position: "relative", display: "inline-block" }}>
@@ -309,7 +339,8 @@ export function UploadSection() {
                   }}
                 />
                 {(() => {
-                  const classifyResult = analysisSteps.find((s) => s.step === "classify")?.result as any;
+                  type ClassifyResult = { boundingBox?: { ymin: number; xmin: number; ymax: number; xmax: number }; severity?: number; category?: string };
+                  const classifyResult = analysisSteps.find((s) => s.step === "classify")?.result as ClassifyResult;
                   const bbox = classifyResult?.boundingBox;
                   if (!imgDims || !bbox) return null;
                   return (
@@ -332,7 +363,16 @@ export function UploadSection() {
                 <p className="mt-1 font-sans text-xs text-ink-muted">JPG or PNG, up to 10MB</p>
               </>
             )}
-            <input ref={inputRef} type="file" accept="image/jpeg,image/png,image/webp" className="hidden" onChange={handleFileChange} />
+            </label>
+            <input
+              id="file-upload"
+              ref={inputRef}
+              type="file"
+              accept="image/jpeg,image/png,image/webp"
+              className="hidden"
+              tabIndex={-1}
+              onChange={handleFileChange}
+            />
           </div>
 
           <div className="mt-5">
@@ -401,13 +441,13 @@ export function UploadSection() {
             </div>
           )}
         </div>
-      </div>
+      </motion.div>
 
       <div className="mt-12">
         <p className="font-mono text-xs uppercase tracking-[0.2em] text-teal">Agent Analysis</p>
         {analysisSteps.length > 0 ? (
           <>
-            <ReasoningReveal steps={analysisSteps} />
+            <ReasoningReveal steps={analysisSteps} streamingText={streamingText} />
             {showConfirmPanel && (
               <div className="mt-8 border border-[#5BBFBF] rounded-xl p-6 bg-[#FAF7F2]">
 
@@ -426,6 +466,28 @@ export function UploadSection() {
                   </span>
                   <span>Department: <strong className="text-[#1A1208]">{analysisSteps.find((s) => s.step === 'final_report')?.result?.report?.department}</strong></span>
                 </div>
+
+                {(() => {
+                  const escalationUrgency = parseInt(step3Result?.assessment?.match(/(\d)\/5/)?.[1] ?? "3", 10);
+                  const escalationDepartment = analysisSteps.find((s) => s.step === 'final_report')?.result?.report?.department ?? "Municipal Corporation";
+                  const escalationEntry = ESCALATION_MAP[escalationDepartment] ?? DEFAULT_ESCALATION;
+                  const escalationColor = escalationUrgency >= 4 ? "#E8957A" : "#5BBFBF";
+                  return (
+                    <div className="flex items-center gap-1 flex-wrap mt-2 text-xs font-mono">
+                      <span style={{ color: escalationColor }} className="border rounded-full px-2 py-0.5 border-current">Report</span>
+                      <span className="text-[#7A6A58]">→</span>
+                      <span style={{ color: escalationColor }} className="border rounded-full px-2 py-0.5 border-current">{escalationDepartment}</span>
+                      <span className="text-[#7A6A58]">→</span>
+                      <span style={{ color: escalationColor }} className="border rounded-full px-2 py-0.5 border-current">{escalationEntry.body}</span>
+                      {escalationUrgency >= 4 && (
+                        <>
+                          <span className="text-[#7A6A58]">→</span>
+                          <span style={{ color: escalationColor }} className="border rounded-full px-2 py-0.5 border-current font-semibold">{escalationEntry.escalation}</span>
+                        </>
+                      )}
+                    </div>
+                  );
+                })()}
 
                 {step3Result?.resolutionTimeEstimate ? (
                   <p className="text-sm text-foreground/80 mt-1">

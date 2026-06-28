@@ -77,7 +77,7 @@ const DuplicateCard = (result: unknown) => {
   );
 };
 
-const SeverityCard = (result: unknown) => {
+const SeverityCard = (result: unknown, streamingText?: string) => {
   const assessment = (result as any)?.assessment ?? "";
   const grounded = (result as any)?.grounded ?? false;
   const sources = (result as any)?.sources ?? [];
@@ -134,7 +134,14 @@ const SeverityCard = (result: unknown) => {
       ) : (
         <p className="text-xs text-[#7A6A58]/80 italic">Timeline varies by department</p>
       )}
-      <p className="text-xs text-[#7A6A58] leading-relaxed mt-1">{assessment}</p>
+      {streamingText ? (
+        <p className="text-sm text-[#1A1208]/80 font-mono leading-relaxed">
+          {streamingText}
+          <span className="inline-block w-0.5 h-4 bg-teal-500 ml-0.5 animate-pulse" />
+        </p>
+      ) : (
+        <p className="text-xs text-[#7A6A58] leading-relaxed mt-1">{assessment}</p>
+      )}
       {grounded && Array.isArray(sources) && sources.length > 0 ? (
         <div className="flex flex-wrap gap-2 pt-1">
           {sources.slice(0, 3).map((source: any, index: number) => (
@@ -169,14 +176,14 @@ const ReportCard = (result: unknown) => {
   );
 };
 
-const renderStepResult = (step: string, result: unknown) => {
+const renderStepResult = (step: string, result: unknown, streamingText?: string) => {
   switch (step) {
     case "classify":
       return ClassifyCard(result);
     case "duplicate_check":
       return DuplicateCard(result);
     case "severity_assessment":
-      return SeverityCard(result);
+      return SeverityCard(result, streamingText);
     case "final_report":
       return ReportCard(result);
     default:
@@ -186,7 +193,7 @@ const renderStepResult = (step: string, result: unknown) => {
 
 interface Step { step: string; result: unknown; }
 
-export function ReasoningReveal({ steps }: { steps: Step[] }) {
+export function ReasoningReveal({ steps, streamingText = "" }: { steps: Step[]; streamingText?: string }) {
   return (
     <div className="space-y-4 w-full">
       <div className="space-y-2 w-full">
@@ -226,7 +233,7 @@ export function ReasoningReveal({ steps }: { steps: Step[] }) {
                   </div>
                 ) : null}
                 <div className="mt-2 text-xs text-[#1A1208]" style={{ fontFamily: "DM Sans, sans-serif" }}>
-                  {renderStepResult(s.step, s.result)}
+                  {renderStepResult(s.step, s.result, s.step === 'severity_assessment' ? streamingText : undefined)}
                 </div>
               </div>
             </motion.li>

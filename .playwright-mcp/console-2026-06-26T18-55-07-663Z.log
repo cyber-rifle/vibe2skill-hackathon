@@ -1,0 +1,3773 @@
+[    9615ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[   10624ms] [LOG] [HMR] connected @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[  155783ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[  162465ms] [LOG] [Fast Refresh] done in 6786ms @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[  162958ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[  163058ms] [LOG] [HMR] connected @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[  163394ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[  163496ms] [LOG] [Fast Refresh] done in 205ms @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[  171171ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[  171184ms] [LOG] [Fast Refresh] done in 121ms @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[  456331ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[  458111ms] [LOG] [Fast Refresh] done in 1909ms @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[  481533ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[  487676ms] [ERROR] ./components/upload-section.tsx:429:13
+Expected '</', got 'jsx text'
+  427 |           )}
+  428 |         </div>
+> 429 |       </div>
+      |             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 430 |
+      | ^
+> 431 |       <div className="mt-12">
+      | ^^^^^^
+  432 |         <p className="font-mono text-xs uppercase tracking-[0.2em] te...
+  433 |         {analysisSteps.length > 0 ? (
+  434 |           <>
+
+Parsing ecmascript source code failed
+
+Import trace:
+  Server Component:
+    ./components/upload-section.tsx
+    ./app/page.tsx @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:3318
+[  488082ms] [ERROR] ./components/upload-section.tsx:429:13
+Expected '</', got 'jsx text'
+  427 |           )}
+  428 |         </div>
+> 429 |       </div>
+      |             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 430 |
+      | ^
+> 431 |       <div className="mt-12">
+      | ^^^^^^
+  432 |         <p className="font-mono text-xs uppercase tracking-[0.2em] te...
+  433 |         {analysisSteps.length > 0 ? (
+  434 |           <>
+
+Parsing ecmascript source code failed
+
+Import trace:
+  Server Component:
+    ./components/upload-section.tsx
+    ./app/page.tsx @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:3318
+[  488192ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[  494769ms] [ERROR] ./components/upload-section.tsx:429:13
+Expected '</', got 'jsx text'
+  427 |           )}
+  428 |         </div>
+> 429 |       </div>
+      |             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 430 |
+      | ^
+> 431 |       <div className="mt-12">
+      | ^^^^^^
+  432 |         <p className="font-mono text-xs uppercase tracking-[0.2em] te...
+  433 |         {analysisSteps.length > 0 ? (
+  434 |           <>
+
+Parsing ecmascript source code failed
+
+Import trace:
+  Server Component:
+    ./components/upload-section.tsx
+    ./app/page.tsx @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:3318
+[  494890ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[  521475ms] [ERROR] ./components/upload-section.tsx:429:13
+Expected '</', got 'jsx text'
+  427 |           )}
+  428 |         </div>
+> 429 |       </div>
+      |             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 430 |
+      | ^
+> 431 |       <div className="mt-12">
+      | ^^^^^^
+  432 |         <p className="font-mono text-xs uppercase tracking-[0.2em] te...
+  433 |         {analysisSteps.length > 0 ? (
+  434 |           <>
+
+Parsing ecmascript source code failed
+
+Import trace:
+  Server Component:
+    ./components/upload-section.tsx
+    ./app/page.tsx @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:3318
+[  521600ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:3000/?_rsc=q3mOO9BClNZHexY7#upload:0
+[  521889ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[  522215ms] [ERROR] ./components/upload-section.tsx:429:13
+Expected '</', got 'jsx text'
+  427 |           )}
+  428 |         </div>
+> 429 |       </div>
+      |             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 430 |
+      | ^
+> 431 |       <div className="mt-12">
+      | ^^^^^^
+  432 |         <p className="font-mono text-xs uppercase tracking-[0.2em] te...
+  433 |         {analysisSteps.length > 0 ? (
+  434 |           <>
+
+Parsing ecmascript source code failed
+
+Import trace:
+  Server Component:
+    ./components/upload-section.tsx
+    ./app/page.tsx @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:3318
+[  523095ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[  526636ms] [ERROR] ./components/upload-section.tsx:429:13
+Expected '</', got 'jsx text'
+  427 |           )}
+  428 |         </div>
+> 429 |       </div>
+      |             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 430 |
+      | ^
+> 431 |       <div className="mt-12">
+      | ^^^^^^
+  432 |         <p className="font-mono text-xs uppercase tracking-[0.2em] te...
+  433 |         {analysisSteps.length > 0 ? (
+  434 |           <>
+
+Parsing ecmascript source code failed
+
+Import trace:
+  Server Component:
+    ./components/upload-section.tsx
+    ./app/page.tsx @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:3318
+[  526638ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:3000/?_rsc=q3mOO9BClNZHexY7#upload:0
+[  526648ms] [ERROR] ./components/upload-section.tsx:429:13
+Expected '</', got 'jsx text'
+  427 |           )}
+  428 |         </div>
+> 429 |       </div>
+      |             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 430 |
+      | ^
+> 431 |       <div className="mt-12">
+      | ^^^^^^
+  432 |         <p className="font-mono text-xs uppercase tracking-[0.2em] te...
+  433 |         {analysisSteps.length > 0 ? (
+  434 |           <>
+
+Parsing ecmascript source code failed
+
+Import trace:
+  Server Component:
+    ./components/upload-section.tsx
+    ./app/page.tsx @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:3318
+[  526659ms] [ERROR] ./components/upload-section.tsx:429:13
+Expected '</', got 'jsx text'
+  427 |           )}
+  428 |         </div>
+> 429 |       </div>
+      |             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 430 |
+      | ^
+> 431 |       <div className="mt-12">
+      | ^^^^^^
+  432 |         <p className="font-mono text-xs uppercase tracking-[0.2em] te...
+  433 |         {analysisSteps.length > 0 ? (
+  434 |           <>
+
+Parsing ecmascript source code failed
+
+Import trace:
+  Server Component:
+    ./components/upload-section.tsx
+    ./app/page.tsx @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:3318
+[  526662ms] [ERROR] ./components/upload-section.tsx:429:13
+Expected '</', got 'jsx text'
+  427 |           )}
+  428 |         </div>
+> 429 |       </div>
+      |             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 430 |
+      | ^
+> 431 |       <div className="mt-12">
+      | ^^^^^^
+  432 |         <p className="font-mono text-xs uppercase tracking-[0.2em] te...
+  433 |         {analysisSteps.length > 0 ? (
+  434 |           <>
+
+Parsing ecmascript source code failed
+
+Import trace:
+  Server Component:
+    ./components/upload-section.tsx
+    ./app/page.tsx @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:3318
+[  526665ms] [ERROR] ./components/upload-section.tsx:429:13
+Expected '</', got 'jsx text'
+  427 |           )}
+  428 |         </div>
+> 429 |       </div>
+      |             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 430 |
+      | ^
+> 431 |       <div className="mt-12">
+      | ^^^^^^
+  432 |         <p className="font-mono text-xs uppercase tracking-[0.2em] te...
+  433 |         {analysisSteps.length > 0 ? (
+  434 |           <>
+
+Parsing ecmascript source code failed
+
+Import trace:
+  Server Component:
+    ./components/upload-section.tsx
+    ./app/page.tsx @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:3318
+[  526763ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[  538511ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[  539619ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:3000/?_rsc=q3mOO9BClNZHexY7#upload:0
+[  539657ms] [ERROR] ./components/upload-section.tsx:441:13
+Expected '</', got 'jsx text'
+  439 |           )}
+  440 |         </div>
+> 441 |       </div>
+      |             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 442 |
+      | ^
+> 443 |       <div className="mt-12">
+      | ^^^^^^
+  444 |         <p className="font-mono text-xs uppercase tracking-[0.2em] te...
+  445 |         {analysisSteps.length > 0 ? (
+  446 |           <>
+
+Parsing ecmascript source code failed
+
+Import trace:
+  Server Component:
+    ./components/upload-section.tsx
+    ./app/page.tsx @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:3318
+[  655980ms] [ERROR] ./components/upload-section.tsx:441:13
+Expected '</', got 'jsx text'
+  439 |           )}
+  440 |         </div>
+> 441 |       </div>
+      |             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 442 |
+      | ^
+> 443 |       <div className="mt-12">
+      | ^^^^^^
+  444 |         <p className="font-mono text-xs uppercase tracking-[0.2em] te...
+  445 |         {analysisSteps.length > 0 ? (
+  446 |           <>
+
+Parsing ecmascript source code failed
+
+Import trace:
+  Server Component:
+    ./components/upload-section.tsx
+    ./app/page.tsx @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:3318
+[  656006ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[  922684ms] [ERROR] ./components/upload-section.tsx:441:13
+Expected '</', got 'jsx text'
+  439 |           )}
+  440 |         </div>
+> 441 |       </div>
+      |             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 442 |
+      | ^
+> 443 |       <div className="mt-12">
+      | ^^^^^^
+  444 |         <p className="font-mono text-xs uppercase tracking-[0.2em] te...
+  445 |         {analysisSteps.length > 0 ? (
+  446 |           <>
+
+Parsing ecmascript source code failed
+
+Import trace:
+  Server Component:
+    ./components/upload-section.tsx
+    ./app/page.tsx @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:3318
+[  922813ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[  922832ms] [ERROR] ./components/upload-section.tsx:441:13
+Expected '</', got 'jsx text'
+  439 |           )}
+  440 |         </div>
+> 441 |       </div>
+      |             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 442 |
+      | ^
+> 443 |       <div className="mt-12">
+      | ^^^^^^
+  444 |         <p className="font-mono text-xs uppercase tracking-[0.2em] te...
+  445 |         {analysisSteps.length > 0 ? (
+  446 |           <>
+
+Parsing ecmascript source code failed
+
+Import trace:
+  Server Component:
+    ./components/upload-section.tsx
+    ./app/page.tsx @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:3318
+[  922836ms] [ERROR] ./components/upload-section.tsx:441:13
+Expected '</', got 'jsx text'
+  439 |           )}
+  440 |         </div>
+> 441 |       </div>
+      |             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 442 |
+      | ^
+> 443 |       <div className="mt-12">
+      | ^^^^^^
+  444 |         <p className="font-mono text-xs uppercase tracking-[0.2em] te...
+  445 |         {analysisSteps.length > 0 ? (
+  446 |           <>
+
+Parsing ecmascript source code failed
+
+Import trace:
+  Server Component:
+    ./components/upload-section.tsx
+    ./app/page.tsx @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:3318
+[  922901ms] [ERROR] ./components/upload-section.tsx:441:13
+Expected '</', got 'jsx text'
+  439 |           )}
+  440 |         </div>
+> 441 |       </div>
+      |             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 442 |
+      | ^
+> 443 |       <div className="mt-12">
+      | ^^^^^^
+  444 |         <p className="font-mono text-xs uppercase tracking-[0.2em] te...
+  445 |         {analysisSteps.length > 0 ? (
+  446 |           <>
+
+Parsing ecmascript source code failed
+
+Import trace:
+  Server Component:
+    ./components/upload-section.tsx
+    ./app/page.tsx @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:3318
+[  922943ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[  923045ms] [ERROR] ./components/upload-section.tsx:441:13
+Expected '</', got 'jsx text'
+  439 |           )}
+  440 |         </div>
+> 441 |       </div>
+      |             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 442 |
+      | ^
+> 443 |       <div className="mt-12">
+      | ^^^^^^
+  444 |         <p className="font-mono text-xs uppercase tracking-[0.2em] te...
+  445 |         {analysisSteps.length > 0 ? (
+  446 |           <>
+
+Parsing ecmascript source code failed
+
+Import trace:
+  Server Component:
+    ./components/upload-section.tsx
+    ./app/page.tsx @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:3318
+[  923104ms] [ERROR] ./components/upload-section.tsx:441:13
+Expected '</', got 'jsx text'
+  439 |           )}
+  440 |         </div>
+> 441 |       </div>
+      |             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 442 |
+      | ^
+> 443 |       <div className="mt-12">
+      | ^^^^^^
+  444 |         <p className="font-mono text-xs uppercase tracking-[0.2em] te...
+  445 |         {analysisSteps.length > 0 ? (
+  446 |           <>
+
+Parsing ecmascript source code failed
+
+Import trace:
+  Server Component:
+    ./components/upload-section.tsx
+    ./app/page.tsx @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:3318
+[  923214ms] [ERROR] ./components/upload-section.tsx:441:13
+Expected '</', got 'jsx text'
+  439 |           )}
+  440 |         </div>
+> 441 |       </div>
+      |             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 442 |
+      | ^
+> 443 |       <div className="mt-12">
+      | ^^^^^^
+  444 |         <p className="font-mono text-xs uppercase tracking-[0.2em] te...
+  445 |         {analysisSteps.length > 0 ? (
+  446 |           <>
+
+Parsing ecmascript source code failed
+
+Import trace:
+  Server Component:
+    ./components/upload-section.tsx
+    ./app/page.tsx @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:3318
+[  923270ms] [ERROR] ./components/upload-section.tsx:441:13
+Expected '</', got 'jsx text'
+  439 |           )}
+  440 |         </div>
+> 441 |       </div>
+      |             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 442 |
+      | ^
+> 443 |       <div className="mt-12">
+      | ^^^^^^
+  444 |         <p className="font-mono text-xs uppercase tracking-[0.2em] te...
+  445 |         {analysisSteps.length > 0 ? (
+  446 |           <>
+
+Parsing ecmascript source code failed
+
+Import trace:
+  Server Component:
+    ./components/upload-section.tsx
+    ./app/page.tsx @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:3318
+[  923362ms] [ERROR] ./components/upload-section.tsx:441:13
+Expected '</', got 'jsx text'
+  439 |           )}
+  440 |         </div>
+> 441 |       </div>
+      |             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 442 |
+      | ^
+> 443 |       <div className="mt-12">
+      | ^^^^^^
+  444 |         <p className="font-mono text-xs uppercase tracking-[0.2em] te...
+  445 |         {analysisSteps.length > 0 ? (
+  446 |           <>
+
+Parsing ecmascript source code failed
+
+Import trace:
+  Server Component:
+    ./components/upload-section.tsx
+    ./app/page.tsx @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:3318
+[  923425ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[  923631ms] [ERROR] ./components/upload-section.tsx:441:13
+Expected '</', got 'jsx text'
+  439 |           )}
+  440 |         </div>
+> 441 |       </div>
+      |             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 442 |
+      | ^
+> 443 |       <div className="mt-12">
+      | ^^^^^^
+  444 |         <p className="font-mono text-xs uppercase tracking-[0.2em] te...
+  445 |         {analysisSteps.length > 0 ? (
+  446 |           <>
+
+Parsing ecmascript source code failed
+
+Import trace:
+  Server Component:
+    ./components/upload-section.tsx
+    ./app/page.tsx @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:3318
+[  923701ms] [ERROR] ./components/upload-section.tsx:441:13
+Expected '</', got 'jsx text'
+  439 |           )}
+  440 |         </div>
+> 441 |       </div>
+      |             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 442 |
+      | ^
+> 443 |       <div className="mt-12">
+      | ^^^^^^
+  444 |         <p className="font-mono text-xs uppercase tracking-[0.2em] te...
+  445 |         {analysisSteps.length > 0 ? (
+  446 |           <>
+
+Parsing ecmascript source code failed
+
+Import trace:
+  Server Component:
+    ./components/upload-section.tsx
+    ./app/page.tsx @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:3318
+[  923788ms] [ERROR] ./components/upload-section.tsx:441:13
+Expected '</', got 'jsx text'
+  439 |           )}
+  440 |         </div>
+> 441 |       </div>
+      |             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 442 |
+      | ^
+> 443 |       <div className="mt-12">
+      | ^^^^^^
+  444 |         <p className="font-mono text-xs uppercase tracking-[0.2em] te...
+  445 |         {analysisSteps.length > 0 ? (
+  446 |           <>
+
+Parsing ecmascript source code failed
+
+Import trace:
+  Server Component:
+    ./components/upload-section.tsx
+    ./app/page.tsx @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:3318
+[  923848ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[  937959ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[  953051ms] [LOG] [Fast Refresh] done in 15044ms @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[  953162ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[  954144ms] [LOG] [Fast Refresh] done in 1083ms @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[  954461ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[  954509ms] [LOG] [Fast Refresh] done in 156ms @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[ 1028461ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[ 1028464ms] [LOG] [Fast Refresh] done in 111ms @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[ 1032945ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[ 1036357ms] [ERROR] ./components/upload-section.tsx:540:5
+Expression expected
+  538 |       </div>
+  539 |     </motion.div>
+> 540 |     </section>
+      |     ^
+  541 |   );
+  542 | }
+  543 |
+
+Parsing ecmascript source code failed
+
+Import trace:
+  Server Component:
+    ./components/upload-section.tsx
+    ./app/page.tsx @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:3318
+[ 1036359ms] [ERROR] ./components/upload-section.tsx:540:6
+Unterminated regexp literal
+  538 |       </div>
+  539 |     </motion.div>
+> 540 |     </section>
+      |      ^^^^^^^^^
+  541 |   );
+  542 | }
+  543 |
+
+Parsing ecmascript source code failed
+
+Import trace:
+  Server Component:
+    ./components/upload-section.tsx
+    ./app/page.tsx @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:3318
+[ 1036601ms] [ERROR] ./components/upload-section.tsx:540:5
+Expression expected
+  538 |       </div>
+  539 |     </motion.div>
+> 540 |     </section>
+      |     ^
+  541 |   );
+  542 | }
+  543 |
+
+Parsing ecmascript source code failed
+
+Import trace:
+  Server Component:
+    ./components/upload-section.tsx
+    ./app/page.tsx @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:3318
+[ 1036602ms] [ERROR] ./components/upload-section.tsx:540:6
+Unterminated regexp literal
+  538 |       </div>
+  539 |     </motion.div>
+> 540 |     </section>
+      |      ^^^^^^^^^
+  541 |   );
+  542 | }
+  543 |
+
+Parsing ecmascript source code failed
+
+Import trace:
+  Server Component:
+    ./components/upload-section.tsx
+    ./app/page.tsx @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:3318
+[ 1036680ms] [ERROR] ./components/upload-section.tsx:540:5
+Expression expected
+  538 |       </div>
+  539 |     </motion.div>
+> 540 |     </section>
+      |     ^
+  541 |   );
+  542 | }
+  543 |
+
+Parsing ecmascript source code failed
+
+Import trace:
+  Server Component:
+    ./components/upload-section.tsx
+    ./app/page.tsx @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:3318
+[ 1036680ms] [ERROR] ./components/upload-section.tsx:540:6
+Unterminated regexp literal
+  538 |       </div>
+  539 |     </motion.div>
+> 540 |     </section>
+      |      ^^^^^^^^^
+  541 |   );
+  542 | }
+  543 |
+
+Parsing ecmascript source code failed
+
+Import trace:
+  Server Component:
+    ./components/upload-section.tsx
+    ./app/page.tsx @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:3318
+[ 1036702ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:3000/?_rsc=q3mOO9BClNZHexY7#upload:0
+[ 1036781ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:3000/?_rsc=q3mOO9BClNZHexY7#upload:0
+[ 1036786ms] [ERROR] ./components/upload-section.tsx:540:5
+Expression expected
+  538 |       </div>
+  539 |     </motion.div>
+> 540 |     </section>
+      |     ^
+  541 |   );
+  542 | }
+  543 |
+
+Parsing ecmascript source code failed
+
+Import trace:
+  Server Component:
+    ./components/upload-section.tsx
+    ./app/page.tsx @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:3318
+[ 1036787ms] [ERROR] ./components/upload-section.tsx:540:6
+Unterminated regexp literal
+  538 |       </div>
+  539 |     </motion.div>
+> 540 |     </section>
+      |      ^^^^^^^^^
+  541 |   );
+  542 | }
+  543 |
+
+Parsing ecmascript source code failed
+
+Import trace:
+  Server Component:
+    ./components/upload-section.tsx
+    ./app/page.tsx @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:3318
+[ 1036862ms] [ERROR] ./components/upload-section.tsx:540:5
+Expression expected
+  538 |       </div>
+  539 |     </motion.div>
+> 540 |     </section>
+      |     ^
+  541 |   );
+  542 | }
+  543 |
+
+Parsing ecmascript source code failed
+
+Import trace:
+  Server Component:
+    ./components/upload-section.tsx
+    ./app/page.tsx @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:3318
+[ 1036862ms] [ERROR] ./components/upload-section.tsx:540:6
+Unterminated regexp literal
+  538 |       </div>
+  539 |     </motion.div>
+> 540 |     </section>
+      |      ^^^^^^^^^
+  541 |   );
+  542 | }
+  543 |
+
+Parsing ecmascript source code failed
+
+Import trace:
+  Server Component:
+    ./components/upload-section.tsx
+    ./app/page.tsx @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:3318
+[ 1036864ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:3000/?_rsc=q3mOO9BClNZHexY7#upload:0
+[ 1036894ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[ 1044683ms] [ERROR] ./components/upload-section.tsx:540:5
+Expression expected
+  538 |       </div>
+  539 |     </motion.div>
+> 540 |     </section>
+      |     ^
+  541 |   );
+  542 | }
+  543 |
+
+Parsing ecmascript source code failed
+
+Import trace:
+  Server Component:
+    ./components/upload-section.tsx
+    ./app/page.tsx @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:3318
+[ 1044685ms] [ERROR] ./components/upload-section.tsx:540:6
+Unterminated regexp literal
+  538 |       </div>
+  539 |     </motion.div>
+> 540 |     </section>
+      |      ^^^^^^^^^
+  541 |   );
+  542 | }
+  543 |
+
+Parsing ecmascript source code failed
+
+Import trace:
+  Server Component:
+    ./components/upload-section.tsx
+    ./app/page.tsx @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:3318
+[ 1044721ms] [ERROR] ./components/upload-section.tsx:540:5
+Expression expected
+  538 |       </div>
+  539 |     </motion.div>
+> 540 |     </section>
+      |     ^
+  541 |   );
+  542 | }
+  543 |
+
+Parsing ecmascript source code failed
+
+Import trace:
+  Server Component:
+    ./components/upload-section.tsx
+    ./app/page.tsx @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:3318
+[ 1044722ms] [ERROR] ./components/upload-section.tsx:540:6
+Unterminated regexp literal
+  538 |       </div>
+  539 |     </motion.div>
+> 540 |     </section>
+      |      ^^^^^^^^^
+  541 |   );
+  542 | }
+  543 |
+
+Parsing ecmascript source code failed
+
+Import trace:
+  Server Component:
+    ./components/upload-section.tsx
+    ./app/page.tsx @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:3318
+[ 1044791ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[ 1094259ms] [ERROR] ./components/upload-section.tsx:540:5
+Expression expected
+  538 |       </div>
+  539 |     </motion.div>
+> 540 |     </section>
+      |     ^
+  541 |   );
+  542 | }
+  543 |
+
+Parsing ecmascript source code failed
+
+Import trace:
+  Server Component:
+    ./components/upload-section.tsx
+    ./app/page.tsx @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:3318
+[ 1094261ms] [ERROR] ./components/upload-section.tsx:540:6
+Unterminated regexp literal
+  538 |       </div>
+  539 |     </motion.div>
+> 540 |     </section>
+      |      ^^^^^^^^^
+  541 |   );
+  542 | }
+  543 |
+
+Parsing ecmascript source code failed
+
+Import trace:
+  Server Component:
+    ./components/upload-section.tsx
+    ./app/page.tsx @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:3318
+[ 1094316ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[ 1094461ms] [ERROR] ./components/upload-section.tsx:540:5
+Expression expected
+  538 |       </div>
+  539 |     </motion.div>
+> 540 |     </section>
+      |     ^
+  541 |   );
+  542 | }
+  543 |
+
+Parsing ecmascript source code failed
+
+Import trace:
+  Server Component:
+    ./components/upload-section.tsx
+    ./app/page.tsx @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:3318
+[ 1094463ms] [ERROR] ./components/upload-section.tsx:540:6
+Unterminated regexp literal
+  538 |       </div>
+  539 |     </motion.div>
+> 540 |     </section>
+      |      ^^^^^^^^^
+  541 |   );
+  542 | }
+  543 |
+
+Parsing ecmascript source code failed
+
+Import trace:
+  Server Component:
+    ./components/upload-section.tsx
+    ./app/page.tsx @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:3318
+[ 1094506ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[ 1094617ms] [ERROR] ./components/upload-section.tsx:540:5
+Expression expected
+  538 |       </div>
+  539 |     </motion.div>
+> 540 |     </section>
+      |     ^
+  541 |   );
+  542 | }
+  543 |
+
+Parsing ecmascript source code failed
+
+Import trace:
+  Server Component:
+    ./components/upload-section.tsx
+    ./app/page.tsx @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:3318
+[ 1094618ms] [ERROR] ./components/upload-section.tsx:540:6
+Unterminated regexp literal
+  538 |       </div>
+  539 |     </motion.div>
+> 540 |     </section>
+      |      ^^^^^^^^^
+  541 |   );
+  542 | }
+  543 |
+
+Parsing ecmascript source code failed
+
+Import trace:
+  Server Component:
+    ./components/upload-section.tsx
+    ./app/page.tsx @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:3318
+[ 1094665ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[ 1094851ms] [ERROR] ./components/upload-section.tsx:540:5
+Expression expected
+  538 |       </div>
+  539 |     </motion.div>
+> 540 |     </section>
+      |     ^
+  541 |   );
+  542 | }
+  543 |
+
+Parsing ecmascript source code failed
+
+Import trace:
+  Server Component:
+    ./components/upload-section.tsx
+    ./app/page.tsx @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:3318
+[ 1094851ms] [ERROR] ./components/upload-section.tsx:540:6
+Unterminated regexp literal
+  538 |       </div>
+  539 |     </motion.div>
+> 540 |     </section>
+      |      ^^^^^^^^^
+  541 |   );
+  542 | }
+  543 |
+
+Parsing ecmascript source code failed
+
+Import trace:
+  Server Component:
+    ./components/upload-section.tsx
+    ./app/page.tsx @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:3318
+[ 1094887ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[ 1095262ms] [ERROR] ./components/upload-section.tsx:540:5
+Expression expected
+  538 |       </div>
+  539 |     </motion.div>
+> 540 |     </section>
+      |     ^
+  541 |   );
+  542 | }
+  543 |
+
+Parsing ecmascript source code failed
+
+Import trace:
+  Server Component:
+    ./components/upload-section.tsx
+    ./app/page.tsx @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:3318
+[ 1095263ms] [ERROR] ./components/upload-section.tsx:540:6
+Unterminated regexp literal
+  538 |       </div>
+  539 |     </motion.div>
+> 540 |     </section>
+      |      ^^^^^^^^^
+  541 |   );
+  542 | }
+  543 |
+
+Parsing ecmascript source code failed
+
+Import trace:
+  Server Component:
+    ./components/upload-section.tsx
+    ./app/page.tsx @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:3318
+[ 1095286ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[ 1095620ms] [ERROR] ./components/upload-section.tsx:540:5
+Expression expected
+  538 |       </div>
+  539 |     </motion.div>
+> 540 |     </section>
+      |     ^
+  541 |   );
+  542 | }
+  543 |
+
+Parsing ecmascript source code failed
+
+Import trace:
+  Server Component:
+    ./components/upload-section.tsx
+    ./app/page.tsx @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:3318
+[ 1095621ms] [ERROR] ./components/upload-section.tsx:540:6
+Unterminated regexp literal
+  538 |       </div>
+  539 |     </motion.div>
+> 540 |     </section>
+      |      ^^^^^^^^^
+  541 |   );
+  542 | }
+  543 |
+
+Parsing ecmascript source code failed
+
+Import trace:
+  Server Component:
+    ./components/upload-section.tsx
+    ./app/page.tsx @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:3318
+[ 1095660ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[ 1095760ms] [ERROR] ./components/upload-section.tsx:540:5
+Expression expected
+  538 |       </div>
+  539 |     </motion.div>
+> 540 |     </section>
+      |     ^
+  541 |   );
+  542 | }
+  543 |
+
+Parsing ecmascript source code failed
+
+Import trace:
+  Server Component:
+    ./components/upload-section.tsx
+    ./app/page.tsx @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:3318
+[ 1095762ms] [ERROR] ./components/upload-section.tsx:540:6
+Unterminated regexp literal
+  538 |       </div>
+  539 |     </motion.div>
+> 540 |     </section>
+      |      ^^^^^^^^^
+  541 |   );
+  542 | }
+  543 |
+
+Parsing ecmascript source code failed
+
+Import trace:
+  Server Component:
+    ./components/upload-section.tsx
+    ./app/page.tsx @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:3318
+[ 1095808ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[ 1096168ms] [ERROR] ./components/upload-section.tsx:540:5
+Expression expected
+  538 |       </div>
+  539 |     </motion.div>
+> 540 |     </section>
+      |     ^
+  541 |   );
+  542 | }
+  543 |
+
+Parsing ecmascript source code failed
+
+Import trace:
+  Server Component:
+    ./components/upload-section.tsx
+    ./app/page.tsx @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:3318
+[ 1096169ms] [ERROR] ./components/upload-section.tsx:540:6
+Unterminated regexp literal
+  538 |       </div>
+  539 |     </motion.div>
+> 540 |     </section>
+      |      ^^^^^^^^^
+  541 |   );
+  542 | }
+  543 |
+
+Parsing ecmascript source code failed
+
+Import trace:
+  Server Component:
+    ./components/upload-section.tsx
+    ./app/page.tsx @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:3318
+[ 1096233ms] [ERROR] ./components/upload-section.tsx:540:5
+Expression expected
+  538 |       </div>
+  539 |     </motion.div>
+> 540 |     </section>
+      |     ^
+  541 |   );
+  542 | }
+  543 |
+
+Parsing ecmascript source code failed
+
+Import trace:
+  Server Component:
+    ./components/upload-section.tsx
+    ./app/page.tsx @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:3318
+[ 1096234ms] [ERROR] ./components/upload-section.tsx:540:6
+Unterminated regexp literal
+  538 |       </div>
+  539 |     </motion.div>
+> 540 |     </section>
+      |      ^^^^^^^^^
+  541 |   );
+  542 | }
+  543 |
+
+Parsing ecmascript source code failed
+
+Import trace:
+  Server Component:
+    ./components/upload-section.tsx
+    ./app/page.tsx @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:3318
+[ 1096291ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[ 1096460ms] [ERROR] ./components/upload-section.tsx:540:5
+Expression expected
+  538 |       </div>
+  539 |     </motion.div>
+> 540 |     </section>
+      |     ^
+  541 |   );
+  542 | }
+  543 |
+
+Parsing ecmascript source code failed
+
+Import trace:
+  Server Component:
+    ./components/upload-section.tsx
+    ./app/page.tsx @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:3318
+[ 1096461ms] [ERROR] ./components/upload-section.tsx:540:6
+Unterminated regexp literal
+  538 |       </div>
+  539 |     </motion.div>
+> 540 |     </section>
+      |      ^^^^^^^^^
+  541 |   );
+  542 | }
+  543 |
+
+Parsing ecmascript source code failed
+
+Import trace:
+  Server Component:
+    ./components/upload-section.tsx
+    ./app/page.tsx @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:3318
+[ 1096520ms] [ERROR] ./components/upload-section.tsx:540:5
+Expression expected
+  538 |       </div>
+  539 |     </motion.div>
+> 540 |     </section>
+      |     ^
+  541 |   );
+  542 | }
+  543 |
+
+Parsing ecmascript source code failed
+
+Import trace:
+  Server Component:
+    ./components/upload-section.tsx
+    ./app/page.tsx @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:3318
+[ 1096520ms] [ERROR] ./components/upload-section.tsx:540:6
+Unterminated regexp literal
+  538 |       </div>
+  539 |     </motion.div>
+> 540 |     </section>
+      |      ^^^^^^^^^
+  541 |   );
+  542 | }
+  543 |
+
+Parsing ecmascript source code failed
+
+Import trace:
+  Server Component:
+    ./components/upload-section.tsx
+    ./app/page.tsx @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:3318
+[ 1096585ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[ 1097759ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[ 1097787ms] [ERROR] ./components/upload-section.tsx:540:5
+Expression expected
+  538 |       </div>
+  539 |     </motion.div>
+> 540 |     </section>
+      |     ^
+  541 |   );
+  542 | }
+  543 |
+
+Parsing ecmascript source code failed
+
+Import trace:
+  Server Component:
+    ./components/upload-section.tsx
+    ./app/page.tsx @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:3318
+[ 1097787ms] [ERROR] ./components/upload-section.tsx:540:6
+Unterminated regexp literal
+  538 |       </div>
+  539 |     </motion.div>
+> 540 |     </section>
+      |      ^^^^^^^^^
+  541 |   );
+  542 | }
+  543 |
+
+Parsing ecmascript source code failed
+
+Import trace:
+  Server Component:
+    ./components/upload-section.tsx
+    ./app/page.tsx @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:3318
+[ 1097858ms] [ERROR] ./components/upload-section.tsx:540:5
+Expression expected
+  538 |       </div>
+  539 |     </motion.div>
+> 540 |     </section>
+      |     ^
+  541 |   );
+  542 | }
+  543 |
+
+Parsing ecmascript source code failed
+
+Import trace:
+  Server Component:
+    ./components/upload-section.tsx
+    ./app/page.tsx @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:3318
+[ 1097861ms] [ERROR] ./components/upload-section.tsx:540:6
+Unterminated regexp literal
+  538 |       </div>
+  539 |     </motion.div>
+> 540 |     </section>
+      |      ^^^^^^^^^
+  541 |   );
+  542 | }
+  543 |
+
+Parsing ecmascript source code failed
+
+Import trace:
+  Server Component:
+    ./components/upload-section.tsx
+    ./app/page.tsx @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:3318
+[ 1097912ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[ 1098154ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[ 1098164ms] [ERROR] ./components/upload-section.tsx:540:5
+Expression expected
+  538 |       </div>
+  539 |     </motion.div>
+> 540 |     </section>
+      |     ^
+  541 |   );
+  542 | }
+  543 |
+
+Parsing ecmascript source code failed
+
+Import trace:
+  Server Component:
+    ./components/upload-section.tsx
+    ./app/page.tsx @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:3318
+[ 1098165ms] [ERROR] ./components/upload-section.tsx:540:6
+Unterminated regexp literal
+  538 |       </div>
+  539 |     </motion.div>
+> 540 |     </section>
+      |      ^^^^^^^^^
+  541 |   );
+  542 | }
+  543 |
+
+Parsing ecmascript source code failed
+
+Import trace:
+  Server Component:
+    ./components/upload-section.tsx
+    ./app/page.tsx @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:3318
+[ 1098585ms] [ERROR] ./components/upload-section.tsx:540:5
+Expression expected
+  538 |       </div>
+  539 |     </motion.div>
+> 540 |     </section>
+      |     ^
+  541 |   );
+  542 | }
+  543 |
+
+Parsing ecmascript source code failed
+
+Import trace:
+  Server Component:
+    ./components/upload-section.tsx
+    ./app/page.tsx @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:3318
+[ 1098585ms] [ERROR] ./components/upload-section.tsx:540:6
+Unterminated regexp literal
+  538 |       </div>
+  539 |     </motion.div>
+> 540 |     </section>
+      |      ^^^^^^^^^
+  541 |   );
+  542 | }
+  543 |
+
+Parsing ecmascript source code failed
+
+Import trace:
+  Server Component:
+    ./components/upload-section.tsx
+    ./app/page.tsx @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:3318
+[ 1098649ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[ 1098715ms] [ERROR] ./components/upload-section.tsx:540:5
+Expression expected
+  538 |       </div>
+  539 |     </motion.div>
+> 540 |     </section>
+      |     ^
+  541 |   );
+  542 | }
+  543 |
+
+Parsing ecmascript source code failed
+
+Import trace:
+  Server Component:
+    ./components/upload-section.tsx
+    ./app/page.tsx @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:3318
+[ 1098716ms] [ERROR] ./components/upload-section.tsx:540:6
+Unterminated regexp literal
+  538 |       </div>
+  539 |     </motion.div>
+> 540 |     </section>
+      |      ^^^^^^^^^
+  541 |   );
+  542 | }
+  543 |
+
+Parsing ecmascript source code failed
+
+Import trace:
+  Server Component:
+    ./components/upload-section.tsx
+    ./app/page.tsx @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:3318
+[ 1098781ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[ 1099216ms] [ERROR] ./components/upload-section.tsx:540:5
+Expression expected
+  538 |       </div>
+  539 |     </motion.div>
+> 540 |     </section>
+      |     ^
+  541 |   );
+  542 | }
+  543 |
+
+Parsing ecmascript source code failed
+
+Import trace:
+  Server Component:
+    ./components/upload-section.tsx
+    ./app/page.tsx @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:3318
+[ 1099217ms] [ERROR] ./components/upload-section.tsx:540:6
+Unterminated regexp literal
+  538 |       </div>
+  539 |     </motion.div>
+> 540 |     </section>
+      |      ^^^^^^^^^
+  541 |   );
+  542 | }
+  543 |
+
+Parsing ecmascript source code failed
+
+Import trace:
+  Server Component:
+    ./components/upload-section.tsx
+    ./app/page.tsx @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:3318
+[ 1099259ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[ 1100019ms] [ERROR] ./components/upload-section.tsx:540:5
+Expression expected
+  538 |       </div>
+  539 |     </motion.div>
+> 540 |     </section>
+      |     ^
+  541 |   );
+  542 | }
+  543 |
+
+Parsing ecmascript source code failed
+
+Import trace:
+  Server Component:
+    ./components/upload-section.tsx
+    ./app/page.tsx @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:3318
+[ 1100020ms] [ERROR] ./components/upload-section.tsx:540:6
+Unterminated regexp literal
+  538 |       </div>
+  539 |     </motion.div>
+> 540 |     </section>
+      |      ^^^^^^^^^
+  541 |   );
+  542 | }
+  543 |
+
+Parsing ecmascript source code failed
+
+Import trace:
+  Server Component:
+    ./components/upload-section.tsx
+    ./app/page.tsx @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:3318
+[ 1100116ms] [ERROR] ./components/upload-section.tsx:540:5
+Expression expected
+  538 |       </div>
+  539 |     </motion.div>
+> 540 |     </section>
+      |     ^
+  541 |   );
+  542 | }
+  543 |
+
+Parsing ecmascript source code failed
+
+Import trace:
+  Server Component:
+    ./components/upload-section.tsx
+    ./app/page.tsx @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:3318
+[ 1100116ms] [ERROR] ./components/upload-section.tsx:540:6
+Unterminated regexp literal
+  538 |       </div>
+  539 |     </motion.div>
+> 540 |     </section>
+      |      ^^^^^^^^^
+  541 |   );
+  542 | }
+  543 |
+
+Parsing ecmascript source code failed
+
+Import trace:
+  Server Component:
+    ./components/upload-section.tsx
+    ./app/page.tsx @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:3318
+[ 1100125ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[ 1100256ms] [ERROR] ./components/upload-section.tsx:540:5
+Expression expected
+  538 |       </div>
+  539 |     </motion.div>
+> 540 |     </section>
+      |     ^
+  541 |   );
+  542 | }
+  543 |
+
+Parsing ecmascript source code failed
+
+Import trace:
+  Server Component:
+    ./components/upload-section.tsx
+    ./app/page.tsx @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:3318
+[ 1100257ms] [ERROR] ./components/upload-section.tsx:540:6
+Unterminated regexp literal
+  538 |       </div>
+  539 |     </motion.div>
+> 540 |     </section>
+      |      ^^^^^^^^^
+  541 |   );
+  542 | }
+  543 |
+
+Parsing ecmascript source code failed
+
+Import trace:
+  Server Component:
+    ./components/upload-section.tsx
+    ./app/page.tsx @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:3318
+[ 1100317ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[ 1100612ms] [ERROR] ./components/upload-section.tsx:540:5
+Expression expected
+  538 |       </div>
+  539 |     </motion.div>
+> 540 |     </section>
+      |     ^
+  541 |   );
+  542 | }
+  543 |
+
+Parsing ecmascript source code failed
+
+Import trace:
+  Server Component:
+    ./components/upload-section.tsx
+    ./app/page.tsx @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:3318
+[ 1100613ms] [ERROR] ./components/upload-section.tsx:540:6
+Unterminated regexp literal
+  538 |       </div>
+  539 |     </motion.div>
+> 540 |     </section>
+      |      ^^^^^^^^^
+  541 |   );
+  542 | }
+  543 |
+
+Parsing ecmascript source code failed
+
+Import trace:
+  Server Component:
+    ./components/upload-section.tsx
+    ./app/page.tsx @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:3318
+[ 1100662ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[ 1101061ms] [ERROR] ./components/upload-section.tsx:540:5
+Expression expected
+  538 |       </div>
+  539 |     </motion.div>
+> 540 |     </section>
+      |     ^
+  541 |   );
+  542 | }
+  543 |
+
+Parsing ecmascript source code failed
+
+Import trace:
+  Server Component:
+    ./components/upload-section.tsx
+    ./app/page.tsx @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:3318
+[ 1101063ms] [ERROR] ./components/upload-section.tsx:540:6
+Unterminated regexp literal
+  538 |       </div>
+  539 |     </motion.div>
+> 540 |     </section>
+      |      ^^^^^^^^^
+  541 |   );
+  542 | }
+  543 |
+
+Parsing ecmascript source code failed
+
+Import trace:
+  Server Component:
+    ./components/upload-section.tsx
+    ./app/page.tsx @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:3318
+[ 1101084ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[ 1101238ms] [ERROR] ./components/upload-section.tsx:540:5
+Expression expected
+  538 |       </div>
+  539 |     </motion.div>
+> 540 |     </section>
+      |     ^
+  541 |   );
+  542 | }
+  543 |
+
+Parsing ecmascript source code failed
+
+Import trace:
+  Server Component:
+    ./components/upload-section.tsx
+    ./app/page.tsx @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:3318
+[ 1101242ms] [ERROR] ./components/upload-section.tsx:540:6
+Unterminated regexp literal
+  538 |       </div>
+  539 |     </motion.div>
+> 540 |     </section>
+      |      ^^^^^^^^^
+  541 |   );
+  542 | }
+  543 |
+
+Parsing ecmascript source code failed
+
+Import trace:
+  Server Component:
+    ./components/upload-section.tsx
+    ./app/page.tsx @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:3318
+[ 1101296ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[ 1101402ms] [ERROR] ./components/upload-section.tsx:540:5
+Expression expected
+  538 |       </div>
+  539 |     </motion.div>
+> 540 |     </section>
+      |     ^
+  541 |   );
+  542 | }
+  543 |
+
+Parsing ecmascript source code failed
+
+Import trace:
+  Server Component:
+    ./components/upload-section.tsx
+    ./app/page.tsx @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:3318
+[ 1101404ms] [ERROR] ./components/upload-section.tsx:540:6
+Unterminated regexp literal
+  538 |       </div>
+  539 |     </motion.div>
+> 540 |     </section>
+      |      ^^^^^^^^^
+  541 |   );
+  542 | }
+  543 |
+
+Parsing ecmascript source code failed
+
+Import trace:
+  Server Component:
+    ./components/upload-section.tsx
+    ./app/page.tsx @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:3318
+[ 1101448ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[ 1101683ms] [ERROR] ./components/upload-section.tsx:540:5
+Expression expected
+  538 |       </div>
+  539 |     </motion.div>
+> 540 |     </section>
+      |     ^
+  541 |   );
+  542 | }
+  543 |
+
+Parsing ecmascript source code failed
+
+Import trace:
+  Server Component:
+    ./components/upload-section.tsx
+    ./app/page.tsx @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:3318
+[ 1101684ms] [ERROR] ./components/upload-section.tsx:540:6
+Unterminated regexp literal
+  538 |       </div>
+  539 |     </motion.div>
+> 540 |     </section>
+      |      ^^^^^^^^^
+  541 |   );
+  542 | }
+  543 |
+
+Parsing ecmascript source code failed
+
+Import trace:
+  Server Component:
+    ./components/upload-section.tsx
+    ./app/page.tsx @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:3318
+[ 1101726ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[ 1101828ms] [ERROR] ./components/upload-section.tsx:540:5
+Expression expected
+  538 |       </div>
+  539 |     </motion.div>
+> 540 |     </section>
+      |     ^
+  541 |   );
+  542 | }
+  543 |
+
+Parsing ecmascript source code failed
+
+Import trace:
+  Server Component:
+    ./components/upload-section.tsx
+    ./app/page.tsx @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:3318
+[ 1101830ms] [ERROR] ./components/upload-section.tsx:540:6
+Unterminated regexp literal
+  538 |       </div>
+  539 |     </motion.div>
+> 540 |     </section>
+      |      ^^^^^^^^^
+  541 |   );
+  542 | }
+  543 |
+
+Parsing ecmascript source code failed
+
+Import trace:
+  Server Component:
+    ./components/upload-section.tsx
+    ./app/page.tsx @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:3318
+[ 1101884ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[ 1101987ms] [ERROR] ./components/upload-section.tsx:540:5
+Expression expected
+  538 |       </div>
+  539 |     </motion.div>
+> 540 |     </section>
+      |     ^
+  541 |   );
+  542 | }
+  543 |
+
+Parsing ecmascript source code failed
+
+Import trace:
+  Server Component:
+    ./components/upload-section.tsx
+    ./app/page.tsx @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:3318
+[ 1101987ms] [ERROR] ./components/upload-section.tsx:540:6
+Unterminated regexp literal
+  538 |       </div>
+  539 |     </motion.div>
+> 540 |     </section>
+      |      ^^^^^^^^^
+  541 |   );
+  542 | }
+  543 |
+
+Parsing ecmascript source code failed
+
+Import trace:
+  Server Component:
+    ./components/upload-section.tsx
+    ./app/page.tsx @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:3318
+[ 1102037ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[ 1102250ms] [ERROR] ./components/upload-section.tsx:540:5
+Expression expected
+  538 |       </div>
+  539 |     </motion.div>
+> 540 |     </section>
+      |     ^
+  541 |   );
+  542 | }
+  543 |
+
+Parsing ecmascript source code failed
+
+Import trace:
+  Server Component:
+    ./components/upload-section.tsx
+    ./app/page.tsx @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:3318
+[ 1102250ms] [ERROR] ./components/upload-section.tsx:540:6
+Unterminated regexp literal
+  538 |       </div>
+  539 |     </motion.div>
+> 540 |     </section>
+      |      ^^^^^^^^^
+  541 |   );
+  542 | }
+  543 |
+
+Parsing ecmascript source code failed
+
+Import trace:
+  Server Component:
+    ./components/upload-section.tsx
+    ./app/page.tsx @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:3318
+[ 1102311ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[ 1102393ms] [ERROR] ./components/upload-section.tsx:540:5
+Expression expected
+  538 |       </div>
+  539 |     </motion.div>
+> 540 |     </section>
+      |     ^
+  541 |   );
+  542 | }
+  543 |
+
+Parsing ecmascript source code failed
+
+Import trace:
+  Server Component:
+    ./components/upload-section.tsx
+    ./app/page.tsx @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:3318
+[ 1102394ms] [ERROR] ./components/upload-section.tsx:540:6
+Unterminated regexp literal
+  538 |       </div>
+  539 |     </motion.div>
+> 540 |     </section>
+      |      ^^^^^^^^^
+  541 |   );
+  542 | }
+  543 |
+
+Parsing ecmascript source code failed
+
+Import trace:
+  Server Component:
+    ./components/upload-section.tsx
+    ./app/page.tsx @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:3318
+[ 1102460ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[ 1102531ms] [ERROR] ./components/upload-section.tsx:540:5
+Expression expected
+  538 |       </div>
+  539 |     </motion.div>
+> 540 |     </section>
+      |     ^
+  541 |   );
+  542 | }
+  543 |
+
+Parsing ecmascript source code failed
+
+Import trace:
+  Server Component:
+    ./components/upload-section.tsx
+    ./app/page.tsx @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:3318
+[ 1102532ms] [ERROR] ./components/upload-section.tsx:540:6
+Unterminated regexp literal
+  538 |       </div>
+  539 |     </motion.div>
+> 540 |     </section>
+      |      ^^^^^^^^^
+  541 |   );
+  542 | }
+  543 |
+
+Parsing ecmascript source code failed
+
+Import trace:
+  Server Component:
+    ./components/upload-section.tsx
+    ./app/page.tsx @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:3318
+[ 1102576ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[ 1102719ms] [ERROR] ./components/upload-section.tsx:540:5
+Expression expected
+  538 |       </div>
+  539 |     </motion.div>
+> 540 |     </section>
+      |     ^
+  541 |   );
+  542 | }
+  543 |
+
+Parsing ecmascript source code failed
+
+Import trace:
+  Server Component:
+    ./components/upload-section.tsx
+    ./app/page.tsx @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:3318
+[ 1102720ms] [ERROR] ./components/upload-section.tsx:540:6
+Unterminated regexp literal
+  538 |       </div>
+  539 |     </motion.div>
+> 540 |     </section>
+      |      ^^^^^^^^^
+  541 |   );
+  542 | }
+  543 |
+
+Parsing ecmascript source code failed
+
+Import trace:
+  Server Component:
+    ./components/upload-section.tsx
+    ./app/page.tsx @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:3318
+[ 1102786ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[ 1103115ms] [ERROR] ./components/upload-section.tsx:540:5
+Expression expected
+  538 |       </div>
+  539 |     </motion.div>
+> 540 |     </section>
+      |     ^
+  541 |   );
+  542 | }
+  543 |
+
+Parsing ecmascript source code failed
+
+Import trace:
+  Server Component:
+    ./components/upload-section.tsx
+    ./app/page.tsx @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:3318
+[ 1103116ms] [ERROR] ./components/upload-section.tsx:540:6
+Unterminated regexp literal
+  538 |       </div>
+  539 |     </motion.div>
+> 540 |     </section>
+      |      ^^^^^^^^^
+  541 |   );
+  542 | }
+  543 |
+
+Parsing ecmascript source code failed
+
+Import trace:
+  Server Component:
+    ./components/upload-section.tsx
+    ./app/page.tsx @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:3318
+[ 1103182ms] [ERROR] ./components/upload-section.tsx:540:5
+Expression expected
+  538 |       </div>
+  539 |     </motion.div>
+> 540 |     </section>
+      |     ^
+  541 |   );
+  542 | }
+  543 |
+
+Parsing ecmascript source code failed
+
+Import trace:
+  Server Component:
+    ./components/upload-section.tsx
+    ./app/page.tsx @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:3318
+[ 1103183ms] [ERROR] ./components/upload-section.tsx:540:6
+Unterminated regexp literal
+  538 |       </div>
+  539 |     </motion.div>
+> 540 |     </section>
+      |      ^^^^^^^^^
+  541 |   );
+  542 | }
+  543 |
+
+Parsing ecmascript source code failed
+
+Import trace:
+  Server Component:
+    ./components/upload-section.tsx
+    ./app/page.tsx @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:3318
+[ 1103226ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[ 1103395ms] [ERROR] ./components/upload-section.tsx:540:5
+Expression expected
+  538 |       </div>
+  539 |     </motion.div>
+> 540 |     </section>
+      |     ^
+  541 |   );
+  542 | }
+  543 |
+
+Parsing ecmascript source code failed
+
+Import trace:
+  Server Component:
+    ./components/upload-section.tsx
+    ./app/page.tsx @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:3318
+[ 1103397ms] [ERROR] ./components/upload-section.tsx:540:6
+Unterminated regexp literal
+  538 |       </div>
+  539 |     </motion.div>
+> 540 |     </section>
+      |      ^^^^^^^^^
+  541 |   );
+  542 | }
+  543 |
+
+Parsing ecmascript source code failed
+
+Import trace:
+  Server Component:
+    ./components/upload-section.tsx
+    ./app/page.tsx @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:3318
+[ 1103458ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[ 1103548ms] [ERROR] ./components/upload-section.tsx:540:5
+Expression expected
+  538 |       </div>
+  539 |     </motion.div>
+> 540 |     </section>
+      |     ^
+  541 |   );
+  542 | }
+  543 |
+
+Parsing ecmascript source code failed
+
+Import trace:
+  Server Component:
+    ./components/upload-section.tsx
+    ./app/page.tsx @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:3318
+[ 1103549ms] [ERROR] ./components/upload-section.tsx:540:6
+Unterminated regexp literal
+  538 |       </div>
+  539 |     </motion.div>
+> 540 |     </section>
+      |      ^^^^^^^^^
+  541 |   );
+  542 | }
+  543 |
+
+Parsing ecmascript source code failed
+
+Import trace:
+  Server Component:
+    ./components/upload-section.tsx
+    ./app/page.tsx @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:3318
+[ 1103593ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[ 1103716ms] [ERROR] ./components/upload-section.tsx:540:5
+Expression expected
+  538 |       </div>
+  539 |     </motion.div>
+> 540 |     </section>
+      |     ^
+  541 |   );
+  542 | }
+  543 |
+
+Parsing ecmascript source code failed
+
+Import trace:
+  Server Component:
+    ./components/upload-section.tsx
+    ./app/page.tsx @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:3318
+[ 1103717ms] [ERROR] ./components/upload-section.tsx:540:6
+Unterminated regexp literal
+  538 |       </div>
+  539 |     </motion.div>
+> 540 |     </section>
+      |      ^^^^^^^^^
+  541 |   );
+  542 | }
+  543 |
+
+Parsing ecmascript source code failed
+
+Import trace:
+  Server Component:
+    ./components/upload-section.tsx
+    ./app/page.tsx @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:3318
+[ 1103776ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[ 1103996ms] [ERROR] ./components/upload-section.tsx:540:5
+Expression expected
+  538 |       </div>
+  539 |     </motion.div>
+> 540 |     </section>
+      |     ^
+  541 |   );
+  542 | }
+  543 |
+
+Parsing ecmascript source code failed
+
+Import trace:
+  Server Component:
+    ./components/upload-section.tsx
+    ./app/page.tsx @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:3318
+[ 1103997ms] [ERROR] ./components/upload-section.tsx:540:6
+Unterminated regexp literal
+  538 |       </div>
+  539 |     </motion.div>
+> 540 |     </section>
+      |      ^^^^^^^^^
+  541 |   );
+  542 | }
+  543 |
+
+Parsing ecmascript source code failed
+
+Import trace:
+  Server Component:
+    ./components/upload-section.tsx
+    ./app/page.tsx @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:3318
+[ 1104026ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[ 1104253ms] [ERROR] ./components/upload-section.tsx:540:5
+Expression expected
+  538 |       </div>
+  539 |     </motion.div>
+> 540 |     </section>
+      |     ^
+  541 |   );
+  542 | }
+  543 |
+
+Parsing ecmascript source code failed
+
+Import trace:
+  Server Component:
+    ./components/upload-section.tsx
+    ./app/page.tsx @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:3318
+[ 1104254ms] [ERROR] ./components/upload-section.tsx:540:6
+Unterminated regexp literal
+  538 |       </div>
+  539 |     </motion.div>
+> 540 |     </section>
+      |      ^^^^^^^^^
+  541 |   );
+  542 | }
+  543 |
+
+Parsing ecmascript source code failed
+
+Import trace:
+  Server Component:
+    ./components/upload-section.tsx
+    ./app/page.tsx @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:3318
+[ 1104327ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[ 1104986ms] [ERROR] ./components/upload-section.tsx:540:5
+Expression expected
+  538 |       </div>
+  539 |     </motion.div>
+> 540 |     </section>
+      |     ^
+  541 |   );
+  542 | }
+  543 |
+
+Parsing ecmascript source code failed
+
+Import trace:
+  Server Component:
+    ./components/upload-section.tsx
+    ./app/page.tsx @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:3318
+[ 1104986ms] [ERROR] ./components/upload-section.tsx:540:6
+Unterminated regexp literal
+  538 |       </div>
+  539 |     </motion.div>
+> 540 |     </section>
+      |      ^^^^^^^^^
+  541 |   );
+  542 | }
+  543 |
+
+Parsing ecmascript source code failed
+
+Import trace:
+  Server Component:
+    ./components/upload-section.tsx
+    ./app/page.tsx @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:3318
+[ 1105058ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[ 1121544ms] [ERROR] ./components/upload-section.tsx:540:5
+Expression expected
+  538 |       </div>
+  539 |     </motion.div>
+> 540 |     </section>
+      |     ^
+  541 |   );
+  542 | }
+  543 |
+
+Parsing ecmascript source code failed
+
+Import trace:
+  Server Component:
+    ./components/upload-section.tsx
+    ./app/page.tsx @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:3318
+[ 1121545ms] [ERROR] ./components/upload-section.tsx:540:6
+Unterminated regexp literal
+  538 |       </div>
+  539 |     </motion.div>
+> 540 |     </section>
+      |      ^^^^^^^^^
+  541 |   );
+  542 | }
+  543 |
+
+Parsing ecmascript source code failed
+
+Import trace:
+  Server Component:
+    ./components/upload-section.tsx
+    ./app/page.tsx @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:3318
+[ 1121596ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[ 1121678ms] [ERROR] ./components/upload-section.tsx:540:5
+Expression expected
+  538 |       </div>
+  539 |     </motion.div>
+> 540 |     </section>
+      |     ^
+  541 |   );
+  542 | }
+  543 |
+
+Parsing ecmascript source code failed
+
+Import trace:
+  Server Component:
+    ./components/upload-section.tsx
+    ./app/page.tsx @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:3318
+[ 1121679ms] [ERROR] ./components/upload-section.tsx:540:6
+Unterminated regexp literal
+  538 |       </div>
+  539 |     </motion.div>
+> 540 |     </section>
+      |      ^^^^^^^^^
+  541 |   );
+  542 | }
+  543 |
+
+Parsing ecmascript source code failed
+
+Import trace:
+  Server Component:
+    ./components/upload-section.tsx
+    ./app/page.tsx @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:3318
+[ 1121738ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[ 1121920ms] [ERROR] ./components/upload-section.tsx:540:5
+Expression expected
+  538 |       </div>
+  539 |     </motion.div>
+> 540 |     </section>
+      |     ^
+  541 |   );
+  542 | }
+  543 |
+
+Parsing ecmascript source code failed
+
+Import trace:
+  Server Component:
+    ./components/upload-section.tsx
+    ./app/page.tsx @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:3318
+[ 1121920ms] [ERROR] ./components/upload-section.tsx:540:6
+Unterminated regexp literal
+  538 |       </div>
+  539 |     </motion.div>
+> 540 |     </section>
+      |      ^^^^^^^^^
+  541 |   );
+  542 | }
+  543 |
+
+Parsing ecmascript source code failed
+
+Import trace:
+  Server Component:
+    ./components/upload-section.tsx
+    ./app/page.tsx @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:3318
+[ 1121961ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[ 1122231ms] [ERROR] ./components/upload-section.tsx:540:5
+Expression expected
+  538 |       </div>
+  539 |     </motion.div>
+> 540 |     </section>
+      |     ^
+  541 |   );
+  542 | }
+  543 |
+
+Parsing ecmascript source code failed
+
+Import trace:
+  Server Component:
+    ./components/upload-section.tsx
+    ./app/page.tsx @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:3318
+[ 1122233ms] [ERROR] ./components/upload-section.tsx:540:6
+Unterminated regexp literal
+  538 |       </div>
+  539 |     </motion.div>
+> 540 |     </section>
+      |      ^^^^^^^^^
+  541 |   );
+  542 | }
+  543 |
+
+Parsing ecmascript source code failed
+
+Import trace:
+  Server Component:
+    ./components/upload-section.tsx
+    ./app/page.tsx @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:3318
+[ 1122261ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[ 1122376ms] [ERROR] ./components/upload-section.tsx:540:5
+Expression expected
+  538 |       </div>
+  539 |     </motion.div>
+> 540 |     </section>
+      |     ^
+  541 |   );
+  542 | }
+  543 |
+
+Parsing ecmascript source code failed
+
+Import trace:
+  Server Component:
+    ./components/upload-section.tsx
+    ./app/page.tsx @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:3318
+[ 1122378ms] [ERROR] ./components/upload-section.tsx:540:6
+Unterminated regexp literal
+  538 |       </div>
+  539 |     </motion.div>
+> 540 |     </section>
+      |      ^^^^^^^^^
+  541 |   );
+  542 | }
+  543 |
+
+Parsing ecmascript source code failed
+
+Import trace:
+  Server Component:
+    ./components/upload-section.tsx
+    ./app/page.tsx @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:3318
+[ 1122441ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[ 1122548ms] [ERROR] ./components/upload-section.tsx:540:5
+Expression expected
+  538 |       </div>
+  539 |     </motion.div>
+> 540 |     </section>
+      |     ^
+  541 |   );
+  542 | }
+  543 |
+
+Parsing ecmascript source code failed
+
+Import trace:
+  Server Component:
+    ./components/upload-section.tsx
+    ./app/page.tsx @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:3318
+[ 1122550ms] [ERROR] ./components/upload-section.tsx:540:6
+Unterminated regexp literal
+  538 |       </div>
+  539 |     </motion.div>
+> 540 |     </section>
+      |      ^^^^^^^^^
+  541 |   );
+  542 | }
+  543 |
+
+Parsing ecmascript source code failed
+
+Import trace:
+  Server Component:
+    ./components/upload-section.tsx
+    ./app/page.tsx @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:3318
+[ 1122613ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[ 1122862ms] [ERROR] ./components/upload-section.tsx:540:5
+Expression expected
+  538 |       </div>
+  539 |     </motion.div>
+> 540 |     </section>
+      |     ^
+  541 |   );
+  542 | }
+  543 |
+
+Parsing ecmascript source code failed
+
+Import trace:
+  Server Component:
+    ./components/upload-section.tsx
+    ./app/page.tsx @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:3318
+[ 1122865ms] [ERROR] ./components/upload-section.tsx:540:6
+Unterminated regexp literal
+  538 |       </div>
+  539 |     </motion.div>
+> 540 |     </section>
+      |      ^^^^^^^^^
+  541 |   );
+  542 | }
+  543 |
+
+Parsing ecmascript source code failed
+
+Import trace:
+  Server Component:
+    ./components/upload-section.tsx
+    ./app/page.tsx @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:3318
+[ 1122916ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[ 1123045ms] [ERROR] ./components/upload-section.tsx:540:5
+Expression expected
+  538 |       </div>
+  539 |     </motion.div>
+> 540 |     </section>
+      |     ^
+  541 |   );
+  542 | }
+  543 |
+
+Parsing ecmascript source code failed
+
+Import trace:
+  Server Component:
+    ./components/upload-section.tsx
+    ./app/page.tsx @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:3318
+[ 1123046ms] [ERROR] ./components/upload-section.tsx:540:6
+Unterminated regexp literal
+  538 |       </div>
+  539 |     </motion.div>
+> 540 |     </section>
+      |      ^^^^^^^^^
+  541 |   );
+  542 | }
+  543 |
+
+Parsing ecmascript source code failed
+
+Import trace:
+  Server Component:
+    ./components/upload-section.tsx
+    ./app/page.tsx @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:3318
+[ 1123106ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[ 1123362ms] [ERROR] ./components/upload-section.tsx:540:5
+Expression expected
+  538 |       </div>
+  539 |     </motion.div>
+> 540 |     </section>
+      |     ^
+  541 |   );
+  542 | }
+  543 |
+
+Parsing ecmascript source code failed
+
+Import trace:
+  Server Component:
+    ./components/upload-section.tsx
+    ./app/page.tsx @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:3318
+[ 1123363ms] [ERROR] ./components/upload-section.tsx:540:6
+Unterminated regexp literal
+  538 |       </div>
+  539 |     </motion.div>
+> 540 |     </section>
+      |      ^^^^^^^^^
+  541 |   );
+  542 | }
+  543 |
+
+Parsing ecmascript source code failed
+
+Import trace:
+  Server Component:
+    ./components/upload-section.tsx
+    ./app/page.tsx @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:3318
+[ 1123424ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[ 1123552ms] [ERROR] ./components/upload-section.tsx:540:5
+Expression expected
+  538 |       </div>
+  539 |     </motion.div>
+> 540 |     </section>
+      |     ^
+  541 |   );
+  542 | }
+  543 |
+
+Parsing ecmascript source code failed
+
+Import trace:
+  Server Component:
+    ./components/upload-section.tsx
+    ./app/page.tsx @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:3318
+[ 1123553ms] [ERROR] ./components/upload-section.tsx:540:6
+Unterminated regexp literal
+  538 |       </div>
+  539 |     </motion.div>
+> 540 |     </section>
+      |      ^^^^^^^^^
+  541 |   );
+  542 | }
+  543 |
+
+Parsing ecmascript source code failed
+
+Import trace:
+  Server Component:
+    ./components/upload-section.tsx
+    ./app/page.tsx @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:3318
+[ 1123591ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[ 1123750ms] [ERROR] ./components/upload-section.tsx:540:5
+Expression expected
+  538 |       </div>
+  539 |     </motion.div>
+> 540 |     </section>
+      |     ^
+  541 |   );
+  542 | }
+  543 |
+
+Parsing ecmascript source code failed
+
+Import trace:
+  Server Component:
+    ./components/upload-section.tsx
+    ./app/page.tsx @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:3318
+[ 1123750ms] [ERROR] ./components/upload-section.tsx:540:6
+Unterminated regexp literal
+  538 |       </div>
+  539 |     </motion.div>
+> 540 |     </section>
+      |      ^^^^^^^^^
+  541 |   );
+  542 | }
+  543 |
+
+Parsing ecmascript source code failed
+
+Import trace:
+  Server Component:
+    ./components/upload-section.tsx
+    ./app/page.tsx @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:3318
+[ 1123816ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[ 1124203ms] [ERROR] ./components/upload-section.tsx:540:5
+Expression expected
+  538 |       </div>
+  539 |     </motion.div>
+> 540 |     </section>
+      |     ^
+  541 |   );
+  542 | }
+  543 |
+
+Parsing ecmascript source code failed
+
+Import trace:
+  Server Component:
+    ./components/upload-section.tsx
+    ./app/page.tsx @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:3318
+[ 1124208ms] [ERROR] ./components/upload-section.tsx:540:6
+Unterminated regexp literal
+  538 |       </div>
+  539 |     </motion.div>
+> 540 |     </section>
+      |      ^^^^^^^^^
+  541 |   );
+  542 | }
+  543 |
+
+Parsing ecmascript source code failed
+
+Import trace:
+  Server Component:
+    ./components/upload-section.tsx
+    ./app/page.tsx @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:3318
+[ 1124220ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[ 1124411ms] [ERROR] ./components/upload-section.tsx:540:5
+Expression expected
+  538 |       </div>
+  539 |     </motion.div>
+> 540 |     </section>
+      |     ^
+  541 |   );
+  542 | }
+  543 |
+
+Parsing ecmascript source code failed
+
+Import trace:
+  Server Component:
+    ./components/upload-section.tsx
+    ./app/page.tsx @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:3318
+[ 1124412ms] [ERROR] ./components/upload-section.tsx:540:6
+Unterminated regexp literal
+  538 |       </div>
+  539 |     </motion.div>
+> 540 |     </section>
+      |      ^^^^^^^^^
+  541 |   );
+  542 | }
+  543 |
+
+Parsing ecmascript source code failed
+
+Import trace:
+  Server Component:
+    ./components/upload-section.tsx
+    ./app/page.tsx @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:3318
+[ 1124467ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[ 1124882ms] [ERROR] ./components/upload-section.tsx:540:5
+Expression expected
+  538 |       </div>
+  539 |     </motion.div>
+> 540 |     </section>
+      |     ^
+  541 |   );
+  542 | }
+  543 |
+
+Parsing ecmascript source code failed
+
+Import trace:
+  Server Component:
+    ./components/upload-section.tsx
+    ./app/page.tsx @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:3318
+[ 1124883ms] [ERROR] ./components/upload-section.tsx:540:6
+Unterminated regexp literal
+  538 |       </div>
+  539 |     </motion.div>
+> 540 |     </section>
+      |      ^^^^^^^^^
+  541 |   );
+  542 | }
+  543 |
+
+Parsing ecmascript source code failed
+
+Import trace:
+  Server Component:
+    ./components/upload-section.tsx
+    ./app/page.tsx @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:3318
+[ 1124931ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[ 1125687ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[ 1125700ms] [ERROR] ./components/upload-section.tsx:540:5
+Expression expected
+  538 |       </div>
+  539 |     </motion.div>
+> 540 |     </section>
+      |     ^
+  541 |   );
+  542 | }
+  543 |
+
+Parsing ecmascript source code failed
+
+Import trace:
+  Server Component:
+    ./components/upload-section.tsx
+    ./app/page.tsx @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:3318
+[ 1125702ms] [ERROR] ./components/upload-section.tsx:540:6
+Unterminated regexp literal
+  538 |       </div>
+  539 |     </motion.div>
+> 540 |     </section>
+      |      ^^^^^^^^^
+  541 |   );
+  542 | }
+  543 |
+
+Parsing ecmascript source code failed
+
+Import trace:
+  Server Component:
+    ./components/upload-section.tsx
+    ./app/page.tsx @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:3318
+[ 1125964ms] [ERROR] ./components/upload-section.tsx:540:5
+Expression expected
+  538 |       </div>
+  539 |     </motion.div>
+> 540 |     </section>
+      |     ^
+  541 |   );
+  542 | }
+  543 |
+
+Parsing ecmascript source code failed
+
+Import trace:
+  Server Component:
+    ./components/upload-section.tsx
+    ./app/page.tsx @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:3318
+[ 1125965ms] [ERROR] ./components/upload-section.tsx:540:6
+Unterminated regexp literal
+  538 |       </div>
+  539 |     </motion.div>
+> 540 |     </section>
+      |      ^^^^^^^^^
+  541 |   );
+  542 | }
+  543 |
+
+Parsing ecmascript source code failed
+
+Import trace:
+  Server Component:
+    ./components/upload-section.tsx
+    ./app/page.tsx @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:3318
+[ 1126027ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[ 1126278ms] [ERROR] ./components/upload-section.tsx:540:5
+Expression expected
+  538 |       </div>
+  539 |     </motion.div>
+> 540 |     </section>
+      |     ^
+  541 |   );
+  542 | }
+  543 |
+
+Parsing ecmascript source code failed
+
+Import trace:
+  Server Component:
+    ./components/upload-section.tsx
+    ./app/page.tsx @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:3318
+[ 1126278ms] [ERROR] ./components/upload-section.tsx:540:6
+Unterminated regexp literal
+  538 |       </div>
+  539 |     </motion.div>
+> 540 |     </section>
+      |      ^^^^^^^^^
+  541 |   );
+  542 | }
+  543 |
+
+Parsing ecmascript source code failed
+
+Import trace:
+  Server Component:
+    ./components/upload-section.tsx
+    ./app/page.tsx @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:3318
+[ 1126341ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[ 1127170ms] [ERROR] ./components/upload-section.tsx:540:5
+Expression expected
+  538 |       </div>
+  539 |     </motion.div>
+> 540 |     </section>
+      |     ^
+  541 |   );
+  542 | }
+  543 |
+
+Parsing ecmascript source code failed
+
+Import trace:
+  Server Component:
+    ./components/upload-section.tsx
+    ./app/page.tsx @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:3318
+[ 1127179ms] [ERROR] ./components/upload-section.tsx:540:6
+Unterminated regexp literal
+  538 |       </div>
+  539 |     </motion.div>
+> 540 |     </section>
+      |      ^^^^^^^^^
+  541 |   );
+  542 | }
+  543 |
+
+Parsing ecmascript source code failed
+
+Import trace:
+  Server Component:
+    ./components/upload-section.tsx
+    ./app/page.tsx @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:3318
+[ 1127220ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[ 1127495ms] [ERROR] ./components/upload-section.tsx:540:5
+Expression expected
+  538 |       </div>
+  539 |     </motion.div>
+> 540 |     </section>
+      |     ^
+  541 |   );
+  542 | }
+  543 |
+
+Parsing ecmascript source code failed
+
+Import trace:
+  Server Component:
+    ./components/upload-section.tsx
+    ./app/page.tsx @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:3318
+[ 1127496ms] [ERROR] ./components/upload-section.tsx:540:6
+Unterminated regexp literal
+  538 |       </div>
+  539 |     </motion.div>
+> 540 |     </section>
+      |      ^^^^^^^^^
+  541 |   );
+  542 | }
+  543 |
+
+Parsing ecmascript source code failed
+
+Import trace:
+  Server Component:
+    ./components/upload-section.tsx
+    ./app/page.tsx @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:3318
+[ 1127558ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[ 1127747ms] [ERROR] ./components/upload-section.tsx:540:5
+Expression expected
+  538 |       </div>
+  539 |     </motion.div>
+> 540 |     </section>
+      |     ^
+  541 |   );
+  542 | }
+  543 |
+
+Parsing ecmascript source code failed
+
+Import trace:
+  Server Component:
+    ./components/upload-section.tsx
+    ./app/page.tsx @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:3318
+[ 1127747ms] [ERROR] ./components/upload-section.tsx:540:6
+Unterminated regexp literal
+  538 |       </div>
+  539 |     </motion.div>
+> 540 |     </section>
+      |      ^^^^^^^^^
+  541 |   );
+  542 | }
+  543 |
+
+Parsing ecmascript source code failed
+
+Import trace:
+  Server Component:
+    ./components/upload-section.tsx
+    ./app/page.tsx @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:3318
+[ 1127815ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[ 1128662ms] [ERROR] ./components/upload-section.tsx:540:5
+Expression expected
+  538 |       </div>
+  539 |     </motion.div>
+> 540 |     </section>
+      |     ^
+  541 |   );
+  542 | }
+  543 |
+
+Parsing ecmascript source code failed
+
+Import trace:
+  Server Component:
+    ./components/upload-section.tsx
+    ./app/page.tsx @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:3318
+[ 1128663ms] [ERROR] ./components/upload-section.tsx:540:6
+Unterminated regexp literal
+  538 |       </div>
+  539 |     </motion.div>
+> 540 |     </section>
+      |      ^^^^^^^^^
+  541 |   );
+  542 | }
+  543 |
+
+Parsing ecmascript source code failed
+
+Import trace:
+  Server Component:
+    ./components/upload-section.tsx
+    ./app/page.tsx @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:3318
+[ 1128701ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[ 1129061ms] [ERROR] ./components/upload-section.tsx:540:5
+Expression expected
+  538 |       </div>
+  539 |     </motion.div>
+> 540 |     </section>
+      |     ^
+  541 |   );
+  542 | }
+  543 |
+
+Parsing ecmascript source code failed
+
+Import trace:
+  Server Component:
+    ./components/upload-section.tsx
+    ./app/page.tsx @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:3318
+[ 1129062ms] [ERROR] ./components/upload-section.tsx:540:6
+Unterminated regexp literal
+  538 |       </div>
+  539 |     </motion.div>
+> 540 |     </section>
+      |      ^^^^^^^^^
+  541 |   );
+  542 | }
+  543 |
+
+Parsing ecmascript source code failed
+
+Import trace:
+  Server Component:
+    ./components/upload-section.tsx
+    ./app/page.tsx @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:3318
+[ 1129125ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[ 1129645ms] [ERROR] ./components/upload-section.tsx:540:5
+Expression expected
+  538 |       </div>
+  539 |     </motion.div>
+> 540 |     </section>
+      |     ^
+  541 |   );
+  542 | }
+  543 |
+
+Parsing ecmascript source code failed
+
+Import trace:
+  Server Component:
+    ./components/upload-section.tsx
+    ./app/page.tsx @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:3318
+[ 1129646ms] [ERROR] ./components/upload-section.tsx:540:6
+Unterminated regexp literal
+  538 |       </div>
+  539 |     </motion.div>
+> 540 |     </section>
+      |      ^^^^^^^^^
+  541 |   );
+  542 | }
+  543 |
+
+Parsing ecmascript source code failed
+
+Import trace:
+  Server Component:
+    ./components/upload-section.tsx
+    ./app/page.tsx @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:3318
+[ 1129715ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[ 1130127ms] [ERROR] ./components/upload-section.tsx:540:5
+Expression expected
+  538 |       </div>
+  539 |     </motion.div>
+> 540 |     </section>
+      |     ^
+  541 |   );
+  542 | }
+  543 |
+
+Parsing ecmascript source code failed
+
+Import trace:
+  Server Component:
+    ./components/upload-section.tsx
+    ./app/page.tsx @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:3318
+[ 1130128ms] [ERROR] ./components/upload-section.tsx:540:6
+Unterminated regexp literal
+  538 |       </div>
+  539 |     </motion.div>
+> 540 |     </section>
+      |      ^^^^^^^^^
+  541 |   );
+  542 | }
+  543 |
+
+Parsing ecmascript source code failed
+
+Import trace:
+  Server Component:
+    ./components/upload-section.tsx
+    ./app/page.tsx @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:3318
+[ 1130179ms] [ERROR] ./components/upload-section.tsx:540:5
+Expression expected
+  538 |       </div>
+  539 |     </motion.div>
+> 540 |     </section>
+      |     ^
+  541 |   );
+  542 | }
+  543 |
+
+Parsing ecmascript source code failed
+
+Import trace:
+  Server Component:
+    ./components/upload-section.tsx
+    ./app/page.tsx @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:3318
+[ 1130179ms] [ERROR] ./components/upload-section.tsx:540:6
+Unterminated regexp literal
+  538 |       </div>
+  539 |     </motion.div>
+> 540 |     </section>
+      |      ^^^^^^^^^
+  541 |   );
+  542 | }
+  543 |
+
+Parsing ecmascript source code failed
+
+Import trace:
+  Server Component:
+    ./components/upload-section.tsx
+    ./app/page.tsx @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:3318
+[ 1130247ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[ 1130883ms] [ERROR] ./components/upload-section.tsx:540:5
+Expression expected
+  538 |       </div>
+  539 |     </motion.div>
+> 540 |     </section>
+      |     ^
+  541 |   );
+  542 | }
+  543 |
+
+Parsing ecmascript source code failed
+
+Import trace:
+  Server Component:
+    ./components/upload-section.tsx
+    ./app/page.tsx @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:3318
+[ 1130884ms] [ERROR] ./components/upload-section.tsx:540:6
+Unterminated regexp literal
+  538 |       </div>
+  539 |     </motion.div>
+> 540 |     </section>
+      |      ^^^^^^^^^
+  541 |   );
+  542 | }
+  543 |
+
+Parsing ecmascript source code failed
+
+Import trace:
+  Server Component:
+    ./components/upload-section.tsx
+    ./app/page.tsx @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:3318
+[ 1130947ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[ 1131083ms] [ERROR] ./components/upload-section.tsx:540:5
+Expression expected
+  538 |       </div>
+  539 |     </motion.div>
+> 540 |     </section>
+      |     ^
+  541 |   );
+  542 | }
+  543 |
+
+Parsing ecmascript source code failed
+
+Import trace:
+  Server Component:
+    ./components/upload-section.tsx
+    ./app/page.tsx @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:3318
+[ 1131083ms] [ERROR] ./components/upload-section.tsx:540:6
+Unterminated regexp literal
+  538 |       </div>
+  539 |     </motion.div>
+> 540 |     </section>
+      |      ^^^^^^^^^
+  541 |   );
+  542 | }
+  543 |
+
+Parsing ecmascript source code failed
+
+Import trace:
+  Server Component:
+    ./components/upload-section.tsx
+    ./app/page.tsx @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:3318
+[ 1131152ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[ 1131879ms] [ERROR] ./components/upload-section.tsx:540:5
+Expression expected
+  538 |       </div>
+  539 |     </motion.div>
+> 540 |     </section>
+      |     ^
+  541 |   );
+  542 | }
+  543 |
+
+Parsing ecmascript source code failed
+
+Import trace:
+  Server Component:
+    ./components/upload-section.tsx
+    ./app/page.tsx @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:3318
+[ 1131881ms] [ERROR] ./components/upload-section.tsx:540:6
+Unterminated regexp literal
+  538 |       </div>
+  539 |     </motion.div>
+> 540 |     </section>
+      |      ^^^^^^^^^
+  541 |   );
+  542 | }
+  543 |
+
+Parsing ecmascript source code failed
+
+Import trace:
+  Server Component:
+    ./components/upload-section.tsx
+    ./app/page.tsx @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:3318
+[ 1131943ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[ 1132634ms] [ERROR] ./components/upload-section.tsx:540:5
+Expression expected
+  538 |       </div>
+  539 |     </motion.div>
+> 540 |     </section>
+      |     ^
+  541 |   );
+  542 | }
+  543 |
+
+Parsing ecmascript source code failed
+
+Import trace:
+  Server Component:
+    ./components/upload-section.tsx
+    ./app/page.tsx @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:3318
+[ 1132635ms] [ERROR] ./components/upload-section.tsx:540:6
+Unterminated regexp literal
+  538 |       </div>
+  539 |     </motion.div>
+> 540 |     </section>
+      |      ^^^^^^^^^
+  541 |   );
+  542 | }
+  543 |
+
+Parsing ecmascript source code failed
+
+Import trace:
+  Server Component:
+    ./components/upload-section.tsx
+    ./app/page.tsx @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:3318
+[ 1132695ms] [ERROR] ./components/upload-section.tsx:540:5
+Expression expected
+  538 |       </div>
+  539 |     </motion.div>
+> 540 |     </section>
+      |     ^
+  541 |   );
+  542 | }
+  543 |
+
+Parsing ecmascript source code failed
+
+Import trace:
+  Server Component:
+    ./components/upload-section.tsx
+    ./app/page.tsx @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:3318
+[ 1132696ms] [ERROR] ./components/upload-section.tsx:540:6
+Unterminated regexp literal
+  538 |       </div>
+  539 |     </motion.div>
+> 540 |     </section>
+      |      ^^^^^^^^^
+  541 |   );
+  542 | }
+  543 |
+
+Parsing ecmascript source code failed
+
+Import trace:
+  Server Component:
+    ./components/upload-section.tsx
+    ./app/page.tsx @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:3318
+[ 1132745ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[ 1154342ms] [ERROR] ./components/upload-section.tsx:540:5
+Expression expected
+  538 |       </div>
+  539 |     </motion.div>
+> 540 |     </section>
+      |     ^
+  541 |   );
+  542 | }
+  543 |
+
+Parsing ecmascript source code failed
+
+Import trace:
+  Server Component:
+    ./components/upload-section.tsx
+    ./app/page.tsx @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:3318
+[ 1154345ms] [ERROR] ./components/upload-section.tsx:540:6
+Unterminated regexp literal
+  538 |       </div>
+  539 |     </motion.div>
+> 540 |     </section>
+      |      ^^^^^^^^^
+  541 |   );
+  542 | }
+  543 |
+
+Parsing ecmascript source code failed
+
+Import trace:
+  Server Component:
+    ./components/upload-section.tsx
+    ./app/page.tsx @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:3318
+[ 1154411ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[ 1154467ms] [ERROR] ./components/upload-section.tsx:540:5
+Expression expected
+  538 |       </div>
+  539 |     </motion.div>
+> 540 |     </section>
+      |     ^
+  541 |   );
+  542 | }
+  543 |
+
+Parsing ecmascript source code failed
+
+Import trace:
+  Server Component:
+    ./components/upload-section.tsx
+    ./app/page.tsx @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:3318
+[ 1154469ms] [ERROR] ./components/upload-section.tsx:540:6
+Unterminated regexp literal
+  538 |       </div>
+  539 |     </motion.div>
+> 540 |     </section>
+      |      ^^^^^^^^^
+  541 |   );
+  542 | }
+  543 |
+
+Parsing ecmascript source code failed
+
+Import trace:
+  Server Component:
+    ./components/upload-section.tsx
+    ./app/page.tsx @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:3318
+[ 1154539ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[ 1154645ms] [ERROR] ./components/upload-section.tsx:540:5
+Expression expected
+  538 |       </div>
+  539 |     </motion.div>
+> 540 |     </section>
+      |     ^
+  541 |   );
+  542 | }
+  543 |
+
+Parsing ecmascript source code failed
+
+Import trace:
+  Server Component:
+    ./components/upload-section.tsx
+    ./app/page.tsx @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:3318
+[ 1154645ms] [ERROR] ./components/upload-section.tsx:540:6
+Unterminated regexp literal
+  538 |       </div>
+  539 |     </motion.div>
+> 540 |     </section>
+      |      ^^^^^^^^^
+  541 |   );
+  542 | }
+  543 |
+
+Parsing ecmascript source code failed
+
+Import trace:
+  Server Component:
+    ./components/upload-section.tsx
+    ./app/page.tsx @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:3318
+[ 1154713ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[ 1154866ms] [ERROR] ./components/upload-section.tsx:540:5
+Expression expected
+  538 |       </div>
+  539 |     </motion.div>
+> 540 |     </section>
+      |     ^
+  541 |   );
+  542 | }
+  543 |
+
+Parsing ecmascript source code failed
+
+Import trace:
+  Server Component:
+    ./components/upload-section.tsx
+    ./app/page.tsx @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:3318
+[ 1154867ms] [ERROR] ./components/upload-section.tsx:540:6
+Unterminated regexp literal
+  538 |       </div>
+  539 |     </motion.div>
+> 540 |     </section>
+      |      ^^^^^^^^^
+  541 |   );
+  542 | }
+  543 |
+
+Parsing ecmascript source code failed
+
+Import trace:
+  Server Component:
+    ./components/upload-section.tsx
+    ./app/page.tsx @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:3318
+[ 1154919ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[ 1155031ms] [ERROR] ./components/upload-section.tsx:540:5
+Expression expected
+  538 |       </div>
+  539 |     </motion.div>
+> 540 |     </section>
+      |     ^
+  541 |   );
+  542 | }
+  543 |
+
+Parsing ecmascript source code failed
+
+Import trace:
+  Server Component:
+    ./components/upload-section.tsx
+    ./app/page.tsx @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:3318
+[ 1155032ms] [ERROR] ./components/upload-section.tsx:540:6
+Unterminated regexp literal
+  538 |       </div>
+  539 |     </motion.div>
+> 540 |     </section>
+      |      ^^^^^^^^^
+  541 |   );
+  542 | }
+  543 |
+
+Parsing ecmascript source code failed
+
+Import trace:
+  Server Component:
+    ./components/upload-section.tsx
+    ./app/page.tsx @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:3318
+[ 1155094ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[ 1155143ms] [ERROR] ./components/upload-section.tsx:540:5
+Expression expected
+  538 |       </div>
+  539 |     </motion.div>
+> 540 |     </section>
+      |     ^
+  541 |   );
+  542 | }
+  543 |
+
+Parsing ecmascript source code failed
+
+Import trace:
+  Server Component:
+    ./components/upload-section.tsx
+    ./app/page.tsx @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:3318
+[ 1155144ms] [ERROR] ./components/upload-section.tsx:540:6
+Unterminated regexp literal
+  538 |       </div>
+  539 |     </motion.div>
+> 540 |     </section>
+      |      ^^^^^^^^^
+  541 |   );
+  542 | }
+  543 |
+
+Parsing ecmascript source code failed
+
+Import trace:
+  Server Component:
+    ./components/upload-section.tsx
+    ./app/page.tsx @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:3318
+[ 1155195ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[ 1161699ms] [ERROR] ./components/upload-section.tsx:540:5
+Expression expected
+  538 |       </div>
+  539 |     </motion.div>
+> 540 |     </section>
+      |     ^
+  541 |   );
+  542 | }
+  543 |
+
+Parsing ecmascript source code failed
+
+Import trace:
+  Server Component:
+    ./components/upload-section.tsx
+    ./app/page.tsx @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:3318
+[ 1161700ms] [ERROR] ./components/upload-section.tsx:540:6
+Unterminated regexp literal
+  538 |       </div>
+  539 |     </motion.div>
+> 540 |     </section>
+      |      ^^^^^^^^^
+  541 |   );
+  542 | }
+  543 |
+
+Parsing ecmascript source code failed
+
+Import trace:
+  Server Component:
+    ./components/upload-section.tsx
+    ./app/page.tsx @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:3318
+[ 1161760ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[ 1163676ms] [ERROR] ./components/upload-section.tsx:540:5
+Expression expected
+  538 |       </div>
+  539 |     </motion.div>
+> 540 |     </section>
+      |     ^
+  541 |   );
+  542 | }
+  543 |
+
+Parsing ecmascript source code failed
+
+Import trace:
+  Server Component:
+    ./components/upload-section.tsx
+    ./app/page.tsx @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:3318
+[ 1163677ms] [ERROR] ./components/upload-section.tsx:540:6
+Unterminated regexp literal
+  538 |       </div>
+  539 |     </motion.div>
+> 540 |     </section>
+      |      ^^^^^^^^^
+  541 |   );
+  542 | }
+  543 |
+
+Parsing ecmascript source code failed
+
+Import trace:
+  Server Component:
+    ./components/upload-section.tsx
+    ./app/page.tsx @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:3318
+[ 1163715ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[ 1164089ms] [ERROR] ./components/upload-section.tsx:540:5
+Expression expected
+  538 |       </div>
+  539 |     </motion.div>
+> 540 |     </section>
+      |     ^
+  541 |   );
+  542 | }
+  543 |
+
+Parsing ecmascript source code failed
+
+Import trace:
+  Server Component:
+    ./components/upload-section.tsx
+    ./app/page.tsx @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:3318
+[ 1164093ms] [ERROR] ./components/upload-section.tsx:540:6
+Unterminated regexp literal
+  538 |       </div>
+  539 |     </motion.div>
+> 540 |     </section>
+      |      ^^^^^^^^^
+  541 |   );
+  542 | }
+  543 |
+
+Parsing ecmascript source code failed
+
+Import trace:
+  Server Component:
+    ./components/upload-section.tsx
+    ./app/page.tsx @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:3318
+[ 1164124ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[ 1164578ms] [ERROR] ./components/upload-section.tsx:540:5
+Expression expected
+  538 |       </div>
+  539 |     </motion.div>
+> 540 |     </section>
+      |     ^
+  541 |   );
+  542 | }
+  543 |
+
+Parsing ecmascript source code failed
+
+Import trace:
+  Server Component:
+    ./components/upload-section.tsx
+    ./app/page.tsx @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:3318
+[ 1164579ms] [ERROR] ./components/upload-section.tsx:540:6
+Unterminated regexp literal
+  538 |       </div>
+  539 |     </motion.div>
+> 540 |     </section>
+      |      ^^^^^^^^^
+  541 |   );
+  542 | }
+  543 |
+
+Parsing ecmascript source code failed
+
+Import trace:
+  Server Component:
+    ./components/upload-section.tsx
+    ./app/page.tsx @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:3318
+[ 1164648ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[ 1164809ms] [ERROR] ./components/upload-section.tsx:540:5
+Expression expected
+  538 |       </div>
+  539 |     </motion.div>
+> 540 |     </section>
+      |     ^
+  541 |   );
+  542 | }
+  543 |
+
+Parsing ecmascript source code failed
+
+Import trace:
+  Server Component:
+    ./components/upload-section.tsx
+    ./app/page.tsx @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:3318
+[ 1164810ms] [ERROR] ./components/upload-section.tsx:540:6
+Unterminated regexp literal
+  538 |       </div>
+  539 |     </motion.div>
+> 540 |     </section>
+      |      ^^^^^^^^^
+  541 |   );
+  542 | }
+  543 |
+
+Parsing ecmascript source code failed
+
+Import trace:
+  Server Component:
+    ./components/upload-section.tsx
+    ./app/page.tsx @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:3318
+[ 1164847ms] [ERROR] ./components/upload-section.tsx:540:5
+Expression expected
+  538 |       </div>
+  539 |     </motion.div>
+> 540 |     </section>
+      |     ^
+  541 |   );
+  542 | }
+  543 |
+
+Parsing ecmascript source code failed
+
+Import trace:
+  Server Component:
+    ./components/upload-section.tsx
+    ./app/page.tsx @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:3318
+[ 1164848ms] [ERROR] ./components/upload-section.tsx:540:6
+Unterminated regexp literal
+  538 |       </div>
+  539 |     </motion.div>
+> 540 |     </section>
+      |      ^^^^^^^^^
+  541 |   );
+  542 | }
+  543 |
+
+Parsing ecmascript source code failed
+
+Import trace:
+  Server Component:
+    ./components/upload-section.tsx
+    ./app/page.tsx @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:3318
+[ 1164918ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[ 1165353ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[ 1165355ms] [ERROR] ./components/upload-section.tsx:540:5
+Expression expected
+  538 |       </div>
+  539 |     </motion.div>
+> 540 |     </section>
+      |     ^
+  541 |   );
+  542 | }
+  543 |
+
+Parsing ecmascript source code failed
+
+Import trace:
+  Server Component:
+    ./components/upload-section.tsx
+    ./app/page.tsx @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:3318
+[ 1165358ms] [ERROR] ./components/upload-section.tsx:540:6
+Unterminated regexp literal
+  538 |       </div>
+  539 |     </motion.div>
+> 540 |     </section>
+      |      ^^^^^^^^^
+  541 |   );
+  542 | }
+  543 |
+
+Parsing ecmascript source code failed
+
+Import trace:
+  Server Component:
+    ./components/upload-section.tsx
+    ./app/page.tsx @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:3318
+[ 1165554ms] [ERROR] ./components/upload-section.tsx:540:5
+Expression expected
+  538 |       </div>
+  539 |     </motion.div>
+> 540 |     </section>
+      |     ^
+  541 |   );
+  542 | }
+  543 |
+
+Parsing ecmascript source code failed
+
+Import trace:
+  Server Component:
+    ./components/upload-section.tsx
+    ./app/page.tsx @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:3318
+[ 1165558ms] [ERROR] ./components/upload-section.tsx:540:6
+Unterminated regexp literal
+  538 |       </div>
+  539 |     </motion.div>
+> 540 |     </section>
+      |      ^^^^^^^^^
+  541 |   );
+  542 | }
+  543 |
+
+Parsing ecmascript source code failed
+
+Import trace:
+  Server Component:
+    ./components/upload-section.tsx
+    ./app/page.tsx @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:3318
+[ 1165591ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[ 1166051ms] [ERROR] ./components/upload-section.tsx:540:5
+Expression expected
+  538 |       </div>
+  539 |     </motion.div>
+> 540 |     </section>
+      |     ^
+  541 |   );
+  542 | }
+  543 |
+
+Parsing ecmascript source code failed
+
+Import trace:
+  Server Component:
+    ./components/upload-section.tsx
+    ./app/page.tsx @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:3318
+[ 1166052ms] [ERROR] ./components/upload-section.tsx:540:6
+Unterminated regexp literal
+  538 |       </div>
+  539 |     </motion.div>
+> 540 |     </section>
+      |      ^^^^^^^^^
+  541 |   );
+  542 | }
+  543 |
+
+Parsing ecmascript source code failed
+
+Import trace:
+  Server Component:
+    ./components/upload-section.tsx
+    ./app/page.tsx @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:3318
+[ 1166112ms] [ERROR] ./components/upload-section.tsx:540:5
+Expression expected
+  538 |       </div>
+  539 |     </motion.div>
+> 540 |     </section>
+      |     ^
+  541 |   );
+  542 | }
+  543 |
+
+Parsing ecmascript source code failed
+
+Import trace:
+  Server Component:
+    ./components/upload-section.tsx
+    ./app/page.tsx @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:3318
+[ 1166113ms] [ERROR] ./components/upload-section.tsx:540:6
+Unterminated regexp literal
+  538 |       </div>
+  539 |     </motion.div>
+> 540 |     </section>
+      |      ^^^^^^^^^
+  541 |   );
+  542 | }
+  543 |
+
+Parsing ecmascript source code failed
+
+Import trace:
+  Server Component:
+    ./components/upload-section.tsx
+    ./app/page.tsx @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:3318
+[ 1166160ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[ 1166248ms] [ERROR] ./components/upload-section.tsx:540:5
+Expression expected
+  538 |       </div>
+  539 |     </motion.div>
+> 540 |     </section>
+      |     ^
+  541 |   );
+  542 | }
+  543 |
+
+Parsing ecmascript source code failed
+
+Import trace:
+  Server Component:
+    ./components/upload-section.tsx
+    ./app/page.tsx @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:3318
+[ 1166248ms] [ERROR] ./components/upload-section.tsx:540:6
+Unterminated regexp literal
+  538 |       </div>
+  539 |     </motion.div>
+> 540 |     </section>
+      |      ^^^^^^^^^
+  541 |   );
+  542 | }
+  543 |
+
+Parsing ecmascript source code failed
+
+Import trace:
+  Server Component:
+    ./components/upload-section.tsx
+    ./app/page.tsx @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:3318
+[ 1166312ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[ 1180676ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[ 1180682ms] [ERROR] ./components/upload-section.tsx:540:5
+Expression expected
+  538 |       </div>
+  539 |     </motion.div>
+> 540 |     </section>
+      |     ^
+  541 |   );
+  542 | }
+  543 |
+
+Parsing ecmascript source code failed
+
+Import trace:
+  Server Component:
+    ./components/upload-section.tsx
+    ./app/page.tsx @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:3318
+[ 1180683ms] [ERROR] ./components/upload-section.tsx:540:6
+Unterminated regexp literal
+  538 |       </div>
+  539 |     </motion.div>
+> 540 |     </section>
+      |      ^^^^^^^^^
+  541 |   );
+  542 | }
+  543 |
+
+Parsing ecmascript source code failed
+
+Import trace:
+  Server Component:
+    ./components/upload-section.tsx
+    ./app/page.tsx @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:3318
+[ 1187250ms] [ERROR] ./components/upload-section.tsx:540:5
+Expression expected
+  538 |       </div>
+  539 |     </motion.div>
+> 540 |     </section>
+      |     ^
+  541 |   );
+  542 | }
+  543 |
+
+Parsing ecmascript source code failed
+
+Import trace:
+  Server Component:
+    ./components/upload-section.tsx
+    ./app/page.tsx @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:3318
+[ 1187250ms] [ERROR] ./components/upload-section.tsx:540:6
+Unterminated regexp literal
+  538 |       </div>
+  539 |     </motion.div>
+> 540 |     </section>
+      |      ^^^^^^^^^
+  541 |   );
+  542 | }
+  543 |
+
+Parsing ecmascript source code failed
+
+Import trace:
+  Server Component:
+    ./components/upload-section.tsx
+    ./app/page.tsx @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:3318
+[ 1187314ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[ 1187365ms] [ERROR] ./components/upload-section.tsx:540:5
+Expression expected
+  538 |       </div>
+  539 |     </motion.div>
+> 540 |     </section>
+      |     ^
+  541 |   );
+  542 | }
+  543 |
+
+Parsing ecmascript source code failed
+
+Import trace:
+  Server Component:
+    ./components/upload-section.tsx
+    ./app/page.tsx @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:3318
+[ 1187367ms] [ERROR] ./components/upload-section.tsx:540:6
+Unterminated regexp literal
+  538 |       </div>
+  539 |     </motion.div>
+> 540 |     </section>
+      |      ^^^^^^^^^
+  541 |   );
+  542 | }
+  543 |
+
+Parsing ecmascript source code failed
+
+Import trace:
+  Server Component:
+    ./components/upload-section.tsx
+    ./app/page.tsx @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:3318
+[ 1187425ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[ 1187478ms] [ERROR] ./components/upload-section.tsx:540:5
+Expression expected
+  538 |       </div>
+  539 |     </motion.div>
+> 540 |     </section>
+      |     ^
+  541 |   );
+  542 | }
+  543 |
+
+Parsing ecmascript source code failed
+
+Import trace:
+  Server Component:
+    ./components/upload-section.tsx
+    ./app/page.tsx @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:3318
+[ 1187478ms] [ERROR] ./components/upload-section.tsx:540:6
+Unterminated regexp literal
+  538 |       </div>
+  539 |     </motion.div>
+> 540 |     </section>
+      |      ^^^^^^^^^
+  541 |   );
+  542 | }
+  543 |
+
+Parsing ecmascript source code failed
+
+Import trace:
+  Server Component:
+    ./components/upload-section.tsx
+    ./app/page.tsx @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:3318
+[ 1187546ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[ 1187878ms] [ERROR] ./components/upload-section.tsx:540:5
+Expression expected
+  538 |       </div>
+  539 |     </motion.div>
+> 540 |     </section>
+      |     ^
+  541 |   );
+  542 | }
+  543 |
+
+Parsing ecmascript source code failed
+
+Import trace:
+  Server Component:
+    ./components/upload-section.tsx
+    ./app/page.tsx @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:3318
+[ 1187879ms] [ERROR] ./components/upload-section.tsx:540:6
+Unterminated regexp literal
+  538 |       </div>
+  539 |     </motion.div>
+> 540 |     </section>
+      |      ^^^^^^^^^
+  541 |   );
+  542 | }
+  543 |
+
+Parsing ecmascript source code failed
+
+Import trace:
+  Server Component:
+    ./components/upload-section.tsx
+    ./app/page.tsx @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:3318
+[ 1187901ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
+[ 1210813ms] [ERROR] ./components/upload-section.tsx:540:5
+Expression expected
+  538 |       </div>
+  539 |     </motion.div>
+> 540 |     </section>
+      |     ^
+  541 |   );
+  542 | }
+  543 |
+
+Parsing ecmascript source code failed
+
+Import trace:
+  Server Component:
+    ./components/upload-section.tsx
+    ./app/page.tsx @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:3318
+[ 1210814ms] [ERROR] ./components/upload-section.tsx:540:6
+Unterminated regexp literal
+  538 |       </div>
+  539 |     </motion.div>
+> 540 |     </section>
+      |      ^^^^^^^^^
+  541 |   );
+  542 | }
+  543 |
+
+Parsing ecmascript source code failed
+
+Import trace:
+  Server Component:
+    ./components/upload-section.tsx
+    ./app/page.tsx @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:3318
+[ 1210857ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477
