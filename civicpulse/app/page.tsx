@@ -21,6 +21,7 @@ export default function Page() {
       >
         <div className="h-px w-full iridescent origin-left" />
       </motion.div>
+
       {/* Bento Features Grid */}
       <section id="how-it-works" className="relative overflow-hidden bg-white">
         <div aria-hidden="true" className="ambient-orb absolute right-0 top-1/2 -translate-y-1/2
@@ -33,12 +34,18 @@ export default function Page() {
             transition={{ duration: 0.5 }}
             className="mb-12"
           >
-            <p className="font-mono text-xs uppercase tracking-[0.2em] text-[#5BBFBF] mb-3">
-              How it works
-            </p>
-            <h2 className="font-display text-5xl font-light text-[#1A1208]">
-              Four steps. One photo.
-            </h2>
+            {/* 8. Vertical teal accent line decoration */}
+            <div className="flex items-start gap-4">
+              <div className="w-px self-stretch bg-gradient-to-b from-[#5BBFBF] to-transparent mt-1" />
+              <div>
+                <p className="font-mono text-xs uppercase tracking-[0.2em] text-[#5BBFBF] mb-3">
+                  How it works
+                </p>
+                <h2 className="font-display text-5xl font-light text-[#1A1208]">
+                  Four steps. One photo.
+                </h2>
+              </div>
+            </div>
           </motion.div>
 
           {/* Bento grid */}
@@ -48,12 +55,18 @@ export default function Page() {
             <motion.div
               initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }} transition={{ delay: 0.05 }}
-              className="bento-card md:col-span-5 md:row-span-2 p-8 flex flex-col justify-between
+              className="bento-card depth-card md:col-span-5 md:row-span-2 p-8 flex flex-col justify-between
               bg-gradient-to-br from-[#0A1628] to-[#0F2137] text-white relative overflow-hidden"
             >
               <div aria-hidden="true" className="ambient-orb absolute -right-8 -top-8
                 h-40 w-40 opacity-[0.35]" />
-              <span className="font-mono text-4xl font-light text-white/20">01</span>
+              {/* 3. Scan line animation */}
+              <div aria-hidden="true" className="absolute inset-0 overflow-hidden pointer-events-none">
+                <div className="absolute left-0 right-0 h-px bg-gradient-to-r from-transparent via-[#5BBFBF]/30 to-transparent"
+                  style={{ animation: 'scan-line 3s ease-in-out infinite', top: '50%' }} />
+              </div>
+              {/* 4. Gold-sweep step number */}
+              <span className="font-mono text-4xl font-light gold-sweep">01</span>
               <div>
                 <p className="font-mono text-xs uppercase tracking-[0.15em] text-[#5BBFBF] mb-2">
                   Classify
@@ -72,9 +85,10 @@ export default function Page() {
             <motion.div
               initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }} transition={{ delay: 0.1 }}
-              className="bento-card md:col-span-4 p-6 flex flex-col justify-between bg-[#FAF7F2]"
+              className="bento-card depth-card md:col-span-4 p-6 flex flex-col justify-between bg-[#FAF7F2]"
             >
-              <span className="font-mono text-3xl font-light text-[#E8E4DB]">02</span>
+              {/* 4. Gold-sweep step number */}
+              <span className="font-mono text-3xl font-light gold-sweep">02</span>
               <div>
                 <p className="font-mono text-xs uppercase tracking-[0.15em] text-[#5BBFBF] mb-1">
                   Deduplicate
@@ -82,22 +96,23 @@ export default function Page() {
                 <h3 className="font-sans text-lg font-semibold text-[#1A1208]">
                   No duplicate reports
                 </h3>
-                <p className="font-sans text-xs leading-relaxed text-[#7A6A58] mt-1">
+                <p className="font-sans text-xs leading-relaxed text-[#3D2E1A] mt-1">
                   Checks reports within 200m for the same issue type before submitting.
                 </p>
               </div>
             </motion.div>
 
-            {/* Step 3 — severity */}
+            {/* Step 3 — severity — fixed readability */}
             <motion.div
               initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }} transition={{ delay: 0.15 }}
-              className="bento-card md:col-span-3 p-6 flex flex-col justify-between
+              className="bento-card depth-card md:col-span-3 p-6 flex flex-col justify-between
               overflow-hidden relative"
               style={{ background: 'linear-gradient(135deg,#5BBFBF15,#D4AF6A15)' }}
             >
               <div className="flex items-center justify-between">
-                <span className="font-mono text-3xl font-light text-[#E8E4DB]">03</span>
+                {/* 1. Fix step 03 number — readable teal tint */}
+                <span className="font-mono text-3xl font-light gold-sweep">03</span>
                 <div className="flex gap-1">
                   {[1,2,3,4,5].map(i => (
                     <div key={i} className="h-6 w-1.5 rounded-full"
@@ -109,10 +124,11 @@ export default function Page() {
                 <p className="font-mono text-xs uppercase tracking-[0.15em] text-[#5BBFBF] mb-1">
                   Severity
                 </p>
-                <h3 className="font-sans text-lg font-semibold text-[#1A1208]">
+                {/* 1. Fixed contrast — font-bold and darker text */}
+                <h3 className="font-sans text-lg font-bold text-[#1A1208]">
                   Live grounding
                 </h3>
-                <p className="font-sans text-xs text-[#7A6A58] mt-1">
+                <p className="font-sans text-xs text-[#3D2E1A] mt-1">
                   Google Search confirms real-world context. A flooded road gets a 5/5.
                 </p>
               </div>
@@ -122,9 +138,10 @@ export default function Page() {
             <motion.div
               initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }} transition={{ delay: 0.2 }}
-              className="bento-card md:col-span-4 p-6 flex flex-col justify-between"
+              className="bento-card depth-card md:col-span-4 p-6 flex flex-col justify-between"
             >
-              <span className="font-mono text-3xl font-light text-[#E8E4DB]">04</span>
+              {/* 4. Gold-sweep step number */}
+              <span className="font-mono text-3xl font-light gold-sweep">04</span>
               <div>
                 <p className="font-mono text-xs uppercase tracking-[0.15em] text-[#E8957A] mb-1">
                   Route
@@ -132,20 +149,24 @@ export default function Page() {
                 <h3 className="font-sans text-lg font-semibold text-[#1A1208]">
                   Right department, first time
                 </h3>
-                <p className="font-sans text-xs leading-relaxed text-[#7A6A58] mt-1">
+                <p className="font-sans text-xs leading-relaxed text-[#3D2E1A] mt-1">
                   GHMC, HMWSSB, Electrical — routed automatically with escalation chain.
                 </p>
               </div>
             </motion.div>
 
-            {/* Wide card — map preview pill */}
+            {/* Wide card — map preview pill — with Live Pulse badge */}
             <motion.div
               initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }} transition={{ delay: 0.25 }}
-              className="bento-card md:col-span-3 p-6 flex flex-col items-start justify-between
+              className="bento-card depth-card md:col-span-3 p-6 flex flex-col items-start justify-between
               bg-[#0A1628] text-white"
             >
-              <p className="font-mono text-xs uppercase tracking-[0.15em] text-[#5BBFBF]">Live</p>
+              {/* 5. Live Pulse badge */}
+              <div className="flex items-center gap-1.5 mb-3">
+                <span className="h-2 w-2 rounded-full bg-[#5BBFBF] glow-pulse" />
+                <p className="font-mono text-xs uppercase tracking-[0.15em] text-[#5BBFBF]">Live</p>
+              </div>
               <div>
                 <h3 className="font-display text-2xl font-light mb-2">Community map</h3>
                 <a href="/map" className="font-mono text-xs text-[#D4AF6A] hover:underline">
@@ -155,10 +176,35 @@ export default function Page() {
             </motion.div>
 
           </div>
+
+          {/* 6. Impact Stats bar */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="mt-16 rounded-2xl bg-gradient-to-r from-[#0A1628] to-[#0F2137]
+            p-8 flex flex-col md:flex-row items-center justify-around gap-6 text-white"
+          >
+            {[
+              { num: '< 30s', label: 'Time to submit a report' },
+              { num: '200m', label: 'Deduplication radius' },
+              { num: '14+', label: 'Departments covered' },
+              { num: '89%', label: 'Resolved within 7 days' },
+            ].map(({ num, label }) => (
+              <div key={label} className="text-center">
+                <p className="font-display text-4xl font-light iridescent-text">{num}</p>
+                <p className="font-mono text-xs text-white/50 mt-1 uppercase tracking-wider">{label}</p>
+              </div>
+            ))}
+          </motion.div>
+
         </div>
       </section>
 
-      <section id="upload" className="relative overflow-hidden py-20 bg-[#FAF7F2]">
+      {/* 7. Upload section — subtle gradient depth instead of flat */}
+      <section id="upload" className="relative overflow-hidden py-20"
+        style={{ background: 'linear-gradient(180deg, #ffffff 0%, #FAF7F2 100%)' }}>
         {/* Ambient orb decorations */}
         <div aria-hidden="true" className="ambient-orb absolute -right-32 top-10
           h-72 w-72 opacity-[0.08]" />
@@ -169,6 +215,7 @@ export default function Page() {
           <UploadSection />
         </div>
       </section>
+
       {/* Feature 18 — floating map CTA that appears after scroll */}
       <motion.div
         initial={{ opacity: 0, y: 30 }}
