@@ -10,6 +10,7 @@ interface StatCounterProps {
   duration?: number;
   /** If true, will read live reportCount from context instead of static value */
   liveReportCount?: boolean;
+  darkMode?: boolean;
 }
 
 export default function StatCounter({
@@ -18,6 +19,7 @@ export default function StatCounter({
   label,
   duration = 1800,
   liveReportCount = false,
+  darkMode = false,
 }: StatCounterProps) {
   const ref = useRef<HTMLDivElement>(null);
   const inView = useInView(ref, { once: true });
@@ -73,12 +75,12 @@ export default function StatCounter({
       <motion.div
         animate={flash ? { scale: [1, 1.2, 1] } : { scale: 1 }}
         transition={{ duration: 0.3 }}
-        className="font-display text-4xl font-light tracking-tight text-[#1A1208]"
+        className={`font-display text-4xl font-light tracking-tight ${darkMode ? 'text-white' : 'text-[#1A1208]'}`}
       >
         {displayedValue}
         {suffix}
       </motion.div>
-      <div className="font-mono text-xs uppercase tracking-[0.15em] text-[#7A6A58] mt-1">
+      <div className={`font-mono text-xs uppercase tracking-[0.15em] mt-1 ${darkMode ? 'text-white/50' : 'text-[#7A6A58]'}`}>
         {label}
       </div>
     </div>

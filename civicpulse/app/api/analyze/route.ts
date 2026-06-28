@@ -1,16 +1,16 @@
 import { GoogleGenAI } from "@google/genai";
 import { NextRequest, NextResponse } from "next/server";
 
-  let _ai: GoogleGenAI | null = null;
-  function getAi(): GoogleGenAI {
-    if (!_ai) {
-      if (!process.env.GEMINI_API_KEY) {
-        throw new Error("GEMINI_API_KEY is not set");
-      }
-      _ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
+let _ai: GoogleGenAI | null = null;
+function getAi(): GoogleGenAI {
+  if (!_ai) {
+    if (!process.env.GEMINI_API_KEY) {
+      throw new Error("GEMINI_API_KEY is not set");
     }
-    return _ai;
+    _ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
   }
+  return _ai;
+}
 const MODEL = "gemini-2.5-flash";
 const FALLBACK_MODELS = [
   "gemini-2.5-flash-lite",

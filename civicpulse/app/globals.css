@@ -132,6 +132,64 @@
     0% { transform: translateX(-100%); }
     55%, 100% { transform: translateX(120%); }
   }
+
+  /* Glassmorphism card */
+  .glass-card {
+    background: rgba(255, 255, 255, 0.65);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    box-shadow: 0 4px 32px rgba(26, 18, 8, 0.08), inset 0 1px 0 rgba(255,255,255,0.6);
+  }
+
+  /* Dark glassmorphism (for dark backgrounds) */
+  .glass-card-dark {
+    background: rgba(26, 18, 8, 0.55);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.10);
+    box-shadow: 0 4px 32px rgba(0, 0, 0, 0.3);
+  }
+
+  /* Ambient orb — reusable background decoration */
+  .ambient-orb {
+    position: absolute;
+    border-radius: 9999px;
+    pointer-events: none;
+    background: linear-gradient(135deg, #5BBFBF 0%, #D4AF6A 50%, #E8957A 100%);
+    filter: blur(80px);
+  }
+
+  /* Bento grid card base */
+  .bento-card {
+    border-radius: 20px;
+    border: 1px solid #E8E4DB;
+    background: #ffffff;
+    overflow: hidden;
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+  }
+  .bento-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 40px rgba(26, 18, 8, 0.12);
+  }
+
+  /* Gradient text — stronger version */
+  .gradient-text {
+    background: linear-gradient(135deg, #5BBFBF 0%, #C9A84C 40%, #E8957A 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    -webkit-text-fill-color: transparent;
+  }
+
+  /* Floating badge */
+  .float-badge {
+    animation: float-y 3s ease-in-out infinite;
+  }
+  @keyframes float-y {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-6px); }
+  }
 }
 
 .civic-popup .leaflet-popup-content-wrapper {
@@ -166,10 +224,10 @@
 }
 .hero-grain::before {
   content: "";
-  position: fixed;
+  position: absolute;
   inset: 0;
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='1'/%3E%3C/svg%3E");
-  opacity: 0.03;
+  opacity: 0.04;
   pointer-events: none;
   z-index: 0;
 }

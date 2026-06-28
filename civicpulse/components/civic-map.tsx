@@ -15,6 +15,8 @@ const severityColor: Record<string, string> = {
   high: '#E8957A',
 }
 
+let _L: typeof import('leaflet') | null = null
+
 // Feature 7 — Lifecycle timeline HTML builder
 function buildTimelineHtml(status: string): string {
   const stages = ['Reported', 'Acknowledged', 'In Progress', 'Resolved']
@@ -56,8 +58,14 @@ export function CivicMap({ reports, selectedId, onMarkerClick }: CivicMapProps) 
   useEffect(() => {
     if (!containerRef.current) return
 
-    import('leaflet').then((L) => {
+    import('leaflet').then(async (LeafletModule) => {
       if (mapRef.current) return
+      _L = LeafletModule
+      // @ts-ignore - TS complains about missing type definitions for these plugins
+      await import('leaflet.markercluster')
+      // @ts-ignore
+      await import('leaflet.heat')
+      const L = _L
 
       const map = L.map(containerRef.current!).setView([17.4474, 78.3762], 12)
       mapRef.current = map
@@ -127,56 +135,58 @@ export function CivicMap({ reports, selectedId, onMarkerClick }: CivicMapProps) 
 
   // Feature 11 — Toggle heatmap
   useEffect(() => {
-    if (!mapRef.current) return
-    import('leaflet').then(() => {
-      // eslint-disable-next-line @typescript-eslint/no-require-imports
-      require('leaflet.heat')
-      const L = (window as any).L ?? require('leaflet')
-      if (!mapRef.current) return
-      if (heatLayerRef.current) {
-        heatLayerRef.current.remove()
-        heatLayerRef.current = null
-      }
-      if (showHeat && reports.length > 0) {
-        const severityNum: Record<string, number> = { low: 1, medium: 3, high: 5 }
-        const heatData = reports.map((r) => [r.lat, r.lon, (severityNum[r.severity] ?? 3) / 5])
-        heatLayerRef.current = (L as any).heatLayer(heatData, {
-          radius: 35,
-          blur: 25,
-          maxZoom: 15,
-          gradient: { 0.4: '#5BBFBF', 0.65: '#D4AF37', 1.0: '#E8957A' },
-        })
-        heatLayerRef.current.addTo(mapRef.current!)
-      }
-    })
+    const L = _L
+    if (!L || !mapRef.current) return
+    if (heatLayerRef.current) {
+      heatLayerRef.current.remove()
+      heatLayerRef.current = null
+    }
+    if (showHeat && reports.length > 0) {
+      const severityNum: Record<string, number> = { low: 1, medium: 3, high: 5 }
+      const heatData = reports.map((r) => [
+        r.lat, r.lon,
+        Math.min(1, (severityNum[r.severity] ?? 3) / 5 + 0.3)
+      ])
+      heatLayerRef.current = (L as any).heatLayer(heatData, {
+        radius: 45,
+        blur: 20,
+        maxZoom: 17,
+        minOpacity: 0.5,
+        gradient: { 0.0: '#5BBFBF', 0.5: '#D4AF37', 1.0: '#E8957A' },
+      })
+      heatLayerRef.current.addTo(mapRef.current!)
+    }
   }, [showHeat, reports]) // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     function buildMarkers() {
-      import('leaflet').then((L) => {
-        if (!mapRef.current) return
+      const L = _L
+      if (!L || !mapRef.current) return
 
-        // Feature 8 — Remove previous cluster layer
-        if (clusterRef.current) {
-          clusterRef.current.remove()
-          clusterRef.current = null
-        }
-        markersRef.current = {}
+      // Feature 8 — Remove previous cluster layer
+      if (clusterRef.current) {
+        clusterRef.current.remove()
+        clusterRef.current = null
+      }
+      markersRef.current = {}
 
-        // Feature 8 — Load markercluster dynamically
-        // eslint-disable-next-line @typescript-eslint/no-require-imports
-        require('leaflet.markercluster')
-
-        const cluster = (L as any).markerClusterGroup({
-          maxClusterRadius: 60,
-          iconCreateFunction: (c: any) =>
-            (L as any).divIcon({
-              html: `<div style="background:#5BBFBF;color:white;border-radius:50%;width:36px;height:36px;display:flex;align-items:center;justify-content:center;font-family:monospace;font-size:13px;font-weight:600;border:2px solid white;box-shadow:0 2px 8px rgba(0,0,0,0.2)">${c.getChildCount()}</div>`,
-              className: '',
-              iconSize: [36, 36],
-            }),
-        })
-        clusterRef.current = cluster
+      const cluster = (L as any).markerClusterGroup({
+        maxClusterRadius: 60,
+        iconCreateFunction: (c: any) =>
+          (L as any).divIcon({
+            html: `<div style="background:${
+              c.getChildCount() >= 5 ? '#E8957A' : c.getChildCount() >= 3 ? '#D4AF37' : '#5BBFBF'
+            };color:white;border-radius:50%;width:40px;height:40px;
+            display:flex;align-items:center;justify-content:center;
+            font-family:monospace;font-size:14px;font-weight:700;
+            border:3px solid white;box-shadow:0 2px 12px rgba(0,0,0,0.25)">
+              ${c.getChildCount()}
+            </div>`,
+            className: '',
+            iconSize: [40, 40],
+          }),
+      })
+      clusterRef.current = cluster
 
         const isNewBatch = reports.length > prevLengthRef.current
         const newestId = isNewBatch ? reports[reports.length - 1]?.id : null
@@ -187,12 +197,13 @@ export function CivicMap({ reports, selectedId, onMarkerClick }: CivicMapProps) 
           const isNewest = r.id === newestId
 
           const marker = (L as any).circleMarker([r.lat, r.lon], {
-            radius: isSelected ? 14 : 10,
+            radius: isSelected ? 20 : 16,
             fillColor: severityColor[r.severity],
             color: isSelected ? '#1A1208' : '#fff',
             weight: isSelected ? 3 : 2,
             opacity: 1,
-            fillOpacity: 0.9,
+            fillOpacity: 0.95,
+            pane: 'markerPane',
           })
             .bindPopup(
               `<div style="font-family:'DM Sans',sans-serif;min-width:190px;padding:4px 2px">
@@ -255,7 +266,6 @@ export function CivicMap({ reports, selectedId, onMarkerClick }: CivicMapProps) 
             setTimeout(() => markersRef.current[selectedId]?.openPopup(), 150)
           }
         }
-      })
     }
 
     if (mapRef.current) {

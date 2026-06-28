@@ -1,64 +1,88 @@
 "use client"
-
 import { MapIcon } from "lucide-react"
 import { motion } from "framer-motion"
 import StatCounter from "@/components/StatCounter"
 
 export function Hero() {
   return (
-    <section className="relative overflow-hidden hero-grain">
-      {/* Iridescent orb decoration */}
-      <div
-        aria-hidden="true"
-        className="iridescent pointer-events-none absolute -right-24 -top-24 h-[28rem] w-[28rem] rounded-full opacity-[0.07] blur-3xl"
+    <section className="relative overflow-hidden bg-[#0D0B08] hero-grain">
+      {/* Ambient orb — top right */}
+      <div aria-hidden="true" className="ambient-orb absolute -right-40 -top-40
+        h-[42rem] w-[42rem] opacity-[0.22]" />
+      {/* Ambient orb — bottom left */}
+      <div aria-hidden="true" className="ambient-orb absolute -left-32 bottom-0
+        h-[32rem] w-[32rem] opacity-[0.12]"
+        style={{ background: 'linear-gradient(135deg,#E8957A,#D4AF6A)' }}
       />
 
-      <div className="mx-auto max-w-6xl px-5 pb-20 pt-20 md:pb-28 md:pt-28">
+      <div className="relative mx-auto max-w-6xl px-5 pb-24 pt-24 md:pb-32 md:pt-32">
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, ease: "easeOut" }}
-          className="max-w-3xl"
+          transition={{ duration: 0.7, ease: "easeOut" }}
+          className="max-w-4xl"
         >
-          <p className="font-mono text-xs uppercase tracking-[0.2em] text-[#5BBFBF]">
-            Powered by Google AI Studio
-          </p>
+          {/* Eyebrow */}
+          <motion.div
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.1 }}
+            className="mb-6 inline-flex items-center gap-2 rounded-full border
+            border-white/10 bg-white/5 px-4 py-1.5 backdrop-blur-sm"
+          >
+            <span className="h-1.5 w-1.5 rounded-full bg-[#5BBFBF] animate-pulse" />
+            <span className="font-mono text-xs uppercase tracking-[0.2em] text-[#5BBFBF]">
+              Powered by Google AI Studio
+            </span>
+          </motion.div>
 
-          <h1 className="mt-6 font-display text-5xl font-light leading-[1.05] tracking-tight text-balance text-[#1A1208] md:text-[64px]">
-            Report it. Watch it <span className="italic">act</span>.
+          {/* Headline */}
+          <h1 className="font-display text-6xl md:text-[80px] lg:text-[96px] font-light
+            leading-[0.95] tracking-tight text-white text-balance">
+            Report it.{" "}
+            <span className="gradient-text italic">Watch it act.</span>
           </h1>
 
-          <p className="mt-6 max-w-xl font-sans text-lg leading-relaxed text-[#7A6A58]">
-            Every day, broken streetlights, overflowing drains, and crumbling
-            roads go unresolved because reports vanish into the wrong inbox.
-            CivicPulse turns a single photo into a routed, actionable case.
+          <p className="mt-8 max-w-xl font-sans text-lg leading-relaxed text-white/60">
+            Every day, broken streetlights, overflowing drains, and crumbling roads go
+            unresolved because reports vanish into the wrong inbox. CivicPulse turns a
+            single photo into a routed, actionable case — in under 30 seconds.
           </p>
 
-          <div className="mt-9 flex flex-wrap items-center gap-3">
-            <a
-              href="#upload"
-              className="shimmer-btn rounded-full px-7 py-3 font-sans text-sm font-medium shadow-sm"
-            >
+          <div className="mt-10 flex flex-wrap items-center gap-4">
+            <a href="#upload"
+              className="shimmer-btn rounded-full px-8 py-3.5 font-sans text-sm font-semibold shadow-lg">
               Report an Issue
             </a>
-            <a
-              href="/map"
-              className="inline-flex items-center gap-2 rounded-full border border-[#1A1208] bg-transparent px-7 py-3 font-sans text-sm font-medium text-[#1A1208] transition-colors hover:bg-[#1A1208] hover:text-[#FAF7F2]"
-            >
+            <a href="/map"
+              className="inline-flex items-center gap-2 rounded-full border border-white/20
+              bg-white/5 px-8 py-3.5 font-sans text-sm font-medium text-white
+              backdrop-blur-sm transition-all hover:bg-white/10">
               <MapIcon className="h-4 w-4" aria-hidden="true" />
               View the Map
             </a>
           </div>
-          <motion.div
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.4, ease: "easeOut" }}
-            className="mt-14 flex gap-10 flex-wrap"
-          >
-            <StatCounter value={1240} suffix="+" label="Issues Reported" duration={1600} liveReportCount={true} />
-            <StatCounter value={89} suffix="%" label="Resolved in 7 Days" duration={1800} />
-            <StatCounter value={14} suffix="+" label="Departments Linked" duration={1400} />
-          </motion.div>
+        </motion.div>
+
+        {/* Stats row */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.5 }}
+          className="mt-20 flex flex-wrap gap-12"
+        >
+          <div className="glass-card-dark rounded-2xl px-6 py-4">
+            <StatCounter value={1240} suffix="+" label="Issues Reported"
+              duration={1600} liveReportCount={true} darkMode={true} />
+          </div>
+          <div className="glass-card-dark rounded-2xl px-6 py-4">
+            <StatCounter value={89} suffix="%" label="Resolved in 7 Days"
+              duration={1800} darkMode={true} />
+          </div>
+          <div className="glass-card-dark rounded-2xl px-6 py-4">
+            <StatCounter value={14} suffix="+" label="Departments Linked"
+              duration={1400} darkMode={true} />
+          </div>
         </motion.div>
       </div>
     </section>

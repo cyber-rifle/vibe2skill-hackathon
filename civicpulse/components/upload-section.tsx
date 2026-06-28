@@ -80,6 +80,11 @@ export function UploadSection() {
   const [activeLat, setActiveLat] = useState(DEFAULT_LAT)
   const [activeLon, setActiveLon] = useState(DEFAULT_LON)
   const [locationConfirmed, setLocationConfirmed] = useState(false)
+  const [nominatimResults, setNominatimResults] = useState<
+    { display_name: string; lat: string; lon: string; }[]
+  >([])
+  const [isSearchingLocation, setIsSearchingLocation] = useState(false)
+  const nominatimDebounceRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   // Feature 1 — GPS
   const [isGettingLocation, setIsGettingLocation] = useState(false)
@@ -88,6 +93,7 @@ export function UploadSection() {
   // Feature 12 — Voice Input
   const [isListening, setIsListening] = useState(false)
   const [voiceNote, setVoiceNote] = useState("")
+  const [showVoiceTextFallback, setShowVoiceTextFallback] = useState(false)
 
   // Feature 15 — Share card state
   const [confirmedReport, setConfirmedReport] = useState<{
@@ -157,9 +163,20 @@ export function UploadSection() {
 
   // Feature 12 — Voice Input Handler
   const handleVoiceInput = () => {
-    const SR = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition
+    // Feature 13 — Voice input requires HTTPS - gracefully degrade on HTTP
+    const isSecure = window.location.protocol === 'https:' ||
+      window.location.hostname === 'localhost'
+    const SR = (window as any).SpeechRecognition ||
+      (window as any).webkitSpeechRecognition
+
     if (!SR) {
-      addToast("Voice input not supported in this browser", "error")
+      addToast("Voice input not supported in this browser - use Chrome", "error")
+      return
+    }
+    if (!isSecure) {
+      // On HTTP, show the voice note textarea instead
+      setShowVoiceTextFallback(true)
+      addToast("Voice input needs HTTPS - type your description below", "info")
       return
     }
     const recognition = new SR()
@@ -170,10 +187,16 @@ export function UploadSection() {
     recognition.onresult = (e: any) => {
       setVoiceNote(e.results[0][0].transcript)
       setIsListening(false)
+      addToast("Voice note captured!", "success")
     }
-    recognition.onerror = () => {
+    recognition.onerror = (e: any) => {
       setIsListening(false)
-      addToast("Voice input failed — try again", "error")
+      if (e.error === 'not-allowed') {
+        setShowVoiceTextFallback(true)
+        addToast("Mic access denied - type your description below", "error")
+      } else {
+        addToast("Voice input failed - try again", "error")
+      }
     }
     recognition.start()
   }
@@ -399,6 +422,8 @@ export function UploadSection() {
     setShowSuggestions(false)
     setVoiceNote("")
     setConfirmedReport(null)
+    setNominatimResults([])
+    if (nominatimDebounceRef.current) clearTimeout(nominatimDebounceRef.current)
     // Feature 2 — Toast on discard
     addToast("Report discarded", "info")
   }
@@ -417,14 +442,13 @@ export function UploadSection() {
         transition={{ duration: 0.5, delay: 0.3, ease: "easeOut" }}
       >
         {/* Feature 10 — card-hover on upload card */}
-        <div className="iridescent-border rounded-2xl p-[2px] card-hover">
-          <div className="rounded-2xl bg-white p-6 md:p-8">
+        <div className="glass-card rounded-2xl p-6 md:p-8 card-hover relative">
             <h2 className="mt-3 font-display text-3xl font-light text-ink">Show us what needs fixing</h2>
 
             <label
               htmlFor="file-upload"
               onClick={() => inputRef.current?.click()}
-              className="mt-6 flex flex-col items-center justify-center rounded-xl border-2 border-dashed border-teal/50 bg-ivory-deep/40 px-6 py-12 text-center transition-colors hover:border-teal cursor-pointer"
+              className={`mt-6 flex flex-col items-center justify-center rounded-xl border-2 border-dashed border-teal/50 bg-ivory-deep/40 px-6 py-12 text-center transition-all hover:border-[#5BBFBF] cursor-pointer ${selectedFile ? 'iridescent-border' : ''}`}
               onDragOver={(e) => { e.preventDefault(); e.stopPropagation(); }}
               onDrop={(e) => {
                 e.preventDefault();
@@ -529,6 +553,17 @@ export function UploadSection() {
                   &ldquo;{voiceNote}&rdquo;
                 </p>
               )}
+              {showVoiceTextFallback && (
+                <textarea
+                  value={voiceNote}
+                  onChange={(e) => setVoiceNote(e.target.value)}
+                  placeholder="Describe the issue in your own words..."
+                  rows={2}
+                  className="w-full rounded-lg border border-[#E6DDCF] bg-white px-3 py-2
+                  font-mono text-sm text-[#1A1208] placeholder-[#7A6A58] focus:border-[#5BBFBF]
+                  focus:outline-none focus:ring-1 focus:ring-[#5BBFBF] resize-none"
+                />
+              )}
             </div>
 
             {/* Feature 1 — GPS Location Input */}
@@ -554,13 +589,43 @@ export function UploadSection() {
                     type="text"
                     value={locationInput}
                     onChange={(e) => {
-                      setLocationInput(e.target.value)
-                      setShowSuggestions(true)
+                      const val = e.target.value
+                      setLocationInput(val)
                       setLocationConfirmed(false)
                       setActiveLat(DEFAULT_LAT)
                       setActiveLon(DEFAULT_LON)
+                      setNominatimResults([])
+                  
+                      if (nominatimDebounceRef.current) clearTimeout(nominatimDebounceRef.current)
+                  
+                      // First show instant local matches from NEIGHBORHOODS
+                      setShowSuggestions(val.length >= 2)
+                  
+                      // Then after 400ms debounce, also fetch Nominatim results
+                      if (val.length >= 3) {
+                        nominatimDebounceRef.current = setTimeout(async () => {
+                          setIsSearchingLocation(true)
+                          try {
+                            const res = await fetch(
+                              `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(val + ', Hyderabad, India')}&format=json&limit=5&countrycodes=in`,
+                              { headers: { 'Accept-Language': 'en' } }
+                            )
+                            const data = await res.json()
+                            setNominatimResults(Array.isArray(data) ? data : [])
+                          } catch {
+                            // Nominatim failed, local results still show
+                          } finally {
+                            setIsSearchingLocation(false)
+                          }
+                        }, 400)
+                      }
                     }}
-                    onBlur={() => setTimeout(() => setShowSuggestions(false), 150)}
+                    onBlur={() => {
+                      setTimeout(() => {
+                        setShowSuggestions(false)
+                        setNominatimResults([])
+                      }, 150)
+                    }}
                     onFocus={() => locationInput.length >= 2 && setShowSuggestions(true)}
                     placeholder="Enter area in Hyderabad..."
                     className="w-full rounded-lg border border-[#E6DDCF] bg-white px-4 py-2 font-mono text-sm text-[#1A1208] placeholder-[#5A6A58] focus:border-[#5BBFBF] focus:outline-none focus:ring-1 focus:ring-[#5BBFBF]"
@@ -570,30 +635,62 @@ export function UploadSection() {
                       📍 {locationInput}
                     </p>
                   )}
-                  {showSuggestions && locationInput.length >= 2 && (
-                    <ul className="absolute z-50 mt-1 w-full rounded-lg border border-[#E6DDCF] bg-white shadow-md max-h-48 overflow-y-auto">
-                      {Object.keys(NEIGHBORHOODS)
-                        .filter((name) =>
-                          name.toLowerCase().includes(locationInput.toLowerCase())
-                        )
-                        .slice(0, 5)
-                        .map((name) => (
+                  {showSuggestions && locationInput.length >= 2 && (() => {
+                    const localMatches = Object.entries(NEIGHBORHOODS)
+                      .filter(([name]) => name.toLowerCase().includes(locationInput.toLowerCase()))
+                      .slice(0, 3)
+                      .map(([name, coords]) => ({
+                        label: name,
+                        sublabel: 'Hyderabad neighborhood',
+                        onSelect: () => {
+                          setLocationInput(name)
+                          setActiveLat(coords.lat)
+                          setActiveLon(coords.lon)
+                          setLocationConfirmed(true)
+                          setShowSuggestions(false)
+                          setNominatimResults([])
+                        }
+                      }))
+                  
+                    const nominatimMatches = nominatimResults
+                      .slice(0, 4)
+                      .map((r) => ({
+                        label: r.display_name.split(',').slice(0, 2).join(',').trim(),
+                        sublabel: r.display_name.split(',').slice(2, 4).join(',').trim() || 'Hyderabad',
+                        onSelect: () => {
+                          setLocationInput(r.display_name.split(',')[0].trim())
+                          setActiveLat(parseFloat(r.lat))
+                          setActiveLon(parseFloat(r.lon))
+                          setLocationConfirmed(true)
+                          setShowSuggestions(false)
+                          setNominatimResults([])
+                        }
+                      }))
+                  
+                    const allSuggestions = [...localMatches, ...nominatimMatches]
+                    if (allSuggestions.length === 0 && !isSearchingLocation) return null
+                  
+                    return (
+                      <ul className="absolute z-50 mt-1 w-full rounded-xl border border-[#E6DDCF] bg-white shadow-lg max-h-56 overflow-y-auto divide-y divide-[#F0EBE3]">
+                        {isSearchingLocation && allSuggestions.length === 0 && (
+                          <li className="px-4 py-3 text-xs font-mono text-[#7A6A58] flex items-center gap-2">
+                            <span className="inline-block w-3 h-3 border border-[#5BBFBF] border-t-transparent rounded-full animate-spin" />
+                            Searching...
+                          </li>
+                        )}
+                        {allSuggestions.map((s, i) => (
                           <li
-                            key={name}
-                            onMouseDown={() => {
-                              setLocationInput(name)
-                              setActiveLat(NEIGHBORHOODS[name].lat)
-                              setActiveLon(NEIGHBORHOODS[name].lon)
-                              setLocationConfirmed(true)
-                              setShowSuggestions(false)
-                            }}
-                            className="cursor-pointer px-4 py-2 font-mono text-sm text-[#1A1208] hover:bg-[#F0EBE3]"
+                            key={i}
+                            onMouseDown={s.onSelect}
+                            className="cursor-pointer px-4 py-2.5 hover:bg-[#FAF7F2] transition-colors"
                           >
-                            {name}
+                            <p className="font-mono text-sm text-[#1A1208] truncate">📍 {s.label}</p>
+                            <p className="font-mono text-xs text-[#7A6A58] truncate mt-0.5">{s.sublabel}</p>
                           </li>
                         ))}
-                    </ul>
-                  )}
+                      </ul>
+                    )
+                  })()}
                 </div>
               </div>
             </div>
@@ -613,7 +710,6 @@ export function UploadSection() {
                 <p className="font-sans text-sm text-red-700">{analysisError}</p>
               </div>
             )}
-          </div>
         </div>
       </motion.div>
 

@@ -30,7 +30,7 @@ const STATUS_LABELS: Record<string, string> = {
 const STATUS_COLORS: Record<string, string> = {
   reported: "#C9A84C",
   acknowledged: "#5BBFBF",
-  verified: "#5BBFBF",
+  verified: "#7BCFCF",
   in_progress: "#D4AF37",
   resolved: "#22c55e",
 }

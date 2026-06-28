@@ -5,8 +5,8 @@ const NAV_LINKS = [
   { label: "How it works", href: "#upload" },
   { label: "The Map", href: "/map" },
   { label: "Dashboard", href: "/dashboard" },
-  { label: "For Cities", href: "#" },
-  { label: "About", href: "#" },
+  { label: "For Cities", href: "/for-cities" },
+  { label: "About", href: "/about" },
 ];
 
 export function Navbar() {
