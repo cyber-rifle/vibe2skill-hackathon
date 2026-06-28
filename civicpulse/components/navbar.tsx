@@ -11,32 +11,42 @@ const NAV_LINKS = [
 
 export function Navbar() {
   const [open, setOpen] = useState(false);
-  const [scrolled, setScrolled] = useState(false)
+  const [scrolled, setScrolled] = useState(false);
+  const [onDark, setOnDark] = useState(true);
+
   useEffect(() => {
-    const handler = () => setScrolled(window.scrollY > 50)
-    window.addEventListener('scroll', handler, { passive: true })
-    return () => window.removeEventListener('scroll', handler)
-  }, [])
+    const handler = () => {
+      setScrolled(window.scrollY > 50);
+      const hero = document.querySelector('section');
+      const heroHeight = hero?.offsetHeight ?? 600;
+      setOnDark(window.scrollY < heroHeight);
+    };
+    window.addEventListener('scroll', handler, { passive: true });
+    handler(); // initial check
+    return () => window.removeEventListener('scroll', handler);
+  }, []);
 
   return (
     <header className="sticky top-0 z-50 w-full">
-      <nav className={`backdrop-blur-md border-b transition-all duration-300
+      <nav className={`transition-all duration-300
         mx-auto flex h-16 max-w-6xl items-center justify-between px-5
-        ${scrolled
-          ? 'bg-background/90 border-border/50'
-          : 'bg-transparent border-transparent'
+        ${(!scrolled && onDark)
+          ? 'bg-transparent border-transparent'
+          : 'bg-white/80 backdrop-blur-xl border-b border-[#E8E4DB]/60 shadow-sm'
         }`}>
         <a href="/" className="iridescent-text font-display text-2xl font-medium tracking-tight">
           CivicPulse
         </a>
 
-        {/* Desktop nav — unchanged */}
+        {/* Desktop nav — unchanged items but dynamic text color */}
         <ul className="hidden items-center gap-8 md:flex">
           {NAV_LINKS.map((link) => (
             <li key={link.label}>
               <a
                 href={link.href}
-                className="font-sans text-sm text-[#7A6A58] transition-colors hover:text-[#1A1208]"
+                className={`font-sans text-sm transition-colors ${
+                  onDark ? 'text-white/70 hover:text-white' : 'text-[#7A6A58] hover:text-[#1A1208]'
+                }`}
               >
                 {link.label}
               </a>
@@ -58,16 +68,16 @@ export function Navbar() {
             onClick={() => setOpen(!open)}
             aria-label="Toggle menu"
           >
-            <span className={`block h-0.5 w-5 bg-[#1A1208] transition-all duration-200 ${open ? "rotate-45 translate-y-2" : ""}`} />
-            <span className={`block h-0.5 w-5 bg-[#1A1208] transition-all duration-200 ${open ? "opacity-0" : ""}`} />
-            <span className={`block h-0.5 w-5 bg-[#1A1208] transition-all duration-200 ${open ? "-rotate-45 -translate-y-2" : ""}`} />
+            <span className={`block h-0.5 w-5 transition-all duration-200 ${onDark ? 'bg-white/80' : 'bg-[#1A1208]'} ${open ? "rotate-45 translate-y-2" : ""}`} />
+            <span className={`block h-0.5 w-5 transition-all duration-200 ${onDark ? 'bg-white/80' : 'bg-[#1A1208]'} ${open ? "opacity-0" : ""}`} />
+            <span className={`block h-0.5 w-5 transition-all duration-200 ${onDark ? 'bg-white/80' : 'bg-[#1A1208]'} ${open ? "-rotate-45 -translate-y-2" : ""}`} />
           </button>
         </div>
       </nav>
 
       {/* Mobile dropdown */}
       {open && (
-        <div className="md:hidden bg-background/95 backdrop-blur-md border-b border-border/50 px-5 py-4 space-y-4">
+        <div className="md:hidden bg-white/95 backdrop-blur-xl border-b border-[#E8E4DB] px-5 py-4 space-y-4">
           {NAV_LINKS.map((link) => (
             <a
               key={link.label}
