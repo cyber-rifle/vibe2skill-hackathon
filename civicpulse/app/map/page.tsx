@@ -187,7 +187,7 @@ export default function MapPage() {
 
         {/* Mobile Full-Screen Report Modal (Option B) */}
         {selectedId && (
-          <div className="md:hidden fixed inset-0 z-[100] bg-[#FAF7F2] flex flex-col overflow-hidden animate-in slide-in-from-bottom-8 fade-in duration-300">
+          <div className="md:hidden fixed inset-0 z-[2000] bg-[#FAF7F2] flex flex-col overflow-hidden animate-in slide-in-from-bottom-8 fade-in duration-300">
             <div className="bg-white px-4 py-3 border-b border-[#E8E4DB] flex items-center justify-between shadow-sm-warm flex-shrink-0">
               <h2 className="font-display text-lg text-[#1A1208]">Report Details</h2>
               <button 
