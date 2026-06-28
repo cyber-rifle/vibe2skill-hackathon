@@ -269,13 +269,57 @@ const ReportCard = (result: unknown) => {
   const department = (result as any)?.report?.department ?? (result as any)?.department ?? "Unknown Department";
   const reportText = (result as any)?.report?.reportText ?? (result as any)?.reportText ?? "";
 
+  const escalation = (result as any)?.report?.escalationPath ?? (result as any)?.escalationPath ?? null;
+  const severity = (result as any)?.report?.severity ?? (result as any)?.severity ?? 3;
+  const chainColor = severity >= 4 ? '#E8957A' : '#5BBFBF';
+
+  // Build escalation chain from department name
+  const ESCALATION_MAP: Record<string, string[]> = {
+    'GHMC Roads Department': ['Citizen Report', 'Roads Dept', 'GHMC', ...(severity >= 4 ? ['Commissioner'] : [])],
+    'HMWSSB': ['Citizen Report', 'HMWSSB', 'Board', ...(severity >= 4 ? ['MD HMWSSB'] : [])],
+    'Electrical/Streetlighting': ['Citizen Report', 'Electrical Dept', 'GHMC', ...(severity >= 4 ? ['Commissioner'] : [])],
+    'GHMC Sanitation': ['Citizen Report', 'Sanitation', 'Zonal Commissioner', ...(severity >= 4 ? ['Commissioner'] : [])],
+  };
+  const chain = ESCALATION_MAP[department] ?? ['Citizen Report', department, 'Municipal Corporation'];
+
   return (
     <div className="space-y-2 mt-2">
       <div className="inline-flex items-center gap-2 bg-[#1A1208]/10 px-3 py-1.5 rounded-full">
         <span className="inline-block h-2 w-2 rounded-full bg-[#5BBFBF]" />
         <span className="text-sm font-semibold text-[#1A1208]">{department}</span>
       </div>
-      <p className="text-sm text-[#1A1208]/70 leading-relaxed line-clamp-2">{reportText}</p>
+      
+      <div className="mt-3 flex flex-wrap items-center gap-1.5">
+        {chain.map((node, i) => (
+          <div key={i} className="flex items-center gap-1.5">
+            <motion.span
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 0.3 + i * 0.1 }}
+              className="font-mono text-[10px] px-2.5 py-1 rounded-full border"
+              style={{
+                borderColor: i === chain.length - 1 ? chainColor : 'rgba(26,18,8,0.15)',
+                color: i === chain.length - 1 ? chainColor : '#7A6A58',
+                background: i === chain.length - 1 ? `${chainColor}15` : 'transparent',
+                fontWeight: i === chain.length - 1 ? '700' : '400',
+              }}
+            >
+              {node}
+            </motion.span>
+            {i < chain.length - 1 && (
+              <motion.span
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.35 + i * 0.1 }}
+                className="font-mono text-[10px]"
+                style={{ color: chainColor }}
+              >→</motion.span>
+            )}
+          </div>
+        ))}
+      </div>
+
+      <p className="text-sm text-[#1A1208]/70 leading-relaxed line-clamp-2 mt-2">{reportText}</p>
     </div>
   );
 };

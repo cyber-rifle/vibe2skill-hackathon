@@ -74,6 +74,7 @@ export function UploadSection() {
   const [analysisError, setAnalysisError] = useState<string | null>(null);
   const [editedReportText, setEditedReportText] = useState<string>("");
   const [showConfirmPanel, setShowConfirmPanel] = useState<boolean>(false);
+  const [showARPreview, setShowARPreview] = useState(false);
   const [streamingText, setStreamingText] = useState<string>("");
   const [locationInput, setLocationInput] = useState("")
   const [showSuggestions, setShowSuggestions] = useState(false)
@@ -869,6 +870,15 @@ export function UploadSection() {
                     Discard
                   </button>
                 </div>
+                
+                <button
+                  type="button"
+                  onClick={() => setShowARPreview(true)}
+                  className="mt-3 w-full flex items-center justify-center gap-2 rounded-xl border border-[#5BBFBF]/40 bg-[#5BBFBF]/5 px-4 py-2.5 font-mono text-xs text-[#5BBFBF] hover:bg-[#5BBFBF]/10 transition-all"
+                >
+                  <span>📱</span>
+                  <span>AR PREVIEW — See how this looks in the field</span>
+                </button>
 
                 {/* Feature 15 — Shareable Report Card */}
                 {confirmedReport && (
@@ -942,6 +952,86 @@ export function UploadSection() {
           </div>
         )}
       </div>
+      
+      <AnimatePresence>
+        {showARPreview && preview && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm p-4"
+            onClick={() => setShowARPreview(false)}
+          >
+            <motion.div
+              initial={{ scale: 0.85, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.85, opacity: 0 }}
+              transition={{ type: 'spring', stiffness: 300, damping: 25 }}
+              className="relative bg-[#0A1628] rounded-3xl overflow-hidden shadow-2xl"
+              style={{
+                width: '320px',
+                perspective: '1200px',
+                transform: 'rotateY(-8deg) rotateX(4deg)',
+                boxShadow: '0 40px 80px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.1)',
+              }}
+              onClick={e => e.stopPropagation()}
+            >
+              {/* Phone frame top notch */}
+              <div className="h-6 bg-[#0A1628] flex items-center justify-center">
+                <div className="w-16 h-1.5 bg-white/20 rounded-full" />
+              </div>
+              {/* Photo with overlays */}
+              <div className="relative">
+                <img src={preview} alt="AR Preview" className="w-full object-cover" style={{ maxHeight: '300px' }} />
+                {/* Severity overlay badge */}
+                {(() => {
+                  const cr = analysisSteps.find(s => s.step === 'classify')?.result as any;
+                  const sv = analysisSteps.find(s => s.step === 'severity_assessment')?.result as any;
+                  const finalRep = analysisSteps.find(s => s.step === 'final_report')?.result as any;
+                  if (!cr) return null;
+                  const sev = cr.severity ?? sv?.urgencyScore ?? 3;
+                  const color = sev >= 4 ? '#E8957A' : sev >= 2 ? '#D4AF37' : '#5BBFBF';
+                  const dept = finalRep?.report?.department ?? finalRep?.department ?? '';
+                  return (
+                    <>
+                      <div className="absolute top-3 left-3 flex flex-col gap-1.5">
+                        <div className="flex items-center gap-1.5 bg-black/70 backdrop-blur-sm rounded-full px-3 py-1">
+                          <div className="h-2 w-2 rounded-full animate-pulse" style={{ backgroundColor: color }} />
+                          <span className="font-mono text-[10px] text-white uppercase tracking-wider">{cr.category}</span>
+                        </div>
+                        <div className="flex items-center gap-1 bg-black/70 backdrop-blur-sm rounded-full px-3 py-1">
+                          <span className="font-mono text-[10px]" style={{ color }}>SEV {sev}/5</span>
+                        </div>
+                        {dept && (
+                          <div className="bg-black/70 backdrop-blur-sm rounded-full px-3 py-1">
+                            <span className="font-mono text-[9px] text-white/70">{dept}</span>
+                          </div>
+                        )}
+                      </div>
+                      {/* Crosshair center */}
+                      <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                        <div className="relative h-12 w-12">
+                          <div className="absolute top-0 left-0 w-3 h-3 border-t-2 border-l-2 rounded-tl-sm" style={{ borderColor: color }} />
+                          <div className="absolute top-0 right-0 w-3 h-3 border-t-2 border-r-2 rounded-tr-sm" style={{ borderColor: color }} />
+                          <div className="absolute bottom-0 left-0 w-3 h-3 border-b-2 border-l-2 rounded-bl-sm" style={{ borderColor: color }} />
+                          <div className="absolute bottom-0 right-0 w-3 h-3 border-b-2 border-r-2 rounded-br-sm" style={{ borderColor: color }} />
+                        </div>
+                      </div>
+                    </>
+                  );
+                })()}
+              </div>
+              {/* Phone frame bottom */}
+              <div className="px-4 py-4 bg-[#0A1628]">
+                <p className="font-mono text-[9px] text-white/30 text-center uppercase tracking-widest">CivicPulse AR Field View</p>
+              </div>
+              {/* Close */}
+              <button onClick={() => setShowARPreview(false)}
+                className="absolute top-8 right-3 text-white/60 hover:text-white font-mono text-xs">✕</button>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </section>
   );
 }
