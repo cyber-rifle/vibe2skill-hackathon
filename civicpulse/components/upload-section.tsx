@@ -161,44 +161,67 @@ export function UploadSection() {
     )
   }
 
-  // Feature 12 — Voice Input Handler
   const handleVoiceInput = () => {
-    // Feature 13 — Voice input requires HTTPS - gracefully degrade on HTTP
-    const isSecure = window.location.protocol === 'https:' ||
-      window.location.hostname === 'localhost'
-    const SR = (window as any).SpeechRecognition ||
+    const isSecure =
+      window.location.protocol === 'https:' ||
+      window.location.hostname === 'localhost' ||
+      window.location.hostname === '127.0.0.1'
+
+    const SR =
+      (window as any).SpeechRecognition ||
       (window as any).webkitSpeechRecognition
 
     if (!SR) {
-      addToast("Voice input not supported in this browser - use Chrome", "error")
-      return
-    }
-    if (!isSecure) {
-      // On HTTP, show the voice note textarea instead
       setShowVoiceTextFallback(true)
-      addToast("Voice input needs HTTPS - type your description below", "info")
+      addToast('Voice input not supported — type your description below', 'error')
       return
     }
+
+    if (!isSecure) {
+      setShowVoiceTextFallback(true)
+      addToast('Voice input needs HTTPS — type your description below', 'info')
+      return
+    }
+
     const recognition = new SR()
-    recognition.lang = "en-IN"
+    recognition.lang = 'en-IN'
     recognition.continuous = false
     recognition.interimResults = false
+
     recognition.onstart = () => setIsListening(true)
+
     recognition.onresult = (e: any) => {
-      setVoiceNote(e.results[0][0].transcript)
+      const transcript = e.results[0][0].transcript
+      setVoiceNote(transcript)
       setIsListening(false)
-      addToast("Voice note captured!", "success")
+      addToast('Voice note captured!', 'success')
     }
+
     recognition.onerror = (e: any) => {
       setIsListening(false)
-      if (e.error === 'not-allowed') {
+      if (e.error === 'not-allowed' || e.error === 'permission-denied') {
         setShowVoiceTextFallback(true)
-        addToast("Mic access denied - type your description below", "error")
+        addToast('Mic access denied — type your description below', 'error')
+      } else if (e.error === 'no-speech') {
+        addToast('No speech detected — try again or type below', 'info')
       } else {
-        addToast("Voice input failed - try again", "error")
+        // network, service-not-allowed, aborted, etc.
+        setShowVoiceTextFallback(true)
+        addToast('Voice unavailable — type your description below', 'info')
       }
     }
-    recognition.start()
+
+    recognition.onend = () => {
+      setIsListening(false)
+    }
+
+    try {
+      recognition.start()
+    } catch {
+      setIsListening(false)
+      setShowVoiceTextFallback(true)
+      addToast('Could not start voice — type your description below', 'error')
+    }
   }
 
   async function handleAnalyze() {
@@ -404,6 +427,7 @@ export function UploadSection() {
     // Feature 2 — Toast on confirm
     addToast("Report added to map", "success")
     setTimeout(() => router.push('/map'), 1800)
+    setShowConfirmPanel(false)
   }
 
   const handleDiscard = () => {
@@ -439,7 +463,7 @@ export function UploadSection() {
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5, delay: 0.3, ease: "easeOut" }}
+        transition={{ duration: 0.5, delay: 0.3, ease: [0.25, 0.46, 0.45, 0.94] }}
       >
         {/* Feature 10 — card-hover on upload card */}
         <div className="glass-card rounded-2xl p-6 md:p-8 card-hover relative">
@@ -448,7 +472,8 @@ export function UploadSection() {
             <label
               htmlFor="file-upload"
               onClick={() => inputRef.current?.click()}
-              className={`mt-6 flex flex-col items-center justify-center rounded-xl border-2 border-dashed border-teal/50 bg-ivory-deep/40 px-6 py-12 text-center transition-all hover:border-[#5BBFBF] cursor-pointer ${selectedFile ? 'iridescent-border' : ''}`}
+              className={`mt-6 flex flex-col items-center justify-center rounded-xl border-2 border-dashed border-teal/50 bg-[#F2EDE4]/40 px-6 py-12 text-center transition-all duration-200 hover:border-[#5BBFBF] cursor-pointer ${selectedFile ? 'iridescent-border' : ''}`}
+              style={{ boxShadow: selectedFile ? 'inset 0 0 0 2px #5BBFBF' : undefined }}
               onDragOver={(e) => { e.preventDefault(); e.stopPropagation(); }}
               onDrop={(e) => {
                 e.preventDefault();
@@ -536,18 +561,25 @@ export function UploadSection() {
 
             {/* Feature 12 — Voice input */}
             <div className="mt-3 space-y-2">
-              <button
-                type="button"
-                onClick={handleVoiceInput}
-                disabled={isListening}
-                className={`flex items-center gap-2 text-xs font-mono border rounded-full px-4 py-2 w-full justify-center transition-colors ${
-                  isListening
-                    ? "border-[#E8957A] text-[#E8957A] bg-[#E8957A]/10 animate-pulse"
-                    : "border-teal/40 text-teal hover:bg-teal/10"
-                }`}
-              >
-                🎙 {isListening ? "Listening..." : "Describe the issue by voice"}
-              </button>
+              <div className="relative">
+                <button
+                  type="button"
+                  onClick={handleVoiceInput}
+                  disabled={isListening}
+                  className={`relative flex items-center gap-2 text-xs font-mono
+                    border rounded-full px-4 py-2 w-full justify-center transition-all
+                    ${isListening
+                      ? 'border-[#E8957A] text-[#E8957A] bg-[#E8957A]/10'
+                      : 'border-[#5BBFBF]/50 text-[#5BBFBF] hover:bg-[#5BBFBF]/10'
+                    }`}
+                >
+                  🎙 {isListening ? "Listening..." : "Describe the issue by voice"}
+                </button>
+                {isListening && (
+                  <span className="absolute inset-0 rounded-full border-2 border-[#E8957A]
+                    animate-ping opacity-60 pointer-events-none" />
+                )}
+              </div>
               {voiceNote && (
                 <p className="text-xs font-mono text-[#7A6A58] bg-[#FAF7F2] rounded-lg px-3 py-2 border border-[#E8E4DB]">
                   &ldquo;{voiceNote}&rdquo;
@@ -646,6 +678,7 @@ export function UploadSection() {
                           setLocationInput(name)
                           setActiveLat(coords.lat)
                           setActiveLon(coords.lon)
+                          setLocationName(name)
                           setLocationConfirmed(true)
                           setShowSuggestions(false)
                           setNominatimResults([])
@@ -661,6 +694,7 @@ export function UploadSection() {
                           setLocationInput(r.display_name.split(',')[0].trim())
                           setActiveLat(parseFloat(r.lat))
                           setActiveLon(parseFloat(r.lon))
+                          setLocationName(r.display_name.split(',')[0].trim())
                           setLocationConfirmed(true)
                           setShowSuggestions(false)
                           setNominatimResults([])
@@ -706,8 +740,8 @@ export function UploadSection() {
             </button>
 
             {analysisError && (
-              <div className="mt-4 rounded-xl bg-red-50 border border-red-200 px-4 py-3">
-                <p className="font-sans text-sm text-red-700">{analysisError}</p>
+              <div className="mt-4 rounded-xl bg-[#FEF2EE] border border-[#E8957A]/30 px-4 py-3">
+                <p className="font-sans text-sm text-[#E8957A]">{analysisError}</p>
               </div>
             )}
         </div>
@@ -719,7 +753,7 @@ export function UploadSection() {
           <>
             <ReasoningReveal steps={analysisSteps} streamingText={streamingText} />
             {showConfirmPanel && (
-              <div className="mt-8 border border-[#5BBFBF] rounded-xl p-6 bg-[#FAF7F2]">
+              <div className="mt-8 iridescent-border rounded-xl p-6 bg-[#FAF7F2]">
 
                 <p className="font-mono text-xs uppercase tracking-widest text-[#5BBFBF] mb-4">
                   Human-in-the-loop review — confirm before submitting
@@ -735,6 +769,7 @@ export function UploadSection() {
                     )} />
                   </span>
                   <span>Department: <strong className="text-[#1A1208]">{analysisSteps.find((s) => s.step === 'final_report')?.result?.report?.department}</strong></span>
+                  <span>Location: <strong className="text-[#1A1208]">{locationName || locationInput || 'Hyderabad (default)'}</strong></span>
                 </div>
 
                 {/* Feature 3 — Department Escalation Pills */}
@@ -779,7 +814,7 @@ export function UploadSection() {
                   <button
                     type="button"
                     onClick={handleConfirmReport}
-                    className="flex-1 py-2 px-4 rounded-lg text-sm font-medium text-white bg-gradient-to-r from-[#5BBFBF] to-[#C9A84C] hover:opacity-90 transition-opacity"
+                    className="flex-1 py-2 px-4 shimmer-btn rounded-lg text-sm font-medium transition-opacity"
                   >
                     Confirm and Add to Map
                   </button>

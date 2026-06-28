@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 const NAV_LINKS = [
   { label: "How it works", href: "#upload" },
@@ -11,10 +11,21 @@ const NAV_LINKS = [
 
 export function Navbar() {
   const [open, setOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false)
+  useEffect(() => {
+    const handler = () => setScrolled(window.scrollY > 50)
+    window.addEventListener('scroll', handler, { passive: true })
+    return () => window.removeEventListener('scroll', handler)
+  }, [])
 
   return (
     <header className="sticky top-0 z-50 w-full">
-      <nav className="backdrop-blur-md bg-background/80 border-b border-border/50 mx-auto flex h-16 max-w-6xl items-center justify-between px-5">
+      <nav className={`backdrop-blur-md border-b transition-all duration-300
+        mx-auto flex h-16 max-w-6xl items-center justify-between px-5
+        ${scrolled
+          ? 'bg-background/90 border-border/50'
+          : 'bg-transparent border-transparent'
+        }`}>
         <a href="/" className="iridescent-text font-display text-2xl font-medium tracking-tight">
           CivicPulse
         </a>

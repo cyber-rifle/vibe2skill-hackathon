@@ -158,10 +158,16 @@ export default function Page() {
         </div>
       </section>
 
-      <section className="relative overflow-hidden bg-[#FAF7F2] py-2">
-        <div aria-hidden="true" className="ambient-orb absolute left-1/2 top-1/2
-          -translate-x-1/2 -translate-y-1/2 h-[50rem] w-[50rem] opacity-[0.05]" />
-        <UploadSection />
+      <section id="upload" className="relative overflow-hidden py-20 bg-[#FAF7F2]">
+        {/* Ambient orb decorations */}
+        <div aria-hidden="true" className="ambient-orb absolute -right-32 top-10
+          h-72 w-72 opacity-[0.08]" />
+        <div aria-hidden="true" className="ambient-orb absolute -left-24 bottom-10
+          h-56 w-56 opacity-[0.06]"
+          style={{ background: 'linear-gradient(135deg,#E8957A,#D4AF6A)' }} />
+        <div className="relative z-10 mx-auto max-w-3xl px-5">
+          <UploadSection />
+        </div>
       </section>
       {/* Feature 18 — floating map CTA that appears after scroll */}
       <motion.div

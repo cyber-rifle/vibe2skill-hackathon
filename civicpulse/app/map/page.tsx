@@ -35,83 +35,88 @@ export default function MapPage() {
     <div className="flex h-screen flex-col bg-[#0D0B08] overflow-hidden">
       <Navbar />
 
-      {/* Feature 18 — scroll-triggered reveal on map page header */}
+      {/* Page header */}
       <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.5, ease: 'easeOut' }}
-        className="border-b border-white/10 bg-[#0D0B08] px-6 py-5 relative overflow-hidden"
+        initial={{ opacity: 0, y: 16 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.45, ease: 'easeOut' }}
+        className="flex-shrink-0 border-b border-white/10 bg-[#0D0B08] px-6 py-4"
       >
-        <div aria-hidden="true" className="ambient-orb absolute right-0 top-0
-          h-32 w-64 opacity-[0.20]" />
-        <div className="relative z-10 mx-auto flex max-w-7xl flex-col gap-3 md:flex-row md:items-center md:justify-between">
+        <div className="mx-auto flex max-w-7xl items-center justify-between">
           <div>
-            <h1 className="text-4xl font-light mb-1 text-white" style={{ fontFamily: 'var(--font-display)' }}>
+            <h1 className="font-display text-2xl font-light text-white">
               Community Reports
             </h1>
-            <p className="text-sm text-white/50">View and track civic issues reported in Hyderabad</p>
+            <p className="text-xs text-white/40 font-mono mt-0.5">
+              {allReports.length} active reports · Hyderabad
+            </p>
           </div>
-          <div className="flex items-center gap-3">
-            <Link
-              href="/#upload"
-              className="shimmer-btn rounded-full px-5 py-2 font-sans text-sm font-medium shadow-sm"
-            >
-              Report an Issue
-            </Link>
-          </div>
+          <Link href="/#upload" className="shimmer-btn rounded-full px-5 py-2 text-sm font-medium">
+            Report an Issue
+          </Link>
         </div>
       </motion.div>
 
-      <div className="relative flex-1 overflow-hidden min-h-0">
-        {/* Map — full bleed */}
-        <div className="absolute inset-0">
+      {/* Map + Sidebar split — true flex, not absolute */}
+      <div className="flex flex-1 min-h-0 overflow-hidden">
+        {/* Map area */}
+        <div className="relative flex-1 min-w-0">
           {allReports.length === 0 ? (
             <div className="flex flex-col items-center justify-center h-full text-center p-8 bg-[#FAF7F2]">
               <p className="text-4xl mb-3">🗺️</p>
               <p className="font-display text-xl text-[#1A1208]">No reports yet</p>
               <p className="text-sm text-[#7A6A58] mt-1">Be the first to report an issue</p>
-              <a href="/#upload" className="mt-4 shimmer-btn rounded-full px-5 py-2 text-sm">
-                Report an Issue
-              </a>
+              <Link href="/#upload" className="mt-4 shimmer-btn rounded-full px-5 py-2 text-sm">Report an Issue</Link>
             </div>
           ) : (
-            <CivicMap reports={allReports} selectedId={selectedId}
-              onMarkerClick={setSelectedId} />
+            <CivicMap reports={allReports} selectedId={selectedId} onMarkerClick={setSelectedId} />
           )}
           <MapLegend />
         </div>
-      
-        {/* Glassmorphism sidebar */}
-        <div className="absolute right-0 top-0 md:top-4 md:bottom-4 md:right-4
-          bottom-0 w-full md:w-[22rem] z-10 flex flex-col
-          md:rounded-2xl overflow-hidden
-          bg-white/80 md:backdrop-blur-xl md:bg-white/70
-          border-t md:border md:border-white/50
-          md:shadow-2xl
-          max-h-[42vh] md:max-h-none">
-          <div className="flex-shrink-0 px-5 py-4 border-b border-black/5">
-            <h2 className="font-display text-xl font-light text-[#1A1208]">Active Reports</h2>
+
+        {/* Sidebar — fixed width on desktop, bottom sheet on mobile */}
+        <div className="
+          hidden md:flex md:flex-col md:w-80 lg:w-96
+          bg-[#FAF7F2] border-l border-[#E8E4DB]
+          overflow-hidden flex-shrink-0
+        ">
+          <div className="flex-shrink-0 px-5 py-4 border-b border-[#E8E4DB] bg-white">
+            <h2 className="font-display text-lg font-light text-[#1A1208]">Active Reports</h2>
             <p className="text-xs text-[#7A6A58] mt-0.5 font-mono">
               {allReports.length} reports in Hyderabad
             </p>
           </div>
           <div className="flex-1 overflow-y-auto p-3 space-y-2">
-            {allReports.length === 0 ? (
-              <div className="flex flex-col items-center justify-center p-6 text-center">
-                <p className="text-2xl mb-2">🔍</p>
-                <p className="text-sm font-mono text-[#7A6A58]">No reports match this filter</p>
-              </div>
-            ) : (
-              allReports.map((report) => (
-                <ReportCard
-                  key={report.id}
-                  report={report}
-                  isSelected={selectedId === report.id}
-                  onClick={() => setSelectedId(report.id)}
-                />
-              ))
-            )}
+            {allReports.map((report) => (
+              <ReportCard
+                key={report.id}
+                report={report}
+                isSelected={selectedId === report.id}
+                onClick={() => setSelectedId(report.id === selectedId ? null : report.id)}
+              />
+            ))}
+          </div>
+        </div>
+
+        {/* Mobile: bottom sheet with report count badge */}
+        <div className="
+          md:hidden fixed bottom-0 left-0 right-0 z-20
+          bg-white border-t border-[#E8E4DB]
+          max-h-[45vh] flex flex-col
+        ">
+          <div className="flex items-center justify-between px-4 py-3 border-b border-[#E8E4DB]">
+            <span className="font-display text-base font-light text-[#1A1208]">Reports</span>
+            <span className="font-mono text-xs text-[#7A6A58]">{allReports.length} total</span>
+          </div>
+          <div className="flex-1 overflow-y-auto p-2 space-y-2">
+            {allReports.map((report) => (
+              <ReportCard
+                key={report.id}
+                report={report}
+                isSelected={selectedId === report.id}
+                onClick={() => setSelectedId(report.id === selectedId ? null : report.id)}
+              />
+            ))}
           </div>
         </div>
       </div>

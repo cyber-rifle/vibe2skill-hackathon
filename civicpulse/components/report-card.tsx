@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { motion } from 'framer-motion'
 import { SeverityBadge } from './severity-badge'
 import type { CivicReport } from '@/lib/seed-reports'
 import { useReports } from '@/lib/report-context'
@@ -15,9 +16,12 @@ export function ReportCard({ report, isSelected, onClick }: ReportCardProps) {
   const reportComments = comments[report.id] || []
 
   return (
-    <div
+    <motion.div
+      whileHover={{ y: -2, boxShadow: '0 8px 32px rgba(26,18,8,0.10)' }}
+      whileTap={{ scale: 0.98 }}
+      transition={{ type: 'spring', stiffness: 400, damping: 30 }}
       onClick={onClick}
-      className={`cursor-pointer rounded-lg border p-4 transition-all hover:shadow-md card-hover ${
+      className={`cursor-pointer rounded-lg border p-4 transition-all ${
         isSelected ? 'border-[#C9A84C] bg-[#FAF7F2]' : 'border-[#E8E4DB] bg-white'
       }`}
     >
@@ -86,6 +90,6 @@ export function ReportCard({ report, isSelected, onClick }: ReportCardProps) {
           </div>
         </div>
       )}
-    </div>
+    </motion.div>
   )
 }

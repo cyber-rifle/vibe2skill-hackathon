@@ -109,8 +109,9 @@ export default function DashboardPage() {
           {/* Reports by Category — horizontal bar chart */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.3 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0, duration: 0.45 }}
             className="rounded-2xl border border-[#E8E4DB] bg-white p-6 card-hover"
           >
             <h2 className="font-display text-xl font-light text-[#1A1208] mb-6">By Category</h2>
@@ -140,8 +141,9 @@ export default function DashboardPage() {
           {/* Reports by Severity */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.4 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.1, duration: 0.45 }}
             className="rounded-2xl border border-[#E8E4DB] bg-white p-6 card-hover"
           >
             <h2 className="font-display text-xl font-light text-[#1A1208] mb-6">By Severity</h2>
@@ -179,8 +181,9 @@ export default function DashboardPage() {
           {/* Reports by Status */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.5 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.2, duration: 0.45 }}
             className="rounded-2xl border border-[#E8E4DB] bg-white p-6 card-hover"
           >
             <h2 className="font-display text-xl font-light text-[#1A1208] mb-6">By Status</h2>
@@ -210,8 +213,9 @@ export default function DashboardPage() {
           {/* Resolution Impact */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.6 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.3, duration: 0.45 }}
             className="rounded-2xl border border-[#E8E4DB] bg-white p-6 card-hover"
           >
             <h2 className="font-display text-xl font-light text-[#1A1208] mb-6">Resolution Rate</h2>

@@ -248,7 +248,7 @@ export function ReasoningReveal({ steps, streamingText = "" }: { steps: Step[]; 
               key={s.step}
               initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: i * 0.15, duration: 0.4, ease: "easeOut" }}
+              transition={{ delay: i * 0.12, duration: 0.35, ease: 'easeOut' }}
               className="flex items-start gap-4 rounded-xl border border-[#E6DDCF] border-l-4 border-l-[#5BBFBF] bg-[#F2EDE4] px-5 py-4 card-hover"
             >
               <span className="mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-[#E6DDCF] bg-white font-mono text-xs text-[#7A6A58]">

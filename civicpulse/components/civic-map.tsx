@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useRef, useState, useCallback } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import type { CivicReport } from '@/lib/seed-reports'
 
 interface CivicMapProps {
@@ -11,13 +11,10 @@ interface CivicMapProps {
 
 const severityColor: Record<string, string> = {
   low: '#5BBFBF',
-  medium: '#C9A84C',
+  medium: '#D4AF37',
   high: '#E8957A',
 }
 
-let _L: typeof import('leaflet') | null = null
-
-// Feature 7 — Lifecycle timeline HTML builder
 function buildTimelineHtml(status: string): string {
   const stages = ['Reported', 'Acknowledged', 'In Progress', 'Resolved']
   const statusKeys = ['reported', 'acknowledged', 'in_progress', 'resolved']
@@ -37,106 +34,127 @@ function buildTimelineHtml(status: string): string {
 
 export function CivicMap({ reports, selectedId, onMarkerClick }: CivicMapProps) {
   const containerRef = useRef<HTMLDivElement>(null)
-  const mapRef = useRef<import('leaflet').Map | null>(null)
+  const mapRef = useRef<any>(null)
   const markersRef = useRef<Record<string, any>>({})
   const clusterRef = useRef<any>(null)
   const heatLayerRef = useRef<any>(null)
   const tileLayerRef = useRef<any>(null)
-  const styleInjectedRef = useRef(false)
+  const initStartedRef = useRef(false)
   const onMarkerClickRef = useRef(onMarkerClick)
   const prevLengthRef = useRef(reports.length)
 
-  // Feature 14 — Dark map state
   const [darkMap, setDarkMap] = useState(false)
-  // Feature 11 — Heatmap state
   const [showHeat, setShowHeat] = useState(false)
+  const [mapReady, setMapReady] = useState(false)
 
   useEffect(() => {
     onMarkerClickRef.current = onMarkerClick
   }, [onMarkerClick])
 
+  // Initialize map once
   useEffect(() => {
     if (!containerRef.current) return
+    if (initStartedRef.current) return
+    initStartedRef.current = true
 
-    import('leaflet').then(async (LeafletModule) => {
-      if (mapRef.current) return
-      _L = LeafletModule
-      // @ts-ignore - TS complains about missing type definitions for these plugins
-      await import('leaflet.markercluster')
-      // @ts-ignore
-      await import('leaflet.heat')
-      const L = _L
+    // Load Leaflet and plugins via script injection so they all patch window.L
+    const loadLeaflet = async () => {
+      // Step 1: load leaflet CSS
+      if (!document.querySelector('link[href*="leaflet.css"]')) {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.css'
+        document.head.appendChild(link)
+      }
+      if (!document.querySelector('link[href*="MarkerCluster"]')) {
+        const link1 = document.createElement('link')
+        link1.rel = 'stylesheet'
+        link1.href = 'https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css'
+        document.head.appendChild(link1)
+        const link2 = document.createElement('link')
+        link2.rel = 'stylesheet'
+        link2.href = 'https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css'
+        document.head.appendChild(link2)
+      }
 
-      const map = L.map(containerRef.current!).setView([17.4474, 78.3762], 12)
+      // Step 2: load Leaflet core JS via import (it patches window.L)
+      await import('leaflet')
+      const L = (window as any).L
+      if (!L) return
+
+      // Step 3: load plugins — they patch window.L
+      if (!(window as any).L.markerClusterGroup) {
+        await import('leaflet.markercluster' as any)
+      }
+      if (!(window as any).L.heatLayer) {
+        await import('leaflet.heat' as any)
+      }
+
+      if (!containerRef.current || mapRef.current) return
+
+      const map = L.map(containerRef.current, { zoomControl: true }).setView([17.4474, 78.3762], 12)
       mapRef.current = map
 
-      const tileUrl = darkMap
-        ? 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png'
-        : 'https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png'
-
+      const tileUrl = 'https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png'
       tileLayerRef.current = L.tileLayer(tileUrl, {
-        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
+        attribution: '&copy; OpenStreetMap contributors &copy; CARTO',
         maxZoom: 19,
       }).addTo(map)
 
-      setTimeout(() => {
-        containerRef.current?.dispatchEvent(new CustomEvent('mapready'))
-      }, 0)
+      // Inject popup styles once
+      const style = document.createElement('style')
+      style.textContent = `
+        .leaflet-popup-content-wrapper {
+          background: #ffffff !important;
+          border: 1px solid #E8E4DB !important;
+          border-radius: 12px !important;
+          box-shadow: 0 4px 24px rgba(26,18,8,0.10) !important;
+          padding: 14px 16px !important;
+        }
+        .leaflet-popup-tip { background: #ffffff !important; }
+        .leaflet-popup-content { margin: 0 !important; }
+        .leaflet-popup-close-button { color: #7A6A58 !important; font-size: 16px !important; top: 8px !important; right: 10px !important; }
+      `
+      document.head.appendChild(style)
 
-      if (!styleInjectedRef.current) {
-        styleInjectedRef.current = true
-        const style = document.createElement('style')
-        style.textContent = `
-          .leaflet-popup-content-wrapper {
-            background: #ffffff !important;
-            border: 1px solid #E8E4DB !important;
-            border-radius: 10px !important;
-            box-shadow: 0 4px 24px rgba(26,18,8,0.10) !important;
-            padding: 14px 16px !important;
-          }
-          .leaflet-popup-tip { background: #ffffff !important; }
-          .leaflet-popup-content { margin: 0 !important; }
-          .leaflet-popup-close-button {
-            color: #7A6A58 !important;
-            font-size: 16px !important;
-            top: 8px !important;
-            right: 10px !important;
-          }
-        `
-        document.head.appendChild(style)
-      }
-    })
+      setMapReady(true)
+    }
+
+    loadLeaflet()
 
     return () => {
-      mapRef.current?.remove()
-      mapRef.current = null
+      if (mapRef.current) {
+        mapRef.current.remove()
+        mapRef.current = null
+      }
       markersRef.current = {}
       clusterRef.current = null
       heatLayerRef.current = null
       tileLayerRef.current = null
+      initStartedRef.current = false
     }
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
-  // Feature 14 — Swap tile layer when darkMap changes
+  // Dark map tile swap
   useEffect(() => {
-    if (!mapRef.current || !tileLayerRef.current) return
-    import('leaflet').then((L) => {
-      if (!mapRef.current) return
-      tileLayerRef.current.remove()
-      const tileUrl = darkMap
-        ? 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png'
-        : 'https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png'
-      tileLayerRef.current = L.tileLayer(tileUrl, {
-        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-        maxZoom: 19,
-      }).addTo(mapRef.current!)
-    })
-  }, [darkMap])
+    if (!mapReady || !mapRef.current || !tileLayerRef.current) return
+    const L = (window as any).L
+    if (!L) return
+    tileLayerRef.current.remove()
+    const tileUrl = darkMap
+      ? 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png'
+      : 'https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png'
+    tileLayerRef.current = L.tileLayer(tileUrl, {
+      attribution: '&copy; OpenStreetMap contributors &copy; CARTO',
+      maxZoom: 19,
+    }).addTo(mapRef.current)
+  }, [darkMap, mapReady])
 
-  // Feature 11 — Toggle heatmap
+  // Heatmap toggle
   useEffect(() => {
-    const L = _L
-    if (!L || !mapRef.current) return
+    if (!mapReady || !mapRef.current) return
+    const L = (window as any).L
+    if (!L) return
     if (heatLayerRef.current) {
       heatLayerRef.current.remove()
       heatLayerRef.current = null
@@ -145,159 +163,139 @@ export function CivicMap({ reports, selectedId, onMarkerClick }: CivicMapProps) 
       const severityNum: Record<string, number> = { low: 1, medium: 3, high: 5 }
       const heatData = reports.map((r) => [
         r.lat, r.lon,
-        Math.min(1, (severityNum[r.severity] ?? 3) / 5 + 0.3)
+        Math.min(1, (severityNum[r.severity] ?? 3) / 5 + 0.35)
       ])
-      heatLayerRef.current = (L as any).heatLayer(heatData, {
+      heatLayerRef.current = L.heatLayer(heatData, {
         radius: 45,
         blur: 20,
         maxZoom: 17,
         minOpacity: 0.5,
         gradient: { 0.0: '#5BBFBF', 0.5: '#D4AF37', 1.0: '#E8957A' },
       })
-      heatLayerRef.current.addTo(mapRef.current!)
+      heatLayerRef.current.addTo(mapRef.current)
     }
-  }, [showHeat, reports]) // eslint-disable-line react-hooks/exhaustive-deps
+  }, [showHeat, reports, mapReady])
 
+  // Build/rebuild markers
   useEffect(() => {
-    function buildMarkers() {
-      const L = _L
-      if (!L || !mapRef.current) return
+    if (!mapReady || !mapRef.current) return
+    const L = (window as any).L
+    if (!L || !L.markerClusterGroup) return
 
-      // Feature 8 — Remove previous cluster layer
-      if (clusterRef.current) {
-        clusterRef.current.remove()
-        clusterRef.current = null
+    if (clusterRef.current) {
+      clusterRef.current.remove()
+      clusterRef.current = null
+    }
+    markersRef.current = {}
+
+    const cluster = L.markerClusterGroup({
+      maxClusterRadius: 60,
+      iconCreateFunction: (c: any) =>
+        L.divIcon({
+          html: `<div style="background:${
+            c.getChildCount() >= 5 ? '#E8957A' : c.getChildCount() >= 3 ? '#D4AF37' : '#5BBFBF'
+          };color:white;border-radius:50%;width:40px;height:40px;
+          display:flex;align-items:center;justify-content:center;
+          font-family:monospace;font-size:14px;font-weight:700;
+          border:3px solid white;box-shadow:0 2px 12px rgba(0,0,0,0.25)">
+            ${c.getChildCount()}
+          </div>`,
+          className: '',
+          iconSize: [40, 40],
+        }),
+    })
+    clusterRef.current = cluster
+
+    const isNewBatch = reports.length > prevLengthRef.current
+    const newestId = isNewBatch ? reports[reports.length - 1]?.id : null
+    prevLengthRef.current = reports.length
+
+    reports.forEach((r) => {
+      const isSelected = r.id === selectedId
+
+      const marker = L.circleMarker([r.lat, r.lon], {
+        radius: isSelected ? 20 : 16,
+        fillColor: severityColor[r.severity] ?? '#5BBFBF',
+        color: isSelected ? '#1A1208' : '#ffffff',
+        weight: isSelected ? 3 : 2,
+        opacity: 1,
+        fillOpacity: 0.95,
+      }).bindPopup(
+        `<div style="font-family:'DM Sans',sans-serif;min-width:190px;padding:4px 2px">
+          <div style="font-size:10px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:#7A6A58;margin-bottom:6px;font-family:'JetBrains Mono',monospace">${r.category.replace(/_/g, ' ')}</div>
+          <div style="font-size:14px;font-weight:600;color:#1A1208;margin-bottom:6px;line-height:1.3">${r.department}</div>
+          ${r.resolutionTimeEstimate
+            ? `<div style="font-size:11px;color:#1A1208;margin-bottom:8px"><span style="color:#7A6A58">Expected resolution:</span> <strong>${r.resolutionTimeEstimate}</strong></div>`
+            : '<div style="font-size:11px;color:#7A6A58;margin-bottom:8px;font-style:italic">Timeline varies by department</div>'}
+          <div style="font-size:12px;color:#7A6A58;line-height:1.6;margin-bottom:10px;border-top:1px solid #E8E4DB;padding-top:8px">${r.description}</div>
+          <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap">
+            <span style="font-size:10px;font-family:'JetBrains Mono',monospace;background:#FAF7F2;border:1px solid #E8E4DB;border-radius:4px;padding:2px 7px;color:#1A1208;font-weight:500">severity ${r.severity}</span>
+            <span style="font-size:10px;font-family:'JetBrains Mono',monospace;background:#FAF7F2;border:1px solid #E8E4DB;border-radius:4px;padding:2px 7px;color:#7A6A58">${(r.status ?? 'reported').replace(/_/g, ' ')}</span>
+          </div>
+          ${buildTimelineHtml(r.status ?? 'reported')}
+        </div>`,
+        { maxWidth: 280 }
+      )
+
+      marker.on('click', () => onMarkerClickRef.current(r.id))
+      markersRef.current[r.id] = marker
+
+      // Pulse animation for newest marker
+      if (r.id === newestId && mapRef.current) {
+        const pulseCircle = L.circle([r.lat, r.lon], {
+          radius: 30,
+          color: severityColor[r.severity] ?? '#5BBFBF',
+          fillColor: severityColor[r.severity] ?? '#5BBFBF',
+          fillOpacity: 0.4,
+          weight: 2,
+          opacity: 0.8,
+        }).addTo(mapRef.current)
+
+        let frame = 0
+        const pulseInterval = setInterval(() => {
+          frame++
+          const t = (frame % 30) / 30
+          pulseCircle.setRadius(30 * (1 + t * 2))
+          pulseCircle.setStyle({ opacity: 0.5 * (1 - t), fillOpacity: 0.3 * (1 - t) })
+          if (frame >= 90) {
+            clearInterval(pulseInterval)
+            pulseCircle.remove()
+          }
+        }, 33)
       }
-      markersRef.current = {}
 
-      const cluster = (L as any).markerClusterGroup({
-        maxClusterRadius: 60,
-        iconCreateFunction: (c: any) =>
-          (L as any).divIcon({
-            html: `<div style="background:${
-              c.getChildCount() >= 5 ? '#E8957A' : c.getChildCount() >= 3 ? '#D4AF37' : '#5BBFBF'
-            };color:white;border-radius:50%;width:40px;height:40px;
-            display:flex;align-items:center;justify-content:center;
-            font-family:monospace;font-size:14px;font-weight:700;
-            border:3px solid white;box-shadow:0 2px 12px rgba(0,0,0,0.25)">
-              ${c.getChildCount()}
-            </div>`,
-            className: '',
-            iconSize: [40, 40],
-          }),
-      })
-      clusterRef.current = cluster
+      cluster.addLayer(marker)
+    })
 
-        const isNewBatch = reports.length > prevLengthRef.current
-        const newestId = isNewBatch ? reports[reports.length - 1]?.id : null
-        prevLengthRef.current = reports.length
+    mapRef.current.addLayer(cluster)
 
-        reports.forEach((r) => {
-          const isSelected = r.id === selectedId
-          const isNewest = r.id === newestId
-
-          const marker = (L as any).circleMarker([r.lat, r.lon], {
-            radius: isSelected ? 20 : 16,
-            fillColor: severityColor[r.severity],
-            color: isSelected ? '#1A1208' : '#fff',
-            weight: isSelected ? 3 : 2,
-            opacity: 1,
-            fillOpacity: 0.95,
-            pane: 'markerPane',
-          })
-            .bindPopup(
-              `<div style="font-family:'DM Sans',sans-serif;min-width:190px;padding:4px 2px">
-                <div style="font-size:10px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:#7A6A58;margin-bottom:6px;font-family:'JetBrains Mono',monospace">${r.category.replace(/_/g, ' ')}</div>
-                <div style="font-size:14px;font-weight:600;color:#1A1208;margin-bottom:6px;line-height:1.3">${r.department}</div>
-                ${r.resolutionTimeEstimate
-                  ? `<div style="font-size:11px;color:#1A1208;margin-bottom:8px"><span style="color:#7A6A58">Expected resolution:</span> <strong>${r.resolutionTimeEstimate}</strong></div>`
-                  : '<div style="font-size:11px;color:#7A6A58;margin-bottom:8px;font-style:italic">Timeline varies by department</div>'}
-                <div style="font-size:12px;color:#7A6A58;line-height:1.6;margin-bottom:10px;border-top:1px solid #E8E4DB;padding-top:8px">${r.description}</div>
-                <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap">
-                  <span style="font-size:10px;font-family:'JetBrains Mono',monospace;background:#FAF7F2;border:1px solid #E8E4DB;border-radius:4px;padding:2px 7px;color:#1A1208;font-weight:500">severity ${r.severity}</span>
-                  <span style="font-size:10px;font-family:'JetBrains Mono',monospace;background:#FAF7F2;border:1px solid #E8E4DB;border-radius:4px;padding:2px 7px;color:#7A6A58">${(r.status ?? 'reported').replace(/_/g, ' ')}</span>
-                </div>
-                ${buildTimelineHtml(r.status ?? 'reported')}
-              </div>`,
-              { maxWidth: 280 }
-            )
-
-          marker.on('click', () => onMarkerClickRef.current(r.id))
-          markersRef.current[r.id] = marker
-
-          if (isNewest) {
-            const pulseCircle = (L as any).circle([r.lat, r.lon], {
-              radius: 30,
-              color: severityColor[r.severity],
-              fillColor: severityColor[r.severity],
-              fillOpacity: 0.4,
-              weight: 2,
-              opacity: 0.8,
-            }).addTo(mapRef.current!)
-
-            let frame = 0
-            const pulseInterval = setInterval(() => {
-              frame++
-              const t = (frame % 30) / 30
-              const scale = 1 + t * 2
-              const opacity = 0.5 * (1 - t)
-              pulseCircle.setRadius(30 * scale)
-              pulseCircle.setStyle({ opacity, fillOpacity: opacity * 0.6 })
-              if (frame >= 90) {
-                clearInterval(pulseInterval)
-                pulseCircle.remove()
-              }
-            }, 33)
-          }
-
-          cluster.addLayer(marker)
-        })
-
-        mapRef.current!.addLayer(cluster)
-
-        if (selectedId && markersRef.current[selectedId]) {
-          const r = reports.find((rep) => rep.id === selectedId)
-          if (r && mapRef.current) {
-            mapRef.current.setView([r.lat, r.lon], mapRef.current.getZoom(), {
-              animate: true,
-              duration: 0.3,
-              easeLinearity: 0.5,
-            })
-            setTimeout(() => markersRef.current[selectedId]?.openPopup(), 150)
-          }
-        }
+    if (selectedId && markersRef.current[selectedId] && mapRef.current) {
+      const r = reports.find((rep) => rep.id === selectedId)
+      if (r) {
+        mapRef.current.setView([r.lat, r.lon], mapRef.current.getZoom(), { animate: true, duration: 0.3 })
+        setTimeout(() => markersRef.current[selectedId]?.openPopup(), 150)
+      }
     }
-
-    if (mapRef.current) {
-      buildMarkers()
-      return
-    }
-
-    const container = containerRef.current
-    container?.addEventListener('mapready', buildMarkers, { once: true })
-    return () => container?.removeEventListener('mapready', buildMarkers)
-  }, [reports, selectedId])
+  }, [reports, selectedId, mapReady])
 
   return (
     <div style={{ position: 'relative', height: '100%', width: '100%' }}>
       <div ref={containerRef} className="h-full w-full" />
 
-      {/* Feature 14 — Dark mode toggle button */}
       <button
         onClick={() => setDarkMap(!darkMap)}
         style={{ position: 'absolute', top: 10, right: 10, zIndex: 1000 }}
         className="text-xs font-mono bg-white border border-[#E8E4DB] rounded-full px-3 py-1 shadow hover:bg-[#FAF7F2] transition-colors"
       >
-        {darkMap ? '☀️ Light Map' : '🌙 Dark Map'}
+        {darkMap ? '☀️ Light' : '🌙 Dark'}
       </button>
 
-      {/* Feature 11 — Heatmap toggle button */}
       <button
         onClick={() => setShowHeat(!showHeat)}
         style={{ position: 'absolute', top: 44, right: 10, zIndex: 1000 }}
         className="text-xs font-mono bg-white border border-[#E8E4DB] rounded-full px-3 py-1 shadow hover:bg-[#FAF7F2] transition-colors"
       >
-        {showHeat ? '🗺 Hide Heatmap' : '🔥 Show Heatmap'}
+        {showHeat ? '🗺 Hide Heat' : '🔥 Heatmap'}
       </button>
     </div>
   )
