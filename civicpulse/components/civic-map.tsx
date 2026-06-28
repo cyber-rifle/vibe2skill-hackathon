@@ -272,8 +272,24 @@ export function CivicMap({ reports, selectedId, onMarkerClick }: CivicMapProps) 
     if (selectedId && markersRef.current[selectedId] && mapRef.current) {
       const r = reports.find((rep) => rep.id === selectedId)
       if (r) {
-        mapRef.current.setView([r.lat, r.lon], mapRef.current.getZoom(), { animate: true, duration: 0.3 })
-        setTimeout(() => markersRef.current[selectedId]?.openPopup(), 150)
+        // First zoom to the area
+        mapRef.current.setView([r.lat, r.lon], Math.max(mapRef.current.getZoom(), 14), {
+          animate: true, duration: 0.5
+        })
+        // Then open popup after cluster has had time to uncluster
+        setTimeout(() => {
+          const marker = markersRef.current[selectedId]
+          if (marker) {
+            // If marker is inside a cluster, zoomToShowLayer forces it visible
+            if (clusterRef.current?.zoomToShowLayer) {
+              clusterRef.current.zoomToShowLayer(marker, () => {
+                marker.openPopup()
+              })
+            } else {
+              marker.openPopup()
+            }
+          }
+        }, 400)
       }
     }
   }, [reports, selectedId, mapReady])

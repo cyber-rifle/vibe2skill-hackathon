@@ -8,9 +8,10 @@ interface ReportCardProps {
   report: CivicReport
   isSelected: boolean
   onClick: () => void
+  dark?: boolean
 }
 
-export function ReportCard({ report, isSelected, onClick }: ReportCardProps) {
+export function ReportCard({ report, isSelected, onClick, dark }: ReportCardProps) {
   const { comments, addComment } = useReports()
   const [commentText, setCommentText] = useState('')
   const reportComments = comments[report.id] || []
@@ -22,25 +23,27 @@ export function ReportCard({ report, isSelected, onClick }: ReportCardProps) {
       transition={{ type: "spring", stiffness: 500, damping: 35 }}
       onClick={onClick}
       className={`cursor-pointer rounded-lg border p-4 transition-all ${
-        isSelected ? 'border-[#C9A84C] bg-[#FAF7F2]' : 'border-[#E8E4DB] bg-white'
+        dark
+          ? isSelected ? 'border-[#5BBFBF]/50 bg-[#5BBFBF]/10' : 'border-white/10 bg-white/5 hover:bg-white/8'
+          : isSelected ? 'border-[#C9A84C] bg-[#FAF7F2]' : 'border-[#E8E4DB] bg-white'
       }`}
     >
       <div className="mb-2 flex items-start justify-between gap-2">
         <div className="flex-1">
-          <h3 className="text-sm font-semibold text-[#1A1208]">{report.department}</h3>
-          <p className="text-xs text-[#7A6A58] font-mono">
+          <h3 className={`text-sm font-semibold ${dark ? 'text-white' : 'text-[#1A1208]'}`}>{report.department}</h3>
+          <p className={`text-xs font-mono ${dark ? 'text-white/50' : 'text-[#7A6A58]'}`}>
             {report.category}
           </p>
         </div>
         <SeverityBadge severity={report.severity} />
       </div>
-      <p className="mb-2 text-sm leading-relaxed text-[#1A1208] line-clamp-2">
+      <p className={`mb-2 text-sm leading-relaxed line-clamp-2 ${dark ? 'text-white/50' : 'text-[#1A1208]'}`}>
         {report.description}
       </p>
       <div className="flex items-center justify-between mt-2">
-        <span className="text-xs text-[#7A6A58]">{report.timeAgo}</span>
+        <span className={`text-xs ${dark ? 'text-white/40' : 'text-[#7A6A58]'}`}>{report.timeAgo}</span>
         {reportComments.length > 0 && (
-          <span className="text-xs font-mono text-[#7A6A58] bg-[#E8E4DB]/50 px-2 py-0.5 rounded-full">
+          <span className={`text-xs font-mono px-2 py-0.5 rounded-full ${dark ? 'bg-white/10 text-white/50' : 'text-[#7A6A58] bg-[#E8E4DB]/50'}`}>
             {reportComments.length} comment{reportComments.length !== 1 ? 's' : ''}
           </span>
         )}
@@ -48,16 +51,16 @@ export function ReportCard({ report, isSelected, onClick }: ReportCardProps) {
 
       {isSelected && (
         <div className="mt-4 pt-4 border-t border-[#E8E4DB]" onClick={(e) => e.stopPropagation()}>
-          <h4 className="text-xs font-mono uppercase tracking-wider text-[#7A6A58] mb-3">Comments</h4>
+          <h4 className={`text-xs font-mono uppercase tracking-wider mb-3 ${dark ? 'text-white/50' : 'text-[#7A6A58]'}`}>Comments</h4>
           
           <div className="space-y-3 mb-4 max-h-40 overflow-y-auto">
             {reportComments.map((c) => (
-              <div key={c.id} className="bg-white rounded p-2 text-sm text-[#1A1208] border border-[#E8E4DB]">
+              <div key={c.id} className={`rounded p-2 text-sm border ${dark ? 'bg-white/5 border-white/10 text-white/70' : 'bg-white text-[#1A1208] border-[#E8E4DB]'}`}>
                 {c.text}
               </div>
             ))}
             {reportComments.length === 0 && (
-              <p className="text-xs text-[#7A6A58] italic">No comments yet. Be the first to comment!</p>
+              <p className={`text-xs italic ${dark ? 'text-white/40' : 'text-[#7A6A58]'}`}>No comments yet. Be the first to comment!</p>
             )}
           </div>
 
