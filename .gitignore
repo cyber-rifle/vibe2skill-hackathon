@@ -1,2 +1,6 @@
 .env.local
 .env.local.example
+
+# IDE / tool settings — may contain secrets
+.kiro/settings/
+.antigravityignore
