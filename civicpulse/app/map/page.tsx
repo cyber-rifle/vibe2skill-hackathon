@@ -100,8 +100,13 @@ export default function MapPage() {
               reports={allReports} 
               selectedId={selectedId} 
               onMarkerClick={(id) => {
-                setSelectedId(id)
-                setSheetOpen(true)
+                // Delay by 50ms on mobile to allow Leaflet's mobile touchend events to fully resolve
+                // On desktop, execute instantly for responsive sidebar syncing
+                if (window.innerWidth < 768) {
+                  setTimeout(() => setSelectedId(id), 50)
+                } else {
+                  setSelectedId(id)
+                }
               }} 
             />
           )}

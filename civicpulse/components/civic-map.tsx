@@ -108,7 +108,23 @@ export function CivicMap({ reports, selectedId, onMarkerClick }: CivicMapProps) 
         maxZoom: 19,
       }).addTo(map)
 
-      // Removed popup style injection as popups are no longer used
+      // Inject popup styles once, only if desktop
+      if (window.innerWidth >= 768) {
+        const style = document.createElement('style')
+        style.textContent = `
+          .leaflet-popup-content-wrapper {
+            background: #ffffff !important;
+            border: 1px solid #E8E4DB !important;
+            border-radius: 12px !important;
+            box-shadow: 0 4px 24px rgba(26,18,8,0.10) !important;
+            padding: 14px 16px !important;
+          }
+          .leaflet-popup-tip { background: #ffffff !important; }
+          .leaflet-popup-content { margin: 0 !important; }
+          .leaflet-popup-close-button { color: #7A6A58 !important; font-size: 16px !important; top: 8px !important; right: 10px !important; }
+        `
+        document.head.appendChild(style)
+      }
 
       setMapReady(true)
     }
@@ -215,6 +231,26 @@ export function CivicMap({ reports, selectedId, onMarkerClick }: CivicMapProps) 
         fillOpacity: 0.95,
       })
 
+      // Only bind the Leaflet popup on desktop (PC)
+      if (window.innerWidth >= 768) {
+        marker.bindPopup(
+          `<div style="font-family:'DM Sans',sans-serif;min-width:190px;padding:4px 2px">
+            <div style="font-size:10px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:#7A6A58;margin-bottom:6px;font-family:'JetBrains Mono',monospace">${r.category.replace(/_/g, ' ')}</div>
+            <div style="font-size:14px;font-weight:600;color:#1A1208;margin-bottom:6px;line-height:1.3">${r.department}</div>
+            ${r.resolutionTimeEstimate
+              ? `<div style="font-size:11px;color:#1A1208;margin-bottom:8px"><span style="color:#7A6A58">Expected resolution:</span> <strong>${r.resolutionTimeEstimate}</strong></div>`
+              : '<div style="font-size:11px;color:#7A6A58;margin-bottom:8px;font-style:italic">Timeline varies by department</div>'}
+            <div style="font-size:12px;color:#7A6A58;line-height:1.6;margin-bottom:10px;border-top:1px solid #E8E4DB;padding-top:8px">${r.description}</div>
+            <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap">
+              <span style="font-size:10px;font-family:'JetBrains Mono',monospace;background:#FAF7F2;border:1px solid #E8E4DB;border-radius:4px;padding:2px 7px;color:#1A1208;font-weight:500">severity ${r.severity}</span>
+              <span style="font-size:10px;font-family:'JetBrains Mono',monospace;background:#FAF7F2;border:1px solid #E8E4DB;border-radius:4px;padding:2px 7px;color:#7A6A58">${(r.status ?? 'reported').replace(/_/g, ' ')}</span>
+            </div>
+            ${buildTimelineHtml(r.status ?? 'reported')}
+          </div>`,
+          { maxWidth: 280 }
+        )
+      }
+
       marker.on('click', () => onMarkerClickRef.current(r.id))
       markersRef.current[r.id] = marker
 
@@ -255,7 +291,7 @@ export function CivicMap({ reports, selectedId, onMarkerClick }: CivicMapProps) 
     const r = reports.find((rep) => rep.id === selectedId);
     if (!r || !mapRef.current) return;
 
-    // Fast, responsive map pan with no popups (only on desktop)
+    // Fast, responsive map pan on desktop
     if (window.innerWidth >= 768) {
       mapRef.current.setView([r.lat, r.lon], Math.max(mapRef.current.getZoom(), 14), {
         animate: true,
@@ -264,8 +300,14 @@ export function CivicMap({ reports, selectedId, onMarkerClick }: CivicMapProps) 
 
       // Zoom to cluster if necessary
       const marker = markersRef.current[selectedId];
-      if (marker && clusterRef.current?.zoomToShowLayer) {
-        clusterRef.current.zoomToShowLayer(marker);
+      if (marker) {
+        if (clusterRef.current?.zoomToShowLayer) {
+          clusterRef.current.zoomToShowLayer(marker, () => {
+            setTimeout(() => marker.openPopup(), 300);
+          });
+        } else {
+          setTimeout(() => marker.openPopup(), 300);
+        }
       }
     }
   }, [selectedId, mapReady, reports]);
