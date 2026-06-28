@@ -2,6 +2,7 @@
 import { useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import { BoundingBox } from "@/types/analysis";
+import type { Detection } from "@/types/analysis";
 
 interface Props {
   box: BoundingBox;
@@ -145,6 +146,65 @@ export default function BoundingBoxOverlay({
           {category.toUpperCase()}
         </text>
       </motion.g>
+    </svg>
+  );
+}
+
+export function MultiBoxOverlay({
+  detections,
+  imageWidth,
+  imageHeight,
+}: {
+  detections: Detection[];
+  imageWidth: number;
+  imageHeight: number;
+}) {
+  return (
+    <svg
+      style={{ position: 'absolute', top: 0, left: 0, pointerEvents: 'none' }}
+      width={imageWidth}
+      height={imageHeight}
+      viewBox={`0 0 ${imageWidth} ${imageHeight}`}
+    >
+      {detections.map((det, index) => {
+        const color = getSeverityColor(det.severity);
+        const x = (det.boundingBox.xmin / 1000) * imageWidth;
+        const y = (det.boundingBox.ymin / 1000) * imageHeight;
+        const width = ((det.boundingBox.xmax - det.boundingBox.xmin) / 1000) * imageWidth;
+        const height = ((det.boundingBox.ymax - det.boundingBox.ymin) / 1000) * imageHeight;
+        const perimeter = 2 * (width + height);
+        const labelWidth = Math.max(det.category.length * 8 + 16, 80);
+        return (
+          <g key={index}>
+            <motion.rect
+              x={x} y={y} width={width} height={height}
+              fill="transparent" stroke={color} strokeWidth={2.5} rx={4}
+              initial={{ strokeDasharray: perimeter, strokeDashoffset: perimeter, opacity: 0 }}
+              animate={{ strokeDashoffset: 0, opacity: 1 }}
+              transition={{ duration: 0.6, delay: index * 0.2, ease: 'easeOut' }}
+            />
+            <motion.g
+              initial={{ opacity: 0, y: -4 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.55 + index * 0.2 }}
+            >
+              <rect x={x} y={y - 26} width={labelWidth} height={22} rx={4} fill={color} />
+              <text x={x + 8} y={y - 10} fill="white" fontSize={10}
+                fontFamily="'JetBrains Mono', monospace" fontWeight="600">
+                {det.category.toUpperCase()}
+              </text>
+              <text x={x + labelWidth - 8} y={y - 10} fill="white" fontSize={10}
+                fontFamily="'JetBrains Mono', monospace" textAnchor="end">
+                {Math.round(det.confidence * 100)}%
+              </text>
+            </motion.g>
+            <motion.line x1={x} y1={y+10} x2={x} y2={y} stroke={color} strokeWidth={3}
+              initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.5 + index * 0.2 }} />
+            <motion.line x1={x} y1={y} x2={x+10} y2={y} stroke={color} strokeWidth={3}
+              initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.5 + index * 0.2 }} />
+          </g>
+        );
+      })}
     </svg>
   );
 }

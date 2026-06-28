@@ -7,10 +7,18 @@ export interface BoundingBox {
   mask?: string;
 }
 
+export interface Detection {
+  boundingBox: BoundingBox;
+  category: string;
+  confidence: number;
+  severity: number;
+}
+
 export interface ClassifyResult {
   category: string;
   description: string;
   confidence: number;
   severity?: number;
   boundingBox?: BoundingBox | null;
+  detections?: Detection[];
 }

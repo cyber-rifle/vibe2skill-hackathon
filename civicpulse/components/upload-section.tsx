@@ -6,7 +6,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { ReasoningReveal } from "@/components/ReasoningReveal";
 import { useReports, severityLabel } from "@/lib/report-context";
 import { Textarea } from "@/components/ui/textarea";
-import BoundingBoxOverlay from "@/components/BoundingBoxOverlay";
+import BoundingBoxOverlay, { MultiBoxOverlay } from "@/components/BoundingBoxOverlay";
 import { SeverityBadge } from "@/components/severity-badge";
 import { useToast } from "@/components/toast";
 
@@ -532,17 +532,27 @@ export function UploadSection() {
                   }}
                 />
                 {(() => {
-                  type ClassifyResult = { boundingBox?: { ymin: number; xmin: number; ymax: number; xmax: number }; severity?: number; category?: string };
-                  const cr = analysisSteps.find((s) => s.step === "classify")?.result as ClassifyResult;
-                  const bbox = cr?.boundingBox;
-                  if (!imgDims || !bbox) return null;
+                  type CR = { boundingBox?: { ymin:number; xmin:number; ymax:number; xmax:number }; severity?: number; category?: string; detections?: Array<{ boundingBox: { ymin:number; xmin:number; ymax:number; xmax:number }; category:string; confidence:number; severity:number }> };
+                  const cr = analysisSteps.find((s) => s.step === 'classify')?.result as CR;
+                  if (!imgDims) return null;
+                  if (cr?.detections && cr.detections.length > 1) {
+                    return (
+                      <MultiBoxOverlay
+                        detections={cr.detections}
+                        imageWidth={imgDims.w}
+                        imageHeight={imgDims.h}
+                      />
+                    );
+                  }
+                  const bbox = cr?.boundingBox ?? cr?.detections?.[0]?.boundingBox;
+                  if (!bbox) return null;
                   return (
                     <BoundingBoxOverlay
                       box={bbox}
                       imageWidth={imgDims.w}
                       imageHeight={imgDims.h}
-                      severity={cr?.severity ?? 3}
-                      category={cr?.category ?? "issue"}
+                      severity={cr?.severity ?? cr?.detections?.[0]?.severity ?? 3}
+                      category={cr?.category ?? cr?.detections?.[0]?.category ?? 'issue'}
                     />
                   );
                 })()}

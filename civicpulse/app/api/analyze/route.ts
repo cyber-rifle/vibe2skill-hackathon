@@ -68,6 +68,7 @@ export async function POST(req: NextRequest) {
                 confidence: 0.92,
                 severity: 4,
                 boundingBox: { ymin: 310, xmin: 220, ymax: 590, xmax: 680 },
+                detections: [{ category: 'pothole', confidence: 0.92, severity: 4, boundingBox: { ymin: 310, xmin: 220, ymax: 590, xmax: 680 } }],
               },
             },
             {
@@ -161,7 +162,7 @@ Provide a factual one-sentence description of what is visible.
 Provide a confidence score from 0.0 to 1.0.
 Also identify the primary issue location in the frame and return its bounding box as ymin, xmin, ymax, xmax normalized to a 0–1000 scale where (0,0) is top-left.
 Respond ONLY with valid JSON, no markdown, no code blocks, no extra text:
-{"category":"...","description":"...","confidence":0.0,"severity":3,"boundingBox":{"ymin":0,"xmin":0,"ymax":500,"xmax":500}}`,
+{"category":"...","description":"...","confidence":0.0,"severity":3,"boundingBox":{"ymin":0,"xmin":0,"ymax":500,"xmax":500},"detections":[{"category":"...","confidence":0.0,"severity":3,"boundingBox":{"ymin":0,"xmin":0,"ymax":500,"xmax":500}}]} If the image contains MULTIPLE distinct civic issues (e.g., two potholes, a pothole AND a broken drain), populate the detections array with one entry per distinct issue, each with its own boundingBox coordinates in 0-1000 range, category, confidence, and severity. If only one issue exists, the detections array should contain exactly one entry matching the top-level boundingBox.`,
         },
       ],
     }];
