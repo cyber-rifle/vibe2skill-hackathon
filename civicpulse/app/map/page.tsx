@@ -48,8 +48,17 @@ export default function MapPage() {
 
   useEffect(() => {
     if (selectedId) {
-      const card = document.getElementById(`report-card-${selectedId}`)
-      card?.scrollIntoView({ behavior: 'smooth', block: 'nearest' })
+      // Try scrolling desktop card first
+      const desktopCard = document.getElementById(`report-card-${selectedId}`)
+      if (desktopCard && window.innerWidth >= 768) {
+        desktopCard.scrollIntoView({ behavior: 'smooth', block: 'nearest' })
+      }
+      
+      // Try scrolling mobile card
+      const mobileCard = document.getElementById(`report-card-mobile-${selectedId}`)
+      if (mobileCard && window.innerWidth < 768) {
+        mobileCard.scrollIntoView({ behavior: 'smooth', block: 'nearest' })
+      }
     }
   }, [selectedId])
 
@@ -91,7 +100,14 @@ export default function MapPage() {
               <Link href="/#upload" className="mt-4 shimmer-btn rounded-full px-5 py-2 text-sm">Report an Issue</Link>
             </div>
           ) : (
-            <CivicMap reports={allReports} selectedId={selectedId} onMarkerClick={setSelectedId} />
+            <CivicMap 
+              reports={allReports} 
+              selectedId={selectedId} 
+              onMarkerClick={(id) => {
+                setSelectedId(id)
+                setSheetOpen(true)
+              }} 
+            />
           )}
           <MapLegend />
         </div>

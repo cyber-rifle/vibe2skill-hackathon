@@ -50,7 +50,7 @@ export function ReportCard({ report, isSelected, onClick }: ReportCardProps) {
         <div className="mt-4 pt-4 border-t border-[#E8E4DB]" onClick={(e) => e.stopPropagation()}>
           <h4 className="text-xs font-mono uppercase tracking-wider mb-3 text-[#7A6A58]">Comments</h4>
           
-          <div className="space-y-3 mb-4 max-h-40 overflow-y-auto">
+          <div className="space-y-3 mb-4">
             {reportComments.map((c) => (
               <div key={c.id} className="rounded-lg p-2.5 text-sm border bg-[#FAF7F2] text-[#1A1208] border-[#E8E4DB]">
                 {c.text}
