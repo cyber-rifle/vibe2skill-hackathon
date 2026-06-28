@@ -39,15 +39,16 @@ const DEPT_COLORS: Record<string, string> = {
   "Municipal Corporation": "#C9A84C",
 }
 
+// 6. Progress bars — glow version
 function AnimatedBar({ pct, color, delay = 0 }: { pct: number; color: string; delay?: number }) {
   return (
-    <div className="w-full h-2 bg-[#F2EDE4] rounded-full overflow-hidden">
+    <div className="w-full h-2 bg-white/10 rounded-full overflow-hidden relative">
       <motion.div
         initial={{ width: 0 }}
         animate={{ width: `${pct}%` }}
         transition={{ duration: 0.9, ease: "easeOut", delay }}
-        className="h-full rounded-full"
-        style={{ backgroundColor: color }}
+        className="h-full rounded-full relative"
+        style={{ backgroundColor: color, boxShadow: `0 0 8px ${color}80` }}
       />
     </div>
   )
@@ -98,81 +99,80 @@ export default function DashboardPage() {
     .sort((a, b) => new Date(b.createdAt ?? 0).getTime() - new Date(a.createdAt ?? 0).getTime())
     .slice(0, 6)
 
-  const KPIS = [
-    { label: "Total Reports", value: allReports.length, suffix: "", color: "#5BBFBF", sub: "all time" },
-    { label: "Active Now", value: activeCount, suffix: "", color: "#D4AF37", sub: "need attention" },
-    { label: "High Severity", value: highCount, suffix: "", color: "#E8957A", sub: "urgent" },
-    { label: "Resolved", value: resolvedPct, suffix: "%", color: "#22c55e", sub: "resolution rate" },
-  ]
-
   return (
-    <div className="min-h-screen bg-[#FAF7F2]">
+    // 1. Page background — dark mission control
+    <div className="min-h-screen" style={{ background: 'linear-gradient(135deg, #0A1628 0%, #0F1F38 50%, #0A1628 100%)' }}>
       <Navbar />
 
-      {/* Mission-control header — deep navy */}
-      <div className="bg-[#0A1628] border-b border-white/10">
-        <div className="mx-auto max-w-6xl px-5 py-10">
-          <motion.div
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-          >
-            <p className="font-mono text-[10px] uppercase tracking-[0.22em] text-[#5BBFBF] mb-2">
-              Live Intelligence · Hyderabad
-            </p>
-            <h1 className="font-display text-4xl md:text-5xl font-light text-white mb-1">
-              CivicPulse Dashboard
-            </h1>
-            <p className="text-white/40 font-sans text-sm">
-              Real-time civic intelligence — updates as reports come in
-            </p>
-          </motion.div>
-
-          {/* KPI strip */}
-          <div className="mt-8 grid grid-cols-2 md:grid-cols-4 gap-3">
-            {KPIS.map((kpi, i) => (
-              <motion.div
-                key={kpi.label}
-                initial={{ opacity: 0, y: 12 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: i * 0.08 }}
-                className="rounded-xl border border-white/10 px-5 py-4"
-                style={{ background: "rgba(255,255,255,0.05)" }}
-              >
-                <p className="font-mono text-[10px] uppercase tracking-wider text-white/40 mb-1">
-                  {kpi.label}
-                </p>
-                <p className="font-display text-3xl font-light" style={{ color: kpi.color }}>
-                  <CountUp target={kpi.value} suffix={kpi.suffix} />
-                </p>
-                <p className="font-mono text-[10px] text-white/30 mt-1">{kpi.sub}</p>
-              </motion.div>
-            ))}
+      {/* 2. Page header — command center style */}
+      <div className="border-b border-white/10 px-6 py-6" style={{ background: 'rgba(255,255,255,0.03)' }}>
+        <div className="mx-auto max-w-6xl flex items-center justify-between">
+          <div>
+            <div className="flex items-center gap-2 mb-1">
+              <span className="h-2 w-2 rounded-full bg-[#5BBFBF] glow-pulse" />
+              <p className="font-mono text-xs text-[#5BBFBF] uppercase tracking-widest">Live Dashboard</p>
+            </div>
+            <h1 className="font-display text-3xl font-light text-white">CivicPulse Command</h1>
+            <p className="font-mono text-xs text-white/30 mt-1">Hyderabad Metropolitan Area · Real-time infrastructure tracking</p>
+          </div>
+          <div className="text-right hidden sm:block">
+            <p className="font-mono text-xs text-white/30">Last updated</p>
+            <p className="font-mono text-xs text-[#5BBFBF]">{new Date().toLocaleTimeString('en-IN')}</p>
           </div>
         </div>
       </div>
 
-      {/* Tab bar */}
-      <div className="mx-auto max-w-6xl px-5">
-        <div className="flex gap-0 border-b border-[#E8E4DB] mt-0">
-          {(["overview", "departments", "activity"] as const).map((t) => (
-            <button
-              key={t}
-              onClick={() => setTab(t)}
-              className={`font-mono text-xs uppercase tracking-wider px-5 py-4
-                border-b-2 transition-all -mb-px capitalize ${
-                  tab === t
-                    ? "border-[#5BBFBF] text-[#1A1208]"
-                    : "border-transparent text-[#7A6A58] hover:text-[#1A1208]"
-                }`}
+      <div className="mx-auto max-w-6xl px-5 py-8">
+
+        {/* 3. KPI cards — 4 dark glassmorphism cards */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+          {[
+            { label: 'Total Reports', value: allReports.length, suffix: '', icon: '📋', color: '#5BBFBF', subtext: '+12 this week' },
+            { label: 'Active Issues', value: activeCount, suffix: '', icon: '⚡', color: '#D4AF6A', subtext: `${highCount} critical` },
+            { label: 'Resolved', value: byStatus.resolved ?? 0, suffix: '', icon: '✅', color: '#22c55e', subtext: `${resolvedPct}% rate` },
+            { label: 'Departments', value: Object.keys(byDept).length, suffix: '', icon: '🏛️', color: '#E8957A', subtext: 'Active responders' },
+          ].map(({ label, value, suffix, icon, color, subtext }, i) => (
+            <motion.div
+              key={label}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: i * 0.08 }}
+              className="iridescent-border-animated rounded-2xl"
+              style={{ borderRadius: '16px' }}
             >
+              <div className="rounded-2xl p-5" style={{ background: 'rgba(10, 22, 40, 0.85)', backdropFilter: 'blur(20px)' }}>
+                <div className="flex items-start justify-between mb-3">
+                  <span className="text-2xl">{icon}</span>
+                  <span className="font-mono text-[10px] uppercase tracking-wider px-2 py-0.5 rounded-full"
+                    style={{ background: `${color}20`, color }}>
+                    Live
+                  </span>
+                </div>
+                <p className="font-display text-4xl font-light text-white">
+                  <CountUp target={value} suffix={suffix} />
+                </p>
+                <p className="font-sans text-sm text-white/60 mt-1">{label}</p>
+                <p className="font-mono text-[10px] mt-2" style={{ color }}>{subtext}</p>
+              </div>
+            </motion.div>
+          ))}
+        </div>
+
+        {/* 4. Tabs — dark style */}
+        <div className="flex gap-1 p-1 rounded-xl mb-6 w-fit"
+          style={{ background: 'rgba(255,255,255,0.06)' }}>
+          {(['overview', 'departments', 'activity'] as const).map((t) => (
+            <button key={t} onClick={() => setTab(t)}
+              className={`px-4 py-2 rounded-lg font-mono text-xs uppercase tracking-wider transition-all
+                ${tab === t
+                  ? 'bg-[#5BBFBF] text-[#0A1628] font-semibold'
+                  : 'text-white/50 hover:text-white/80'
+                }`}>
               {t}
             </button>
           ))}
         </div>
-      </div>
 
-      <div className="mx-auto max-w-6xl px-5 py-8">
         <AnimatePresence mode="wait">
 
           {/* ── OVERVIEW TAB ── */}
@@ -182,9 +182,10 @@ export default function DashboardPage() {
               className="space-y-6"
             >
               <div className="grid md:grid-cols-3 gap-6">
-                {/* Category bars — 2/3 width */}
-                <div className="md:col-span-2 rounded-2xl border border-[#E8E4DB] bg-white p-6">
-                  <h2 className="font-display text-xl font-light text-[#1A1208] mb-5">
+                {/* 5. Category bars — dark glassmorphism card */}
+                <div className="md:col-span-2 rounded-2xl border border-white/10 p-6"
+                  style={{ background: 'rgba(255,255,255,0.05)', backdropFilter: 'blur(12px)' }}>
+                  <h2 className="font-display text-xl font-light text-white mb-5">
                     Reports by Category
                   </h2>
                   <div className="space-y-4">
@@ -192,13 +193,13 @@ export default function DashboardPage() {
                       .sort(([, a], [, b]) => b - a)
                       .map(([cat, count], i) => (
                         <div key={cat} className="flex items-center gap-3">
-                          <span className="text-lg w-6 flex-shrink-0">
+                          <span className="text-lg w-6 flex-shrink-0 bg-white/5 rounded-lg p-1 text-center">
                             {CATEGORY_ICONS[cat] ?? "📋"}
                           </span>
                           <div className="flex-1 min-w-0">
-                            <div className="flex justify-between text-xs font-mono text-[#7A6A58] mb-1.5">
+                            <div className="flex justify-between text-xs font-mono text-white/50 mb-1.5">
                               <span>{CATEGORY_LABELS[cat] ?? cat}</span>
-                              <span className="font-semibold text-[#1A1208]">{count}</span>
+                              <span className="font-semibold text-white">{count}</span>
                             </div>
                             <AnimatedBar
                               pct={(count / maxCat) * 100}
@@ -213,21 +214,22 @@ export default function DashboardPage() {
 
                 {/* Right column */}
                 <div className="space-y-4">
-                  {/* Severity */}
-                  <div className="rounded-2xl border border-[#E8E4DB] bg-white p-5">
-                    <h2 className="font-display text-base font-light text-[#1A1208] mb-4">
+                  {/* Severity — dark card */}
+                  <div className="rounded-2xl border border-white/10 p-5"
+                    style={{ background: 'rgba(255,255,255,0.05)', backdropFilter: 'blur(12px)' }}>
+                    <h2 className="font-display text-base font-light text-white mb-4">
                       Severity Distribution
                     </h2>
                     <div className="space-y-3">
                       {(["high", "medium", "low"] as const).map((sev, i) => (
                         <div key={sev}>
-                          <div className="flex justify-between text-xs font-mono text-[#7A6A58] mb-1">
+                          <div className="flex justify-between text-xs font-mono text-white/50 mb-1">
                             <span className="flex items-center gap-1.5 capitalize">
                               <span className="w-2 h-2 rounded-full inline-block"
                                 style={{ background: SEVERITY_COLORS[sev] }} />
                               {sev}
                             </span>
-                            <span>{bySeverity[sev] ?? 0}</span>
+                            <span className="text-white">{bySeverity[sev] ?? 0}</span>
                           </div>
                           <AnimatedBar
                             pct={((bySeverity[sev] ?? 0) / total) * 100}
@@ -239,14 +241,15 @@ export default function DashboardPage() {
                     </div>
                   </div>
 
-                  {/* SVG resolution ring */}
-                  <div className="rounded-2xl border border-[#E8E4DB] bg-white p-5 flex flex-col items-center">
-                    <h2 className="font-display text-base font-light text-[#1A1208] mb-3 self-start">
+                  {/* 7. SVG resolution ring — dark + teal glow */}
+                  <div className="rounded-2xl border border-white/10 p-5 flex flex-col items-center"
+                    style={{ background: 'rgba(255,255,255,0.05)', backdropFilter: 'blur(12px)' }}>
+                    <h2 className="font-display text-base font-light text-white mb-3 self-start">
                       Resolution Rate
                     </h2>
                     <svg width="96" height="96" viewBox="0 0 100 100">
                       <circle cx="50" cy="50" r="40" fill="none"
-                        stroke="#F2EDE4" strokeWidth="10" />
+                        stroke="rgba(255,255,255,0.08)" strokeWidth="10" />
                       <motion.circle cx="50" cy="50" r="40" fill="none"
                         stroke="#22c55e" strokeWidth="10" strokeLinecap="round"
                         strokeDasharray={`${2 * Math.PI * 40}`}
@@ -256,22 +259,24 @@ export default function DashboardPage() {
                         }}
                         transition={{ duration: 1.2, ease: "easeOut" }}
                         transform="rotate(-90 50 50)"
+                        style={{ filter: 'drop-shadow(0 0 6px rgba(34, 197, 94, 0.5))' }}
                       />
                       <text x="50" y="54" textAnchor="middle"
-                        style={{ fontSize: 18, fill: "#1A1208", fontFamily: "var(--font-display)" }}>
+                        style={{ fontSize: 18, fill: "#ffffff", fontFamily: "var(--font-display)" }}>
                         {resolvedPct}%
                       </text>
                     </svg>
-                    <p className="text-xs font-mono text-[#7A6A58] mt-2">
+                    <p className="text-xs font-mono text-white/50 mt-2">
                       {byStatus.resolved ?? 0} of {total} resolved
                     </p>
                   </div>
                 </div>
               </div>
 
-              {/* Status pipeline */}
-              <div className="rounded-2xl border border-[#E8E4DB] bg-white p-6">
-                <h2 className="font-display text-xl font-light text-[#1A1208] mb-5">
+              {/* 8. Status pipeline — dark cards */}
+              <div className="rounded-2xl border border-white/10 p-6"
+                style={{ background: 'rgba(255,255,255,0.05)', backdropFilter: 'blur(12px)' }}>
+                <h2 className="font-display text-xl font-light text-white mb-5">
                   Issue Pipeline
                 </h2>
                 <div className="flex flex-col md:flex-row gap-2">
@@ -285,26 +290,31 @@ export default function DashboardPage() {
                       <div key={status} className="flex md:flex-col items-center gap-2 flex-1">
                         <div className="flex-1 md:flex-none md:w-full rounded-xl p-3 text-center"
                           style={{
-                            background: `${STATUS_COLORS[status]}12`,
-                            borderTop: `3px solid ${STATUS_COLORS[status]}`,
+                            background: `${STATUS_COLORS[status]}08`,
+                            borderTop: `2px solid ${STATUS_COLORS[status]}`,
+                            backdropFilter: 'blur(8px)',
                           }}>
                           <p className="font-display text-2xl font-light"
                             style={{ color: STATUS_COLORS[status] }}>
                             {count}
                           </p>
-                          <p className="font-mono text-[9px] uppercase tracking-wider text-[#7A6A58] mt-0.5">
+                          <p className="font-mono text-[9px] uppercase tracking-wider text-white/50 mt-0.5">
                             {STATUS_LABELS[status]}
                           </p>
                         </div>
                         {i < arr.length - 1 && (
-                          <span className="text-[#E8E4DB] font-mono text-sm hidden md:block">→</span>
+                          <span className="text-white/20 font-mono text-sm hidden md:block">→</span>
                         )}
                       </div>
                     ))}
                 </div>
               </div>
 
-              <CitizenProfile />
+              {/* 10. CitizenProfile — dark wrapper */}
+              <div className="rounded-2xl border border-white/10 overflow-hidden"
+                style={{ background: 'rgba(255,255,255,0.05)' }}>
+                <CitizenProfile dark />
+              </div>
             </motion.div>
           )}
 
@@ -327,12 +337,13 @@ export default function DashboardPage() {
                       initial={{ opacity: 0, y: 16 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: i * 0.06 }}
-                      className="rounded-2xl border border-[#E8E4DB] bg-white p-6"
+                      className="rounded-2xl border border-white/10 p-6"
+                      style={{ background: 'rgba(255,255,255,0.05)', backdropFilter: 'blur(12px)' }}
                     >
                       <div className="flex items-start justify-between mb-4">
                         <div>
-                          <h3 className="font-sans text-sm font-semibold text-[#1A1208]">{dept}</h3>
-                          <p className="font-mono text-xs text-[#7A6A58] mt-0.5">
+                          <h3 className="font-sans text-sm font-semibold text-white">{dept}</h3>
+                          <p className="font-mono text-xs text-white/50 mt-0.5">
                             {count} total reports
                           </p>
                         </div>
@@ -341,16 +352,16 @@ export default function DashboardPage() {
                         </span>
                       </div>
                       <div className="grid grid-cols-2 gap-3 mb-3">
-                        <div className="bg-[#FAF7F2] rounded-lg p-3">
-                          <p className="font-mono text-[9px] uppercase tracking-wider text-[#7A6A58]">
+                        <div className="bg-white/5 rounded-lg p-3">
+                          <p className="font-mono text-[9px] uppercase tracking-wider text-white/50">
                             Resolved
                           </p>
                           <p className="font-sans text-lg font-semibold text-[#22c55e] mt-0.5">
                             {rRate}%
                           </p>
                         </div>
-                        <div className="bg-[#FAF7F2] rounded-lg p-3">
-                          <p className="font-mono text-[9px] uppercase tracking-wider text-[#7A6A58]">
+                        <div className="bg-white/5 rounded-lg p-3">
+                          <p className="font-mono text-[9px] uppercase tracking-wider text-white/50">
                             Urgent
                           </p>
                           <p className="font-sans text-lg font-semibold text-[#E8957A] mt-0.5">
@@ -374,29 +385,31 @@ export default function DashboardPage() {
             <motion.div key="activity"
               initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}
             >
-              <div className="rounded-2xl border border-[#E8E4DB] bg-white overflow-hidden">
-                <div className="px-6 py-4 border-b border-[#E8E4DB]">
-                  <h2 className="font-display text-xl font-light text-[#1A1208]">
+              {/* 9. Activity tab — dark list */}
+              <div className="rounded-2xl border border-white/10 overflow-hidden"
+                style={{ background: 'rgba(255,255,255,0.05)', backdropFilter: 'blur(12px)' }}>
+                <div className="px-6 py-4 border-b border-white/10">
+                  <h2 className="font-display text-xl font-light text-white">
                     Recent Activity
                   </h2>
-                  <p className="text-xs font-mono text-[#7A6A58] mt-0.5">
+                  <p className="text-xs font-mono text-white/50 mt-0.5">
                     Latest {recent.length} reports
                   </p>
                 </div>
-                <div className="divide-y divide-[#F2EDE4]">
+                <div className="divide-y divide-white/5">
                   {recent.map((r, i) => (
                     <motion.div key={r.id}
                       initial={{ opacity: 0, x: -10 }}
                       animate={{ opacity: 1, x: 0 }}
                       transition={{ delay: i * 0.06 }}
-                      className="flex items-start gap-4 px-6 py-4 hover:bg-[#FAF7F2] transition-colors"
+                      className="flex items-start gap-4 px-6 py-4 hover:bg-white/5 transition-colors"
                     >
-                      <span className="text-xl mt-0.5 flex-shrink-0">
+                      <span className="text-xl mt-0.5 flex-shrink-0 bg-white/5 rounded-lg p-1.5">
                         {CATEGORY_ICONS[r.category] ?? "📋"}
                       </span>
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center gap-2 flex-wrap">
-                          <p className="font-sans text-sm font-medium text-[#1A1208] truncate">
+                          <p className="font-sans text-sm font-medium text-white truncate">
                             {r.department}
                           </p>
                           <span className="text-xs font-mono px-2 py-0.5 rounded-full"
@@ -414,7 +427,7 @@ export default function DashboardPage() {
                             {STATUS_LABELS[r.status ?? "reported"]}
                           </span>
                         </div>
-                        <p className="text-xs text-[#7A6A58] mt-1 line-clamp-1">
+                        <p className="text-xs text-white/50 mt-1 line-clamp-1">
                           {r.description}
                         </p>
                         {(r as any).resolutionTimeEstimate && (
@@ -424,7 +437,7 @@ export default function DashboardPage() {
                         )}
                       </div>
                       {r.timeAgo && (
-                        <p className="text-[10px] font-mono text-[#7A6A58] flex-shrink-0 mt-1">
+                        <p className="text-[10px] font-mono text-white/40 flex-shrink-0 mt-1">
                           {r.timeAgo}
                         </p>
                       )}
