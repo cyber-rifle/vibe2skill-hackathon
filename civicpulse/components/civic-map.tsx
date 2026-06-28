@@ -261,12 +261,12 @@ export function CivicMap({ reports, selectedId, onMarkerClick }: CivicMapProps) 
         animate: true,
         duration: 0.25,
       });
-    }
-    
-    // Zoom to cluster if necessary
-    const marker = markersRef.current[selectedId];
-    if (marker && clusterRef.current?.zoomToShowLayer) {
-      clusterRef.current.zoomToShowLayer(marker);
+
+      // Zoom to cluster if necessary
+      const marker = markersRef.current[selectedId];
+      if (marker && clusterRef.current?.zoomToShowLayer) {
+        clusterRef.current.zoomToShowLayer(marker);
+      }
     }
   }, [selectedId, mapReady, reports]);
 

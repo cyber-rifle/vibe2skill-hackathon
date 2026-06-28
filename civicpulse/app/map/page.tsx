@@ -191,7 +191,10 @@ export default function MapPage() {
             <div className="bg-white px-4 py-3 border-b border-[#E8E4DB] flex items-center justify-between shadow-sm-warm flex-shrink-0">
               <h2 className="font-display text-lg text-[#1A1208]">Report Details</h2>
               <button 
-                onClick={() => setSelectedId(null)}
+                onClick={() => {
+                  setSelectedId(null)
+                  setTimeout(() => window.dispatchEvent(new Event('resize')), 100)
+                }}
                 className="p-2 -mr-2 text-[#7A6A58] hover:text-[#1A1208] transition-colors"
               >
                 ✕ Close
