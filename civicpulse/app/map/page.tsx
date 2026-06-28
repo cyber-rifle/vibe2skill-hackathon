@@ -185,16 +185,44 @@ export default function MapPage() {
                 <ReportCard
                   report={report}
                   dark={false}
-                  isSelected={selectedId === report.id}
+                  isSelected={false} // Force false in the list so it doesn't expand inline on mobile
                   onClick={() => {
-                    setSelectedId(report.id === selectedId ? null : report.id)
-                    setSheetOpen(true)
+                    setSelectedId(report.id)
                   }}
                 />
               </div>
             ))}
           </div>
         </div>
+
+        {/* Mobile Full-Screen Report Modal (Option B) */}
+        {selectedId && (
+          <div className="md:hidden fixed inset-0 z-[100] bg-[#FAF7F2] flex flex-col overflow-hidden animate-in slide-in-from-bottom-8 fade-in duration-300">
+            <div className="bg-white px-4 py-3 border-b border-[#E8E4DB] flex items-center justify-between shadow-sm-warm flex-shrink-0">
+              <h2 className="font-display text-lg text-[#1A1208]">Report Details</h2>
+              <button 
+                onClick={() => setSelectedId(null)}
+                className="p-2 -mr-2 text-[#7A6A58] hover:text-[#1A1208] transition-colors"
+              >
+                ✕ Close
+              </button>
+            </div>
+            <div className="flex-1 overflow-y-auto p-4">
+              {(() => {
+                const selectedReport = allReports.find(r => r.id === selectedId)
+                if (!selectedReport) return null
+                return (
+                  <ReportCard
+                    report={selectedReport}
+                    dark={false}
+                    isSelected={true} // Always expanded in modal
+                    onClick={() => {}} // No-op
+                  />
+                )
+              })()}
+            </div>
+          </div>
+        )}
       </div>
     </div>
   )
