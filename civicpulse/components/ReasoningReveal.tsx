@@ -82,6 +82,7 @@ const SeverityCard = ({ result, streamingText }: { result: unknown; streamingTex
   const assessment = (result as any)?.assessment ?? "";
   const grounded = (result as any)?.grounded ?? false;
   const sources = (result as any)?.sources ?? [];
+  const policyContext = (result as any)?.policyContext ?? null;
   const urgencyMatch = assessment.match(/(\d)\/5/);
   const urgency = urgencyMatch ? parseInt(urgencyMatch[1], 10) : 3;
   const resolutionTimeEstimate = (result as any)?.resolutionTimeEstimate ?? null;
@@ -176,15 +177,87 @@ const SeverityCard = ({ result, streamingText }: { result: unknown; streamingTex
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
-            className="mt-2 text-xs text-[#7A6A58] font-mono leading-relaxed bg-[#FAF7F2] rounded-lg p-3 border border-[#E8E4DB] overflow-hidden"
+            className="overflow-hidden"
           >
-            <p className="font-semibold text-[#1A1208] mb-1">Factors considered:</p>
-            <ul className="space-y-1 list-none">
-              <li>• Issue type: {category || "civic issue"}</li>
-              <li>• Urgency score: {urgency}/5</li>
-              <li>• Data source: {grounded ? "Google Search (live)" : "Gemini training data"}</li>
-              <li>• Cited sources: {sources?.length ?? 0}</li>
-            </ul>
+            <div className="mt-3 rounded-xl bg-[#FAF7F2] border border-[#E8E4DB] p-4 space-y-4">
+
+              {/* Policy context block */}
+              {policyContext && (
+                <div>
+                  <p className="font-mono text-[10px] uppercase tracking-[0.15em] text-[#C9A84C] mb-1.5">
+                    Department Policy
+                  </p>
+                  <p className="text-sm text-[#7A6A58] leading-relaxed font-sans italic">
+                    "{policyContext}"
+                  </p>
+                </div>
+              )}
+
+              {/* Live clickable sources */}
+              {grounded && Array.isArray(sources) && sources.length > 0 && (
+                <div className={policyContext ? "border-t border-[#E8E4DB] pt-3" : ""}>
+                  <p className="font-mono text-[10px] uppercase tracking-[0.15em] text-[#5BBFBF] mb-2">
+                    Live Sources ({sources.length})
+                  </p>
+                  <div className="space-y-2">
+                    {sources.slice(0, 5).map((source: any, i: number) => {
+                      let hostname = source.uri || "";
+                      try { hostname = new URL(source.uri).hostname; } catch {}
+                      const title = source.title && source.title !== source.uri
+                        ? source.title
+                        : hostname;
+                      return (
+                        <a
+                          key={i}
+                          href={source.uri}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="flex items-start gap-2 group"
+                        >
+                          <span className="flex-shrink-0 w-1.5 h-1.5 rounded-full bg-[#5BBFBF] mt-1.5" />
+                          <div className="min-w-0">
+                            <p className="text-xs font-sans text-[#1A1208]
+                              group-hover:text-[#5BBFBF] transition-colors leading-relaxed truncate">
+                              {title}
+                            </p>
+                            <p className="text-[10px] font-mono text-[#7A6A58] truncate">
+                              {source.uri.length > 55
+                                ? source.uri.slice(0, 52) + "..."
+                                : source.uri}
+                            </p>
+                          </div>
+                        </a>
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
+
+              {/* Compact factors grid */}
+              <div className="border-t border-[#E8E4DB] pt-3">
+                <p className="font-mono text-[10px] uppercase tracking-[0.15em] text-[#7A6A58] mb-2">
+                  Factors
+                </p>
+                <div className="grid grid-cols-2 gap-2">
+                  {[
+                    { label: "Issue type", value: category || "civic issue" },
+                    { label: "Urgency", value: `${urgency}/5` },
+                    { label: "Data source", value: grounded ? "Google Search (live)" : "Training data" },
+                    { label: "Sources cited", value: String(sources?.length ?? 0) },
+                  ].map((f) => (
+                    <div key={f.label}
+                      className="bg-white rounded-lg px-3 py-2 border border-[#E8E4DB]">
+                      <p className="font-mono text-[9px] uppercase tracking-wide text-[#7A6A58]">
+                        {f.label}
+                      </p>
+                      <p className="font-sans text-xs font-medium text-[#1A1208] mt-0.5">
+                        {f.value}
+                      </p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
           </motion.div>
         )}
       </AnimatePresence>
@@ -249,9 +322,11 @@ export function ReasoningReveal({ steps, streamingText = "" }: { steps: Step[]; 
               initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: i * 0.12, duration: 0.35, ease: 'easeOut' }}
-              className="flex items-start gap-4 rounded-xl border border-[#E6DDCF] border-l-4 border-l-[#5BBFBF] bg-[#F2EDE4] px-5 py-4 card-hover"
+              className="flex items-start gap-4 rounded-2xl border border-[#E8E4DB] bg-white px-5 py-5 shadow-sm-warm"
+              whileHover={{ y: -2, boxShadow: "0 8px 32px rgba(26,18,8,0.10)", transition: { type: "spring", stiffness: 400, damping: 30 } }}
+              whileTap={{ scale: 0.99, transition: { type: "spring", stiffness: 400, damping: 30 } }}
             >
-              <span className="mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-[#E6DDCF] bg-white font-mono text-xs text-[#7A6A58]">
+              <span className="mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-[#5BBFBF]/10 font-mono text-xs font-semibold text-[#5BBFBF]">
                 {i + 1}
               </span>
               <div className="min-w-0 flex-1">

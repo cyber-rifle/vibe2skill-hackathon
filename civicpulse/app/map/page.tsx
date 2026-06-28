@@ -29,10 +29,11 @@ export default function MapPage() {
 
   const { confirmedReports } = useReports()
   const [selectedId, setSelectedId] = useState<string | null>(null)
+  const [sheetOpen, setSheetOpen] = useState(false)
   const allReports = [...seedReports, ...confirmedReports]
 
   return (
-    <div className="flex h-screen flex-col bg-[#0D0B08] overflow-hidden">
+    <div className="flex h-screen flex-col bg-[#0A1628] overflow-hidden">
       <Navbar />
 
       {/* Page header */}
@@ -40,7 +41,7 @@ export default function MapPage() {
         initial={{ opacity: 0, y: 16 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.45, ease: 'easeOut' }}
-        className="flex-shrink-0 border-b border-white/10 bg-[#0D0B08] px-6 py-4"
+        className="flex-shrink-0 border-b border-white/10 bg-[#0A1628] px-6 py-4"
       >
         <div className="mx-auto flex max-w-7xl items-center justify-between">
           <div>
@@ -99,22 +100,42 @@ export default function MapPage() {
         </div>
 
         {/* Mobile: bottom sheet with report count badge */}
-        <div className="
+        <div className={`
           md:hidden fixed bottom-0 left-0 right-0 z-20
           bg-white border-t border-[#E8E4DB]
-          max-h-[45vh] flex flex-col
-        ">
-          <div className="flex items-center justify-between px-4 py-3 border-b border-[#E8E4DB]">
-            <span className="font-display text-base font-light text-[#1A1208]">Reports</span>
-            <span className="font-mono text-xs text-[#7A6A58]">{allReports.length} total</span>
-          </div>
+          flex flex-col overflow-hidden
+          transition-all duration-300 ease-out
+          ${sheetOpen ? "max-h-[55vh]" : "max-h-[52px]"}
+        `}>
+          <button
+            onClick={() => setSheetOpen(!sheetOpen)}
+            className="flex items-center justify-between px-4 py-3 w-full flex-shrink-0
+              border-b border-[#E8E4DB]"
+          >
+            <div className="flex items-center gap-2">
+              <span className="font-display text-sm font-light text-[#1A1208]">
+                Active Reports
+              </span>
+              <span className="font-mono text-xs bg-[#5BBFBF]/10 text-[#5BBFBF]
+                px-2 py-0.5 rounded-full">
+                {allReports.length}
+              </span>
+            </div>
+            <span className={`text-[#7A6A58] text-xs transition-transform duration-200
+              ${sheetOpen ? "rotate-180" : ""}`}>
+              ▲
+            </span>
+          </button>
           <div className="flex-1 overflow-y-auto p-2 space-y-2">
             {allReports.map((report) => (
               <ReportCard
                 key={report.id}
                 report={report}
                 isSelected={selectedId === report.id}
-                onClick={() => setSelectedId(report.id === selectedId ? null : report.id)}
+                onClick={() => {
+                  setSelectedId(report.id === selectedId ? null : report.id)
+                  setSheetOpen(true)
+                }}
               />
             ))}
           </div>

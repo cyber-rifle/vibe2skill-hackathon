@@ -4,36 +4,36 @@ import { SiteFooter } from "@/components/site-footer"
 import { motion } from "framer-motion"
 
 const STACK = [
-  { name: "Next.js 16", role: "Framework" },
-  { name: "Google Gemini 2.5 Flash", role: "AI Analysis" },
-  { name: "Google Cloud Run", role: "Deployment" },
-  { name: "Leaflet + Clustering", role: "Interactive Map" },
-  { name: "Framer Motion", role: "Animations" },
-  { name: "Nominatim OSM", role: "Geocoding" },
-  { name: "Tailwind CSS v4", role: "Styling" },
-  { name: "TypeScript", role: "Type Safety" },
+  { name: "Gemini 2.5 Flash", role: "AI Classification & Routing" },
+  { name: "Google Search Grounding", role: "Live Severity Data" },
+  { name: "URL Context Tool", role: "Department Policy Lookup" },
+  { name: "Nominatim OSM", role: "Free Geocoding" },
+  { name: "Leaflet + Clustering", role: "Interactive Live Map" },
+  { name: "Cloud Run", role: "Zero-Config Deployment" },
+  { name: "Framer Motion", role: "Premium Animations" },
+  { name: "Next.js 16 + TypeScript", role: "App Framework" },
 ]
 
 const STORY = [
   {
     step: "01",
-    title: "The problem",
-    body: "Hyderabad generates thousands of civic complaints daily. A broken streetlight reported to GHMC on Twitter becomes a PDF in someone's email which becomes an entry in a spreadsheet that no one checks. Reports vanish. Nothing gets fixed.",
+    title: "The broken system",
+    body: "In Hyderabad, a GHMC complaint filed on Twitter becomes a screenshot in a WhatsApp group, then a note in a ward officer's register that goes unread. 70% of civic complaints across Indian metros fail to reach the right department. The bottleneck is routing, not intent.",
   },
   {
     step: "02",
-    title: "Our approach",
-    body: "One photo. Four AI steps: classify the issue type, check for duplicates nearby, assess severity with live Google Search grounding, draft a formal report routed to the exact department responsible.",
+    title: "What we built",
+    body: "One upload. Four AI steps: Gemini 2.5 Flash classifies the issue from the photo, checks for duplicates within 100 metres, assesses severity using live Google Search data (real SLAs, real backlogs), then drafts a formal report routed to the exact department with a full escalation chain.",
   },
   {
     step: "03",
-    title: "Why it works",
-    body: "Gemini 2.5 Flash's multimodal understanding means the AI actually looks at the photo — not just reads a text description. Google Search grounding means severity scores reflect current conditions, not just training data.",
+    title: "Why it's different",
+    body: "Most civic tech is a form builder. CivicPulse is a reasoning system. The severity score for a burst water main references HMWSSB's actual current response SLA from their website — not a static estimate. The grounding badge shows when live data was used. You can click the sources.",
   },
   {
     step: "04",
-    title: "Built for the hackathon",
-    body: "CivicPulse was built for the Vibe2Skill hackathon in 72 hours using Google AI Studio and Claude Code. Every line of infrastructure runs on Google Cloud. The entire codebase is open source.",
+    title: "72 hours, open source",
+    body: "Built in 72 hours for Vibe2Skill using Google AI Studio and Anthropic Claude Code. Every line runs on Google Cloud Run. Zero proprietary dependencies. MIT-licensed on GitHub.",
   },
 ]
 
@@ -56,13 +56,12 @@ export default function AboutPage() {
             </p>
             <h1 className="font-display text-5xl md:text-[60px] font-light leading-[1.05]
               tracking-tight text-[#1A1208]">
-              Built for Hyderabad.<br />
-              <span className="italic">Designed for every city.</span>
+              Every day in India, thousands of civic complaints vanish into the wrong inbox.
             </h1>
             <p className="mt-6 max-w-xl font-sans text-lg leading-relaxed text-[#7A6A58]">
-              CivicPulse is an open-source AI civic reporting platform built during the
-              Vibe2Skill hackathon. It demonstrates what's possible when multimodal AI
-              meets local government infrastructure.
+              CivicPulse is an AI civic reporting platform built for the Vibe2Skill
+              hackathon. It demonstrates that a single multimodal AI call can replace a
+              broken multi-department complaint routing system — in real time.
             </p>
           </motion.div>
         </div>
@@ -88,6 +87,27 @@ export default function AboutPage() {
         </div>
       </section>
 
+      {/* Impact Numbers */}
+      <section className="border-t border-[#E8E4DB] bg-[#0A1628]">
+        <div className="mx-auto max-w-4xl px-5 py-14">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+            {[
+              { value: "30s", label: "Photo to routed report" },
+              { value: "4", label: "AI pipeline steps" },
+              { value: "14+", label: "Departments supported" },
+              { value: "72h", label: "Built in" },
+            ].map((stat) => (
+              <div key={stat.label}>
+                <p className="font-display text-4xl font-light text-white mb-1">
+                  {stat.value}
+                </p>
+                <p className="font-mono text-xs text-white/40">{stat.label}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* Tech stack */}
       <section className="border-t border-[#E8E4DB] bg-white">
         <div className="mx-auto max-w-4xl px-5 py-16">
@@ -95,7 +115,7 @@ export default function AboutPage() {
             Tech Stack
           </p>
           <h2 className="font-display text-3xl font-light text-[#1A1208] mb-10">
-            Powered by Google's ecosystem.
+            Every capability intentionally chosen.
           </h2>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             {STACK.map((t, i) => (
@@ -126,6 +146,14 @@ export default function AboutPage() {
           <a href="/for-cities"
             className="shimmer-btn rounded-full px-6 py-2.5 font-mono text-sm">
             For Cities
+          </a>
+          <a
+            href="/#how-it-works"
+            className="inline-flex items-center gap-2 rounded-full border border-[#1A1208]
+            px-6 py-2.5 font-mono text-sm text-[#1A1208]
+            hover:bg-[#1A1208] hover:text-white transition-colors"
+          >
+            How it works →
           </a>
         </div>
       </section>

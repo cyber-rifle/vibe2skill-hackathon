@@ -5,7 +5,7 @@ import StatCounter from "@/components/StatCounter"
 
 export function Hero() {
   return (
-    <section className="relative overflow-hidden bg-[#0D0B08] hero-grain">
+    <section className="relative overflow-hidden bg-[#0A1628] hero-grain">
       {/* Ambient orb — top right */}
       <div aria-hidden="true" className="ambient-orb absolute -right-40 -top-40
         h-[42rem] w-[42rem] opacity-[0.22]" />
@@ -71,17 +71,23 @@ export function Hero() {
           transition={{ duration: 0.6, delay: 0.5 }}
           className="mt-20 flex flex-wrap gap-12"
         >
-          <div className="glass-card-dark rounded-2xl px-6 py-4">
-            <StatCounter value={1240} suffix="+" label="Issues Reported"
-              duration={1600} liveReportCount={true} darkMode={true} />
+          <div className="iridescent-border rounded-2xl">
+            <div className="rounded-2xl px-6 py-4" style={{ background: "rgba(10,22,40,0.8)" }}>
+              <StatCounter value={1240} suffix="+" label="Issues Reported"
+                duration={1600} liveReportCount={true} darkMode={true} />
+            </div>
           </div>
-          <div className="glass-card-dark rounded-2xl px-6 py-4">
-            <StatCounter value={89} suffix="%" label="Resolved in 7 Days"
-              duration={1800} darkMode={true} />
+          <div className="iridescent-border rounded-2xl">
+            <div className="rounded-2xl px-6 py-4" style={{ background: "rgba(10,22,40,0.8)" }}>
+              <StatCounter value={89} suffix="%" label="Resolved in 7 Days"
+                duration={1800} darkMode={true} />
+            </div>
           </div>
-          <div className="glass-card-dark rounded-2xl px-6 py-4">
-            <StatCounter value={14} suffix="+" label="Departments Linked"
-              duration={1400} darkMode={true} />
+          <div className="iridescent-border rounded-2xl">
+            <div className="rounded-2xl px-6 py-4" style={{ background: "rgba(10,22,40,0.8)" }}>
+              <StatCounter value={14} suffix="+" label="Departments Linked"
+                duration={1400} darkMode={true} />
+            </div>
           </div>
         </motion.div>
       </div>

@@ -93,7 +93,6 @@ export function UploadSection() {
   // Feature 12 — Voice Input
   const [isListening, setIsListening] = useState(false)
   const [voiceNote, setVoiceNote] = useState("")
-  const [showVoiceTextFallback, setShowVoiceTextFallback] = useState(false)
 
   // Feature 15 — Share card state
   const [confirmedReport, setConfirmedReport] = useState<{
@@ -172,13 +171,11 @@ export function UploadSection() {
       (window as any).webkitSpeechRecognition
 
     if (!SR) {
-      setShowVoiceTextFallback(true)
       addToast('Voice input not supported — type your description below', 'error')
       return
     }
 
     if (!isSecure) {
-      setShowVoiceTextFallback(true)
       addToast('Voice input needs HTTPS — type your description below', 'info')
       return
     }
@@ -200,13 +197,11 @@ export function UploadSection() {
     recognition.onerror = (e: any) => {
       setIsListening(false)
       if (e.error === 'not-allowed' || e.error === 'permission-denied') {
-        setShowVoiceTextFallback(true)
         addToast('Mic access denied — type your description below', 'error')
       } else if (e.error === 'no-speech') {
         addToast('No speech detected — try again or type below', 'info')
       } else {
         // network, service-not-allowed, aborted, etc.
-        setShowVoiceTextFallback(true)
         addToast('Voice unavailable — type your description below', 'info')
       }
     }
@@ -219,7 +214,6 @@ export function UploadSection() {
       recognition.start()
     } catch {
       setIsListening(false)
-      setShowVoiceTextFallback(true)
       addToast('Could not start voice — type your description below', 'error')
     }
   }
@@ -466,13 +460,12 @@ export function UploadSection() {
         transition={{ duration: 0.5, delay: 0.3, ease: [0.25, 0.46, 0.45, 0.94] }}
       >
         {/* Feature 10 — card-hover on upload card */}
-        <div className="glass-card rounded-2xl p-6 md:p-8 card-hover relative">
+        <div className="rounded-2xl bg-white border border-[#E8E4DB] p-6 md:p-8 relative shadow-md-warm">
             <h2 className="mt-3 font-display text-3xl font-light text-ink">Show us what needs fixing</h2>
 
             <label
               htmlFor="file-upload"
-              onClick={() => inputRef.current?.click()}
-              className={`mt-6 flex flex-col items-center justify-center rounded-xl border-2 border-dashed border-teal/50 bg-[#F2EDE4]/40 px-6 py-12 text-center transition-all duration-200 hover:border-[#5BBFBF] cursor-pointer ${selectedFile ? 'iridescent-border' : ''}`}
+              className={`mt-6 flex flex-col items-center justify-center rounded-xl border-2 border-dashed border-teal/50 bg-[#F2EDE4]/40 px-6 py-12 text-center transition-all duration-200 hover:border-[#5BBFBF] hover:bg-[#5BBFBF]/5 cursor-pointer ${selectedFile ? 'iridescent-border' : ''}`}
               style={{ boxShadow: selectedFile ? 'inset 0 0 0 2px #5BBFBF' : undefined }}
               onDragOver={(e) => { e.preventDefault(); e.stopPropagation(); }}
               onDrop={(e) => {
@@ -561,40 +554,49 @@ export function UploadSection() {
 
             {/* Feature 12 — Voice input */}
             <div className="mt-3 space-y-2">
+              <label className="font-mono text-[10px] uppercase tracking-[0.15em] text-[#7A6A58]">
+                Issue description (optional)
+              </label>
               <div className="relative">
+                <textarea
+                  value={voiceNote}
+                  onChange={(e) => setVoiceNote(e.target.value)}
+                  placeholder="Describe what you see — AI uses this alongside the photo..."
+                  rows={2}
+                  className="w-full rounded-xl border border-[#E8E4DB] bg-white px-4 py-3
+                  font-sans text-sm text-[#1A1208] placeholder-[#7A6A58]
+                  focus:border-[#5BBFBF] focus:outline-none focus:ring-1 focus:ring-[#5BBFBF]
+                  resize-none pr-12"
+                />
                 <button
                   type="button"
                   onClick={handleVoiceInput}
                   disabled={isListening}
-                  className={`relative flex items-center gap-2 text-xs font-mono
-                    border rounded-full px-4 py-2 w-full justify-center transition-all
+                  title={isListening ? "Listening…" : "Describe by voice"}
+                  className={`absolute right-3 top-3 p-1.5 rounded-full transition-all
                     ${isListening
-                      ? 'border-[#E8957A] text-[#E8957A] bg-[#E8957A]/10'
-                      : 'border-[#5BBFBF]/50 text-[#5BBFBF] hover:bg-[#5BBFBF]/10'
+                      ? 'bg-[#E8957A]/15 text-[#E8957A]'
+                      : 'bg-[#5BBFBF]/10 text-[#5BBFBF] hover:bg-[#5BBFBF]/20'
                     }`}
                 >
-                  🎙 {isListening ? "Listening..." : "Describe the issue by voice"}
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" strokeWidth="2" strokeLinecap="round"
+                    strokeLinejoin="round">
+                    <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/>
+                    <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
+                    <line x1="12" y1="19" x2="12" y2="23"/>
+                    <line x1="8" y1="23" x2="16" y2="23"/>
+                  </svg>
                 </button>
                 {isListening && (
-                  <span className="absolute inset-0 rounded-full border-2 border-[#E8957A]
-                    animate-ping opacity-60 pointer-events-none" />
+                  <span className="absolute right-3 top-3 rounded-full p-1.5
+                    border-2 border-[#E8957A] animate-ping opacity-50 pointer-events-none" />
                 )}
               </div>
-              {voiceNote && (
-                <p className="text-xs font-mono text-[#7A6A58] bg-[#FAF7F2] rounded-lg px-3 py-2 border border-[#E8E4DB]">
-                  &ldquo;{voiceNote}&rdquo;
+              {isListening && (
+                <p className="text-xs font-mono text-[#E8957A] animate-pulse">
+                  🎙 Listening — speak now...
                 </p>
-              )}
-              {showVoiceTextFallback && (
-                <textarea
-                  value={voiceNote}
-                  onChange={(e) => setVoiceNote(e.target.value)}
-                  placeholder="Describe the issue in your own words..."
-                  rows={2}
-                  className="w-full rounded-lg border border-[#E6DDCF] bg-white px-3 py-2
-                  font-mono text-sm text-[#1A1208] placeholder-[#7A6A58] focus:border-[#5BBFBF]
-                  focus:outline-none focus:ring-1 focus:ring-[#5BBFBF] resize-none"
-                />
               )}
             </div>
 

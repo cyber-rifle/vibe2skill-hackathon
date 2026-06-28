@@ -5,41 +5,41 @@ import { motion } from "framer-motion"
 
 const FEATURES = [
   {
-    icon: "🗺",
-    title: "Real-Time Issue Map",
-    body: "Every citizen report pinned on a live map, clustered by severity and department. Your operations team sees Hyderabad's pain points the moment they're reported.",
+    icon: "📸",
+    title: "One photo. Zero forms.",
+    body: "Citizens upload a single photo. Gemini 2.5 Flash classifies the issue, identifies severity, checks for duplicates within 100m, and drafts a formal report — without the citizen filling a single field.",
   },
   {
-    icon: "🤖",
-    title: "AI-Powered Routing",
-    body: "Gemini 2.5 Flash classifies, prioritises, and routes each report to the right department automatically — no manual triage, no lost tickets.",
-  },
-  {
-    icon: "📊",
-    title: "Civic Intelligence Dashboard",
-    body: "Category breakdowns, resolution rates, and severity distributions in a single dashboard. Make budget decisions with data, not guesswork.",
+    icon: "🔍",
+    title: "Live Google Search grounding",
+    body: "Step 3 searches Google for current SLAs, recent backlog reports, and department-specific policies before assigning urgency. Not training data — live web data, with clickable sources shown.",
   },
   {
     icon: "⚡",
-    title: "Escalation Engine",
-    body: "High-severity issues automatically surface to senior officials. Urgent potholes reach the Commissioner, not just the ward office.",
+    title: "Automatic escalation chains",
+    body: "High-severity reports (4–5/5) escalate beyond the base department automatically. A burst water main goes to MD HMWSSB, not just the local ward office. Transparent and auditable.",
   },
   {
-    icon: "🏙",
-    title: "Built for Indian Cities",
-    body: "Designed around GHMC, HMWSSB, and Telangana's departmental structure. Works out-of-the-box for any Tier 1 or Tier 2 Indian city.",
+    icon: "🗺️",
+    title: "Real-time community map",
+    body: "Every confirmed report pins to a live Leaflet map with clustering, heatmap overlay, and a lifecycle timeline: reported → acknowledged → in progress → resolved.",
   },
   {
-    icon: "🔒",
-    title: "No New Infrastructure",
-    body: "Cloud Run deployment. No servers to manage, no databases to provision. Scales from 100 to 100,000 reports without configuration.",
+    icon: "📊",
+    title: "Department intelligence dashboard",
+    body: "A tabbed mission-control dashboard shows workload per department, resolution rates, severity trends, and full activity timeline — built for municipal operations teams.",
+  },
+  {
+    icon: "🏙️",
+    title: "Cloud Run deployment in under an hour",
+    body: "No database to provision. A team can go from GitHub clone to live URL in under 60 minutes with just the GEMINI_API_KEY as the only required secret.",
   },
 ]
 
 const STATS = [
-  { value: "4-step", label: "AI Analysis Pipeline" },
-  { value: "<30s", label: "Report to Routing" },
-  { value: "14+", label: "Departments Supported" },
+  { value: "30s", label: "Photo to Routed Report" },
+  { value: "14+", label: "Departments Auto-Linked" },
+  { value: "4-step", label: "AI Pipeline" },
   { value: "100%", label: "Open Source" },
 ]
 
@@ -65,12 +65,12 @@ export default function ForCitiesPage() {
             </p>
             <h1 className="font-display text-5xl md:text-[64px] font-light leading-[1.05]
               tracking-tight text-[#1A1208] text-balance">
-              Civic intelligence for the cities that run India.
+              Hyderabad files 1,200+ civic complaints daily. 70% go unresolved.
             </h1>
             <p className="mt-6 max-w-2xl font-sans text-lg leading-relaxed text-[#7A6A58]">
-              CivicPulse turns unstructured citizen complaints into structured, routed,
-              trackable civic reports — powered by Google AI Studio, deployed on Cloud Run,
-              and built for the speed of Indian governance.
+              CivicPulse turns an unstructured citizen photo into a structured,
+              department-ready report in under 30 seconds — powered by Gemini 2.5 Flash,
+              grounded with live Google Search data, built for Indian governance.
             </p>
             <div className="mt-10 flex flex-wrap gap-4">
               <a href="mailto:contact@civicpulse.in"
@@ -82,6 +82,14 @@ export default function ForCitiesPage() {
                 px-8 py-3 font-sans text-sm font-medium text-[#1A1208]
                 hover:bg-[#1A1208] hover:text-white transition-colors">
                 See Live Dashboard →
+              </a>
+              <a
+                href="/#how-it-works"
+                className="inline-flex items-center gap-2 rounded-full border border-[#E8E4DB]
+                px-8 py-3 font-sans text-sm font-medium text-[#7A6A58]
+                hover:bg-[#FAF7F2] transition-colors"
+              >
+                How it works →
               </a>
             </div>
           </motion.div>
@@ -128,8 +136,27 @@ export default function ForCitiesPage() {
         </div>
       </section>
 
+      {/* See it in action section */}
+      <section className="border-t border-[#E8E4DB] bg-[#FAF7F2]">
+        <div className="mx-auto max-w-5xl px-5 py-16 text-center">
+          <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-[#5BBFBF] mb-3">
+            See it in action
+          </p>
+          <h2 className="font-display text-3xl font-light text-[#1A1208] mb-6">
+            Watch the 4-step AI pipeline run live
+          </h2>
+          <a
+            href="/#how-it-works"
+            className="inline-flex items-center gap-2 shimmer-btn rounded-full
+            px-8 py-3 font-sans text-sm font-medium"
+          >
+            How it works →
+          </a>
+        </div>
+      </section>
+
       {/* CTA */}
-      <section className="border-t border-[#E8E4DB] bg-[#1A1208] text-[#FAF7F2]">
+      <section className="border-t border-[#E8E4DB] bg-[#0A1628] text-[#FAF7F2]">
         <div className="mx-auto max-w-5xl px-5 py-20 text-center">
           <h2 className="font-display text-4xl font-light mb-4">
             Ready to bring CivicPulse to your city?

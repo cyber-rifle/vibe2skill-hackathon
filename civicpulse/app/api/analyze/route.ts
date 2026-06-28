@@ -271,18 +271,32 @@ Respond ONLY with valid JSON, no markdown, no code blocks, no extra text:
       : `This appears to be a first-time report for this location.`;
 
     const severityPrompt = `A civic issue has been reported in an Indian city.
-  Category: ${classification.category}
-  Description: ${classification.description}
-  Confidence: ${Math.round(classification.confidence * 100)}%
-  Recurrence context: ${duplicateContext}
-  Department this will be routed to: ${department}
-  Official department portal for reference: ${officialUrl}
+Category: ${classification.category}
+Description: ${classification.description}
+Confidence: ${Math.round(classification.confidence * 100)}%
+Recurrence context: ${duplicateContext}
+Department this will be routed to: ${department}
+Official department portal: ${officialUrl}
 
-  Assess the urgency of this issue on a scale of 1 to 5 where 1 = minor inconvenience and 5 = immediate safety hazard.
-  Start your response with exactly "Urgency: X/5" on the first line.
+Using Google Search and the official department URL above, find:
+1. The current complaint-resolution SLA for ${department} in Hyderabad
+2. Any recent news about ${classification.category} issues in Hyderabad
+3. Whether this specific issue type has a published response commitment
 
-  Then, in 2-3 sentences, explain the severity, factoring in recurrence if applicable. Specifically reference the CURRENT complaint-resolution timeframe or recent reported backlog for ${department} in its relevant Indian city (e.g. BBMP Bengaluru, BMC Mumbai, GHMC Hyderabad) — find this using current information rather than a general estimate. Mention the timeframe in plain language as part of your explanation, without listing sources or URLs separately.
-  Also provide a brief resolution time estimate (e.g. '3–5 business days', '24–48 hours') as a separate line at the very end of your response in exactly this format: ResolutionTime: <your estimate>`;
+Assess urgency on a 1–5 scale (1=minor inconvenience, 5=immediate safety hazard).
+
+Respond in EXACTLY this format — do not add extra sections:
+
+Urgency: X/5
+
+Assessment: [2–3 sentences. Reference specific SLA data, news, or policy
+you found via search. Name actual timeframes. Be concrete, not generic.]
+
+Policy context: [1 sentence: the department's published SLA or response
+commitment. If not found: "No published SLA found — typical resolution
+is X days based on citizen reports."]
+
+ResolutionTime: [e.g. "3–5 business days"]`;
 
     const encoder = new TextEncoder();
     const stream = new ReadableStream({
@@ -405,9 +419,20 @@ Respond ONLY with valid JSON, no markdown, no code blocks, no extra text:
           severityResult.assessment = severityResult.assessment.replace(/ResolutionTime:\s*.+/i, "").trim();
         }
 
+        // Extract Policy context
+        const policyMatch = severityResult?.assessment?.match(/Policy context:\s*(.+?)(?=\n|$)/i);
+        const policyContext = policyMatch ? policyMatch[1].trim() : null;
+        if (severityResult?.assessment) {
+          severityResult.assessment = severityResult.assessment
+            .replace(/Policy context:\s*.+/i, "")
+            .replace(/^Assessment:\s*/im, "")
+            .trim();
+        }
+
         sendStep("severity_assessment", {
           ...severityResult,
           resolutionTimeEstimate,
+          policyContext,
         });
 
         const urgencyLine = severityResult?.assessment?.split("\n")[0] ?? "Urgency: 3/5";

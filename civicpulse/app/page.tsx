@@ -22,7 +22,7 @@ export default function Page() {
         <div className="h-px w-full iridescent origin-left" />
       </motion.div>
       {/* Bento Features Grid */}
-      <section className="relative overflow-hidden bg-white">
+      <section id="how-it-works" className="relative overflow-hidden bg-white">
         <div aria-hidden="true" className="ambient-orb absolute right-0 top-1/2 -translate-y-1/2
           h-[40rem] w-[40rem] opacity-[0.06]" />
         <div className="relative mx-auto max-w-6xl px-5 py-20">
@@ -49,7 +49,7 @@ export default function Page() {
               initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }} transition={{ delay: 0.05 }}
               className="bento-card md:col-span-5 md:row-span-2 p-8 flex flex-col justify-between
-              bg-gradient-to-br from-[#0D0B08] to-[#1A1208] text-white relative overflow-hidden"
+              bg-gradient-to-br from-[#0A1628] to-[#0F2137] text-white relative overflow-hidden"
             >
               <div aria-hidden="true" className="ambient-orb absolute -right-8 -top-8
                 h-40 w-40 opacity-[0.35]" />
@@ -143,7 +143,7 @@ export default function Page() {
               initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }} transition={{ delay: 0.25 }}
               className="bento-card md:col-span-3 p-6 flex flex-col items-start justify-between
-              bg-[#1A1208] text-white"
+              bg-[#0A1628] text-white"
             >
               <p className="font-mono text-xs uppercase tracking-[0.15em] text-[#5BBFBF]">Live</p>
               <div>

@@ -17,9 +17,9 @@ export function ReportCard({ report, isSelected, onClick }: ReportCardProps) {
 
   return (
     <motion.div
-      whileHover={{ y: -2, boxShadow: '0 8px 32px rgba(26,18,8,0.10)' }}
+      whileHover={{ y: -2, boxShadow: "0 8px 28px rgba(26,18,8,0.10)" }}
       whileTap={{ scale: 0.98 }}
-      transition={{ type: 'spring', stiffness: 400, damping: 30 }}
+      transition={{ type: "spring", stiffness: 500, damping: 35 }}
       onClick={onClick}
       className={`cursor-pointer rounded-lg border p-4 transition-all ${
         isSelected ? 'border-[#C9A84C] bg-[#FAF7F2]' : 'border-[#E8E4DB] bg-white'
