@@ -46,7 +46,11 @@ export default function RootLayout({
         <OfflineBanner />
         <ErrorBoundary>
           <ReportProvider>
-            <ToastProvider>{children}</ToastProvider>
+            <ToastProvider>
+              <div className="page-enter">
+                {children}
+              </div>
+            </ToastProvider>
           </ReportProvider>
         </ErrorBoundary>
       </body>

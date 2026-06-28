@@ -506,13 +506,13 @@ export function UploadSection() {
               }}
             >
               {/* Animated corner accents */}
-              <div className="absolute top-2 left-2 w-4 h-4 border-t-2 border-l-2 border-[#5BBFBF]/40 rounded-tl-lg
+              <div className="hidden sm:block absolute top-2 left-2 w-4 h-4 border-t-2 border-l-2 border-[#5BBFBF]/40 rounded-tl-lg
                 transition-all duration-300 group-hover:border-[#5BBFBF] group-hover:w-6 group-hover:h-6" />
-              <div className="absolute top-2 right-2 w-4 h-4 border-t-2 border-r-2 border-[#5BBFBF]/40 rounded-tr-lg
+              <div className="hidden sm:block absolute top-2 right-2 w-4 h-4 border-t-2 border-r-2 border-[#5BBFBF]/40 rounded-tr-lg
                 transition-all duration-300 group-hover:border-[#5BBFBF] group-hover:w-6 group-hover:h-6" />
-              <div className="absolute bottom-2 left-2 w-4 h-4 border-b-2 border-l-2 border-[#5BBFBF]/40 rounded-bl-lg
+              <div className="hidden sm:block absolute bottom-2 left-2 w-4 h-4 border-b-2 border-l-2 border-[#5BBFBF]/40 rounded-bl-lg
                 transition-all duration-300 group-hover:border-[#5BBFBF] group-hover:w-6 group-hover:h-6" />
-              <div className="absolute bottom-2 right-2 w-4 h-4 border-b-2 border-r-2 border-[#5BBFBF]/40 rounded-br-lg
+              <div className="hidden sm:block absolute bottom-2 right-2 w-4 h-4 border-b-2 border-r-2 border-[#5BBFBF]/40 rounded-br-lg
                 transition-all duration-300 group-hover:border-[#5BBFBF] group-hover:w-6 group-hover:h-6" />
             {preview ? (
               <div style={{ position: "relative", display: "inline-block" }}>

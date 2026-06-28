@@ -39,7 +39,7 @@ export function Hero() {
           </motion.div>
 
           {/* Headline */}
-          <h1 className="font-display text-6xl md:text-[80px] lg:text-[96px] font-light leading-[0.95] tracking-tight text-white text-balance">
+          <h1 className="font-display text-5xl md:text-[80px] lg:text-[96px] font-light leading-[0.95] tracking-tight text-white text-balance">
             {words1.map((word, i) => (
               <span key={`w1-${i}`} className="inline-block blur-reveal mr-[0.25em]"
                 style={{ animationDelay: `${0.2 + i * 0.08}s` }}>

@@ -61,6 +61,12 @@
   }
 }
 
+/* Scroll offset — prevent sticky navbar covering anchored sections */
+#how-it-works,
+#upload {
+  scroll-margin-top: 4rem;
+}
+
 @layer utilities {
   .iridescent {
     background-image: linear-gradient(135deg, #5BBFBF 0%, #D4AF6A 50%, #E8957A 100%);

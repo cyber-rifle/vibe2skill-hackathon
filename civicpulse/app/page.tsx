@@ -49,7 +49,7 @@ export default function Page() {
           </motion.div>
 
           {/* Bento grid */}
-          <div className="grid grid-cols-1 md:grid-cols-12 gap-4 auto-rows-[160px]">
+          <div className="grid grid-cols-1 md:grid-cols-12 gap-4 auto-rows-auto md:auto-rows-[160px]">
 
             {/* Large card — Step 1 */}
             <motion.div
