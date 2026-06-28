@@ -93,6 +93,13 @@ export function UploadSection() {
   // Feature 12 — Voice Input
   const [isListening, setIsListening] = useState(false)
   const [voiceNote, setVoiceNote] = useState("")
+  const [voiceAvailable, setVoiceAvailable] = useState<boolean | null>(null)
+  const [isDragging, setIsDragging] = useState(false)
+
+  useEffect(() => {
+    const SR = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition
+    setVoiceAvailable(!!SR)
+  }, [])
 
   // Feature 15 — Share card state
   const [confirmedReport, setConfirmedReport] = useState<{
@@ -161,60 +168,67 @@ export function UploadSection() {
   }
 
   const handleVoiceInput = () => {
-    const isSecure =
-      window.location.protocol === 'https:' ||
-      window.location.hostname === 'localhost' ||
-      window.location.hostname === '127.0.0.1'
-
     const SR =
       (window as any).SpeechRecognition ||
       (window as any).webkitSpeechRecognition
 
     if (!SR) {
-      addToast('Voice input not supported — type your description below', 'error')
+      addToast('Voice input not supported in this browser — Chrome works best', 'info')
       return
     }
+
+    // Check protocol
+    const isSecure =
+      window.location.protocol === 'https:' ||
+      window.location.hostname === 'localhost' ||
+      window.location.hostname === '127.0.0.1'
 
     if (!isSecure) {
-      addToast('Voice input needs HTTPS — type your description below', 'info')
+      addToast('Voice needs HTTPS — type your description below', 'info')
       return
-    }
-
-    const recognition = new SR()
-    recognition.lang = 'en-IN'
-    recognition.continuous = false
-    recognition.interimResults = false
-
-    recognition.onstart = () => setIsListening(true)
-
-    recognition.onresult = (e: any) => {
-      const transcript = e.results[0][0].transcript
-      setVoiceNote(transcript)
-      setIsListening(false)
-      addToast('Voice note captured!', 'success')
-    }
-
-    recognition.onerror = (e: any) => {
-      setIsListening(false)
-      if (e.error === 'not-allowed' || e.error === 'permission-denied') {
-        addToast('Mic access denied — type your description below', 'error')
-      } else if (e.error === 'no-speech') {
-        addToast('No speech detected — try again or type below', 'info')
-      } else {
-        // network, service-not-allowed, aborted, etc.
-        addToast('Voice unavailable — type your description below', 'info')
-      }
-    }
-
-    recognition.onend = () => {
-      setIsListening(false)
     }
 
     try {
+      const recognition = new SR()
+      recognition.lang = 'en-IN'
+      recognition.continuous = false
+      recognition.interimResults = true  // Changed: show interim results for responsiveness
+
+      recognition.onstart = () => {
+        setIsListening(true)
+      }
+
+      recognition.onresult = (e: any) => {
+        const transcript = Array.from(e.results)
+          .map((result: any) => result[0].transcript)
+          .join('')
+        setVoiceNote(transcript)
+        if (e.results[e.results.length - 1].isFinal) {
+          setIsListening(false)
+          addToast('Voice note captured!', 'success')
+        }
+      }
+
+      recognition.onerror = (e: any) => {
+        setIsListening(false)
+        const messages: Record<string, string> = {
+          'not-allowed': 'Mic access denied — check browser permissions',
+          'permission-denied': 'Mic access denied — check browser permissions',
+          'no-speech': 'No speech detected — try speaking closer to mic',
+          'network': 'Speech service unavailable — type your description',
+          'service-not-allowed': 'Speech service blocked — try on HTTPS deployment',
+          'audio-capture': 'No microphone found — check your device',
+          'aborted': '',  // Silent: user cancelled
+        }
+        const msg = messages[e.error]
+        if (msg) addToast(msg, e.error.includes('allowed') ? 'error' : 'info')
+      }
+
+      recognition.onend = () => setIsListening(false)
       recognition.start()
-    } catch {
+    } catch (err) {
       setIsListening(false)
-      addToast('Could not start voice — type your description below', 'error')
+      addToast('Could not start voice input — type your description', 'error')
     }
   }
 
@@ -463,14 +477,20 @@ export function UploadSection() {
         <div className="rounded-2xl bg-white border border-[#E8E4DB] p-6 md:p-8 relative shadow-md-warm">
             <h2 className="mt-3 font-display text-3xl font-light text-ink">Show us what needs fixing</h2>
 
-            <label
-              htmlFor="file-upload"
-              className={`mt-6 flex flex-col items-center justify-center rounded-xl border-2 border-dashed border-teal/50 bg-[#F2EDE4]/40 px-6 py-12 text-center transition-all duration-200 hover:border-[#5BBFBF] hover:bg-[#5BBFBF]/5 cursor-pointer ${selectedFile ? 'iridescent-border' : ''}`}
+            <div
+              onClick={() => inputRef.current?.click()}
+              className={`relative rounded-2xl border-2 border-dashed transition-all duration-300 cursor-pointer group overflow-hidden ${
+                isDragging
+                  ? 'border-[#5BBFBF] bg-[#5BBFBF]/5 scale-[1.01]'
+                  : 'border-[#E8E4DB] bg-white hover:border-[#5BBFBF]/50 hover:bg-[#5BBFBF]/3'
+              } mt-6 flex flex-col items-center justify-center px-6 py-12 text-center ${selectedFile ? 'iridescent-border' : ''}`}
               style={{ boxShadow: selectedFile ? 'inset 0 0 0 2px #5BBFBF' : undefined }}
-              onDragOver={(e) => { e.preventDefault(); e.stopPropagation(); }}
+              onDragOver={(e) => { e.preventDefault(); e.stopPropagation(); setIsDragging(true); }}
+              onDragLeave={(e) => { e.preventDefault(); e.stopPropagation(); setIsDragging(false); }}
               onDrop={(e) => {
                 e.preventDefault();
                 e.stopPropagation();
+                setIsDragging(false);
                 const file = e.dataTransfer.files?.[0];
                 if (!file) return;
                 const validationError = validateFile(file)
@@ -485,6 +505,15 @@ export function UploadSection() {
                 clearPendingTimeouts();
               }}
             >
+              {/* Animated corner accents */}
+              <div className="absolute top-2 left-2 w-4 h-4 border-t-2 border-l-2 border-[#5BBFBF]/40 rounded-tl-lg
+                transition-all duration-300 group-hover:border-[#5BBFBF] group-hover:w-6 group-hover:h-6" />
+              <div className="absolute top-2 right-2 w-4 h-4 border-t-2 border-r-2 border-[#5BBFBF]/40 rounded-tr-lg
+                transition-all duration-300 group-hover:border-[#5BBFBF] group-hover:w-6 group-hover:h-6" />
+              <div className="absolute bottom-2 left-2 w-4 h-4 border-b-2 border-l-2 border-[#5BBFBF]/40 rounded-bl-lg
+                transition-all duration-300 group-hover:border-[#5BBFBF] group-hover:w-6 group-hover:h-6" />
+              <div className="absolute bottom-2 right-2 w-4 h-4 border-b-2 border-r-2 border-[#5BBFBF]/40 rounded-br-lg
+                transition-all duration-300 group-hover:border-[#5BBFBF] group-hover:w-6 group-hover:h-6" />
             {preview ? (
               <div style={{ position: "relative", display: "inline-block" }}>
                 {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -527,7 +556,7 @@ export function UploadSection() {
                 <p className="mt-1 font-sans text-xs text-ink-muted">JPG or PNG, up to 10MB</p>
               </>
             )}
-            </label>
+            </div>
             <input
               id="file-upload"
               ref={inputRef}
@@ -571,12 +600,14 @@ export function UploadSection() {
                 <button
                   type="button"
                   onClick={handleVoiceInput}
-                  disabled={isListening}
-                  title={isListening ? "Listening…" : "Describe by voice"}
+                  disabled={isListening || voiceAvailable === false}
+                  title={voiceAvailable === false ? "Use Chrome for voice input" : isListening ? "Listening…" : "Describe by voice"}
                   className={`absolute right-3 top-3 p-1.5 rounded-full transition-all
                     ${isListening
                       ? 'bg-[#E8957A]/15 text-[#E8957A]'
-                      : 'bg-[#5BBFBF]/10 text-[#5BBFBF] hover:bg-[#5BBFBF]/20'
+                      : voiceAvailable === false
+                        ? 'bg-[#E8E4DB]/50 text-[#7A6A58] opacity-50 cursor-not-allowed'
+                        : 'bg-[#5BBFBF]/10 text-[#5BBFBF] hover:bg-[#5BBFBF]/20'
                     }`}
                 >
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
@@ -863,17 +894,42 @@ export function UploadSection() {
             )}
           </>
         ) : (
-          <ol className="mt-5 flex flex-col gap-3">
-            {PLACEHOLDER_STEPS.map((step, index) => (
-              <li key={step.label} className="flex items-start gap-4 rounded-xl border border-border border-l-4 border-l-teal bg-ivory-deep px-5 py-4">
-                <span className="mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-border bg-background font-mono text-xs text-ink-muted">{index + 1}</span>
-                <div>
-                  <p className="font-mono text-sm text-teal">{step.label}</p>
-                  <p className="mt-1 font-sans text-xs text-ink-muted">{step.hint}</p>
-                </div>
-              </li>
-            ))}
-          </ol>
+          <div className="mt-5 flex flex-col gap-3">
+            {PLACEHOLDER_STEPS.map((step, i) => {
+              const isActive = i === analysisSteps.length
+              const isDone = i < analysisSteps.length
+              return (
+                <motion.div
+                  key={i}
+                  initial={{ opacity: 0, x: -12 }}
+                  animate={{ opacity: isDone || isActive ? 1 : 0.4, x: 0 }}
+                  transition={{ delay: i * 0.1 }}
+                  className={`flex items-start gap-3 p-3 rounded-xl border transition-all
+                    ${isDone ? 'border-[#5BBFBF]/30 bg-[#5BBFBF]/5' :
+                      isActive ? 'border-[#D4AF6A]/50 bg-[#D4AF6A]/5' :
+                      'border-[#E8E4DB] bg-white/50'}`}
+                >
+                  <div className={`mt-0.5 h-5 w-5 rounded-full flex items-center justify-center flex-shrink-0 text-xs
+                    ${isDone ? 'bg-[#5BBFBF] text-white' :
+                      isActive ? 'border-2 border-[#D4AF6A] text-[#D4AF6A]' :
+                      'border border-[#E8E4DB] text-[#E8E4DB]'}`}>
+                    {isDone ? '✓' : i + 1}
+                  </div>
+                  <div>
+                    <p className={`text-sm font-medium ${isDone ? 'text-[#1A1208]' : isActive ? 'text-[#1A1208]' : 'text-[#7A6A58]'}`}>
+                      {step.label}
+                    </p>
+                    <p className="text-xs text-[#7A6A58] mt-0.5">{step.hint}</p>
+                  </div>
+                  {isActive && (
+                    <div className="ml-auto">
+                      <div className="h-4 w-4 border-2 border-[#D4AF6A] border-t-transparent rounded-full animate-spin" />
+                    </div>
+                  )}
+                </motion.div>
+              )
+            })}
+          </div>
         )}
       </div>
     </section>
