@@ -52,7 +52,7 @@ const PIPELINE_STEPS = [
   { num: "01", label: "Citizen photographs the issue", sub: "No form. No category selection. Just the photo." },
   { num: "02", label: "Gemini classifies the issue", sub: "Category, severity estimate, duplicate check within 200m." },
   { num: "03", label: "Live search grounds the severity", sub: "Real department SLAs pulled from the web, not a static database." },
-  { num: "04", label: "Report routed with escalation chain", sub: "GHMC, HMWSSB, Electrical — correct department, every time." },
+  { num: "04", label: "Report routed with escalation chain", sub: "Municipal Corporation, Water Board, Electrical — correct department, every time." },
 ]
 
 export default function ForCitiesPage() {
@@ -250,7 +250,7 @@ export default function ForCitiesPage() {
               <p className="font-sans text-base leading-relaxed text-[#7A6A58]">
                 CivicPulse is open source and free to deploy. Municipal teams can be
                 live in under 60 minutes with a single environment variable.
-                We support GHMC, HMWSSB, BBMP, and any civic body with an
+                We support Municipal Corporations, State Water Boards, and any civic body with an
                 existing 311 or complaint portal.
               </p>
             </motion.div>

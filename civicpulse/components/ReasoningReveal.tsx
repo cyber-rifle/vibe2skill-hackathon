@@ -275,10 +275,10 @@ const ReportCard = (result: unknown) => {
 
   // Build escalation chain from department name
   const ESCALATION_MAP: Record<string, string[]> = {
-    'GHMC Roads Department': ['Citizen Report', 'Roads Dept', 'GHMC', ...(severity >= 4 ? ['Commissioner'] : [])],
-    'HMWSSB': ['Citizen Report', 'HMWSSB', 'Board', ...(severity >= 4 ? ['MD HMWSSB'] : [])],
-    'Electrical/Streetlighting': ['Citizen Report', 'Electrical Dept', 'GHMC', ...(severity >= 4 ? ['Commissioner'] : [])],
-    'GHMC Sanitation': ['Citizen Report', 'Sanitation', 'Zonal Commissioner', ...(severity >= 4 ? ['Commissioner'] : [])],
+    'Municipal Roads Department': ['Citizen Report', 'Roads Dept', 'Municipal Corporation', ...(severity >= 4 ? ['Commissioner'] : [])],
+    'State Water Board': ['Citizen Report', 'Water Board', 'State Authority', ...(severity >= 4 ? ['MD Water Board'] : [])],
+    'Electrical/Streetlighting': ['Citizen Report', 'Electrical Dept', 'Municipal Corporation', ...(severity >= 4 ? ['Commissioner'] : [])],
+    'Municipal Sanitation': ['Citizen Report', 'Sanitation', 'Zonal Commissioner', ...(severity >= 4 ? ['Commissioner'] : [])],
   };
   const chain = ESCALATION_MAP[department] ?? ['Citizen Report', department, 'Municipal Corporation'];
 

@@ -93,7 +93,11 @@ export function CivicMap({ reports, selectedId, onMarkerClick }: CivicMapProps) 
 
       if (!containerRef.current || mapRef.current) return
 
-      const map = L.map(containerRef.current, { zoomControl: true }).setView([17.4474, 78.3762], 12)
+      const initialCenter: [number, number] = reports.length > 0 
+        ? [reports[0].lat, reports[0].lon] 
+        : [20.5937, 78.9629] // India center
+      
+      const map = L.map(containerRef.current, { zoomControl: true }).setView(initialCenter, 12)
       mapRef.current = map
       setMapReady(true)
       setTimeout(() => map.invalidateSize(), 100)

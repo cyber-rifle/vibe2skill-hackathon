@@ -79,17 +79,17 @@ export async function POST(req: NextRequest) {
               step: "severity_assessment",
               result: {
                 urgencyScore: 4,
-                assessment: "Urgency: 4/5\nSevere pothole posing safety risk. GHMC Roads typically resolves high-severity potholes within 3–5 business days.",
+                assessment: "Urgency: 4/5\nSevere pothole posing safety risk. Municipal Roads typically resolves high-severity potholes within 3–5 business days.",
                 grounded: true,
                 resolutionTimeEstimate: null,
-                sources: [{ uri: "https://ghmc.gov.in/roads", title: "GHMC Road Repair Policy" }],
+                sources: [{ uri: "https://india.gov.in/roads", title: "Municipal Road Repair Policy" }],
               },
             },
             {
               step: "final_report",
               result: {
                 report: {
-                  department: "GHMC Roads Department",
+                  department: "Municipal Roads Department",
                   reportText: "Severe pothole detected at Banjara Hills Road No. 12. Immediate repair required.",
                 },
               },

@@ -32,10 +32,10 @@ const STATUS_COLORS: Record<string, string> = {
   in_progress: "#D4AF37", resolved: "#22c55e",
 }
 const DEPT_COLORS: Record<string, string> = {
-  "GHMC Roads Department": "#E8957A",
-  "HMWSSB": "#5BBFBF",
+  "Municipal Roads Department": "#E8957A",
+  "State Water Board": "#5BBFBF",
   "Electrical/Streetlighting": "#D4AF37",
-  "GHMC Sanitation": "#22c55e",
+  "Municipal Sanitation": "#22c55e",
   "Municipal Corporation": "#C9A84C",
 }
 

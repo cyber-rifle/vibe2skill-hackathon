@@ -8,9 +8,6 @@ import { useReports, severityLabel } from "@/lib/report-context";
 import { Textarea } from "@/components/ui/textarea";
 import BoundingBoxOverlay, { MultiBoxOverlay } from "@/components/BoundingBoxOverlay";
 import { SeverityBadge } from "@/components/severity-badge";
-import dynamic from 'next/dynamic';
-
-const MapPicker = dynamic(() => import('@/components/map-picker').then(m => m.MapPicker), { ssr: false });
 import { useToast } from "@/components/toast";
 
 const NEIGHBORHOODS: Record<string, { lat: number; lon: number }> = {
@@ -70,7 +67,6 @@ export function UploadSection() {
   const [analysisError, setAnalysisError] = useState<string | null>(null);
   const [editedReportText, setEditedReportText] = useState<string>("");
   const [showConfirmPanel, setShowConfirmPanel] = useState<boolean>(false);
-  const [showMapPicker, setShowMapPicker] = useState(false)
   const [streamingText, setStreamingText] = useState<string>("");
   const [locationInput, setLocationInput] = useState("")
   const [showSuggestions, setShowSuggestions] = useState(false)
@@ -656,23 +652,14 @@ export function UploadSection() {
             <div className="mt-5">
               <label htmlFor="location" className="font-mono text-xs uppercase tracking-[0.15em] text-ink-muted">Location</label>
               <div className="space-y-3 mt-2">
-                <div className="flex gap-2">
-                  <button
-                    type="button"
-                    onClick={handleGetLocation}
-                    disabled={isGettingLocation}
-                    className="flex-1 flex items-center justify-center gap-2 text-sm font-mono text-teal border border-teal/40 rounded-full px-4 py-2 hover:bg-teal/10 transition-colors disabled:opacity-60"
-                  >
-                    {isGettingLocation ? "Detecting location..." : "📍 Use My Location"}
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => setShowMapPicker(true)}
-                    className="flex-1 flex items-center justify-center gap-2 text-sm font-mono text-teal border border-teal/40 rounded-full px-4 py-2 hover:bg-teal/10 transition-colors"
-                  >
-                    🗺️ Pick on Map
-                  </button>
-                </div>
+                <button
+                  type="button"
+                  onClick={handleGetLocation}
+                  disabled={isGettingLocation}
+                  className="flex items-center gap-2 text-sm font-mono text-teal border border-teal/40 rounded-full px-4 py-2 hover:bg-teal/10 transition-colors w-full justify-center disabled:opacity-60"
+                >
+                  {isGettingLocation ? "Detecting location..." : "📍 Use My Location"}
+                </button>
                 {locationName && (
                   <p className="text-xs text-[#7A6A58] font-mono text-center">{locationName}</p>
                 )}
@@ -812,28 +799,6 @@ export function UploadSection() {
 
       <div className="mt-12">
         <p className="font-mono text-xs uppercase tracking-[0.2em] text-teal">Agent Analysis</p>
-        
-        {showMapPicker && (
-          <MapPicker
-            onClose={() => setShowMapPicker(false)}
-            onLocationSelect={async (lat, lng) => {
-              setActiveLat(lat)
-              setActiveLon(lng)
-              setLocationConfirmed(true)
-              setShowMapPicker(false)
-              try {
-                const res = await fetch(`https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lng}&format=json&accept-language=en`)
-                const data = await res.json()
-                const name = data.address?.suburb || data.address?.neighbourhood || data.address?.city_district || data.address?.city || data.display_name.split(',')[0]
-                setLocationName(name)
-                setLocationInput(name)
-              } catch {
-                setLocationName(`${lat.toFixed(4)}, ${lng.toFixed(4)}`)
-                setLocationInput(`${lat.toFixed(4)}, ${lng.toFixed(4)}`)
-              }
-            }}
-          />
-        )}
         {analysisSteps.length > 0 ? (
           <>
             <ReasoningReveal steps={analysisSteps} streamingText={streamingText} />

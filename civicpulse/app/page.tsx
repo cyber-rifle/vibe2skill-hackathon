@@ -148,7 +148,7 @@ export default function Page() {
                   Right department, first time
                 </h3>
                 <p className="font-sans text-xs leading-relaxed text-[#3D2E1A] mt-1">
-                  GHMC, HMWSSB, Electrical — routed automatically with escalation chain.
+                  Municipal Corporation, Water Board, Electrical — routed automatically with escalation chain.
                 </p>
               </div>
             </motion.div>

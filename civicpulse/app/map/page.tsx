@@ -42,7 +42,9 @@ export default function MapPage() {
   const { confirmedReports } = useReports()
   const [selectedId, setSelectedId] = useState<string | null>(null)
   const [sheetOpen, setSheetOpen] = useState(false)
-  const allReports = [...seedReports, ...confirmedReports]
+  const allReports = [...seedReports, ...confirmedReports].sort(
+    (a, b) => new Date(b.createdAt ?? 0).getTime() - new Date(a.createdAt ?? 0).getTime()
+  )
 
   useEffect(() => {
     if (selectedId) {
