@@ -55,10 +55,14 @@ export default function MapPage() {
           desktopCard.scrollIntoView({ behavior: 'smooth', block: 'center' })
         }
         
-        // Try scrolling mobile card
+        // Try scrolling mobile card using container to avoid window scroll glitches
         const mobileCard = document.getElementById(`report-card-mobile-${selectedId}`)
-        if (mobileCard && window.innerWidth < 768) {
-          mobileCard.scrollIntoView({ behavior: 'smooth', block: 'center' })
+        const container = document.getElementById('mobile-card-container')
+        if (mobileCard && container && window.innerWidth < 768) {
+          container.scrollTo({
+            top: mobileCard.offsetTop - container.offsetTop - 8,
+            behavior: 'smooth'
+          })
         }
       }, 350)
     }
@@ -175,7 +179,7 @@ export default function MapPage() {
               ▲
             </span>
           </button>
-          <div className="flex-1 overflow-y-auto p-2 space-y-2">
+          <div id="mobile-card-container" className="flex-1 overflow-y-auto p-2 space-y-2">
             {allReports.map((report) => (
               <div key={report.id} id={`report-card-mobile-${report.id}`}>
                 <ReportCard
