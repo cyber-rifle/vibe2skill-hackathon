@@ -2,12 +2,13 @@
 import { useState, useRef, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { UploadCloud } from "lucide-react";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { ReasoningReveal } from "@/components/ReasoningReveal";
 import { useReports, severityLabel } from "@/lib/report-context";
 import { Textarea } from "@/components/ui/textarea";
 import BoundingBoxOverlay from "@/components/BoundingBoxOverlay";
 import { SeverityBadge } from "@/components/severity-badge";
+import { useToast } from "@/components/toast";
 
 const NEIGHBORHOODS: Record<string, { lat: number; lon: number }> = {
   "Banjara Hills":  { lat: 17.4156, lon: 78.4480 },
@@ -51,6 +52,8 @@ const DEFAULT_ESCALATION = { body: "Municipal Corporation", escalation: "Commiss
 export function UploadSection() {
   const router = useRouter();
   const { addConfirmedReport } = useReports();
+  const { addToast } = useToast();
+
   const [selectedFile, setSelectedFile]   = useState<File | null>(null);
   const [preview, setPreview]             = useState<string | null>(null);
   const [isAnalyzing, setIsAnalyzing]     = useState(false);
@@ -64,6 +67,20 @@ export function UploadSection() {
   const [activeLat, setActiveLat] = useState(DEFAULT_LAT)
   const [activeLon, setActiveLon] = useState(DEFAULT_LON)
   const [locationConfirmed, setLocationConfirmed] = useState(false)
+
+  // Feature 1 — GPS
+  const [isGettingLocation, setIsGettingLocation] = useState(false)
+  const [locationName, setLocationName] = useState("")
+
+  // Feature 12 — Voice Input
+  const [isListening, setIsListening] = useState(false)
+  const [voiceNote, setVoiceNote] = useState("")
+
+  // Feature 15 — Share card state
+  const [confirmedReport, setConfirmedReport] = useState<{
+    category: string; location: string; severity: string; department: string;
+  } | null>(null)
+
   const inputRef   = useRef<HTMLInputElement>(null);
   const imgRef = useRef<HTMLImageElement>(null);
   const [imgDims, setImgDims] = useState<{ w: number; h: number } | null>(null);
@@ -86,6 +103,56 @@ export function UploadSection() {
     setAnalysisSteps([]);
     setAnalysisError(null);
     clearPendingTimeouts();
+  }
+
+  // Feature 1 — GPS Handler
+  const handleGetLocation = () => {
+    setIsGettingLocation(true)
+    navigator.geolocation.getCurrentPosition(
+      async (pos) => {
+        const { latitude, longitude } = pos.coords
+        setActiveLat(latitude)
+        setActiveLon(longitude)
+        setLocationConfirmed(true)
+        try {
+          const res = await fetch(
+            `https://nominatim.openstreetmap.org/reverse?lat=${latitude}&lon=${longitude}&format=json`
+          )
+          const data = await res.json()
+          setLocationName(data.display_name?.split(",").slice(0, 3).join(", ") ?? "Location detected")
+        } catch {
+          setLocationName(`${latitude.toFixed(4)}, ${longitude.toFixed(4)}`)
+        }
+        setIsGettingLocation(false)
+      },
+      () => {
+        setIsGettingLocation(false)
+        setLocationName("Location access denied — select manually")
+      }
+    )
+  }
+
+  // Feature 12 — Voice Input Handler
+  const handleVoiceInput = () => {
+    const SR = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition
+    if (!SR) {
+      addToast("Voice input not supported in this browser", "error")
+      return
+    }
+    const recognition = new SR()
+    recognition.lang = "en-IN"
+    recognition.continuous = false
+    recognition.interimResults = false
+    recognition.onstart = () => setIsListening(true)
+    recognition.onresult = (e: any) => {
+      setVoiceNote(e.results[0][0].transcript)
+      setIsListening(false)
+    }
+    recognition.onerror = () => {
+      setIsListening(false)
+      addToast("Voice input failed — try again", "error")
+    }
+    recognition.start()
   }
 
   async function handleAnalyze() {
@@ -125,11 +192,13 @@ export function UploadSection() {
           lat: activeLat,
           lon: activeLon,
           existingReports: [],
+          voiceNote: voiceNote || undefined,
         }),
       });
 
       if (!response.ok) {
         const errorText = await response.text()
+        addToast("Analysis failed — retrying", "error")
         throw new Error(errorText || `Analyze request failed with status ${response.status}`)
       }
 
@@ -153,10 +222,8 @@ export function UploadSection() {
                 copy[idx] = entry
                 return copy
               }
-              // insert at canonical index if possible
               const canonicalIndex = Math.max(0, Math.min(STEP_ORDER.length, STEP_ORDER.indexOf(stepName)))
               if (canonicalIndex >= 0 && canonicalIndex < STEP_ORDER.length) {
-                // find insertion point: first item with index >= canonicalIndex
                 let insertAt = copy.findIndex((s: any) => STEP_ORDER.indexOf(s.step) > canonicalIndex)
                 if (insertAt === -1) insertAt = copy.length
                 copy.splice(insertAt, 0, entry)
@@ -186,7 +253,6 @@ export function UploadSection() {
               try {
                 const event = JSON.parse(payload)
                 if (event?.step && event?.result !== undefined) {
-                  // Handle retry events inline instead of adding as numbered steps
                   if (event.step === 'severity_retry') {
                     upsertStep('severity_assessment', { __retryMessage: event.result?.message })
                     continue
@@ -199,10 +265,9 @@ export function UploadSection() {
                     setStreamingText(event.result?.full_text ?? "")
                     continue
                   }
-                  // For canonical steps, upsert so we preserve ordering and allow replacement
                   upsertStep(event.step, event.result)
                   if (event.step === 'severity_assessment') {
-                    setStreamingText("") // clear streaming text when final arrives
+                    setStreamingText("")
                   }
 
                   if (event.step === 'final_report') {
@@ -211,6 +276,8 @@ export function UploadSection() {
                       setEditedReportText(finalReportText)
                       setShowConfirmPanel(true)
                     }
+                    // Feature 2 — Toast on analysis complete
+                    addToast("Analysis complete", "success")
                   }
                 }
               } catch {
@@ -253,27 +320,40 @@ export function UploadSection() {
     const step4ResultForUrgency = analysisSteps.find((s) => s.step === 'final_report')?.result
     const step4Result = analysisSteps.find((s) => s.step === 'final_report')?.result
 
+    const category = step1Result?.category ?? 'other'
+    const dept = step4Result?.report?.department ?? 'Municipal Corporation'
+    const sevNum = step3Result?.urgencyScore ??
+      step4ResultForUrgency?.urgencyScore ??
+      parseInt(step3Result?.assessment?.match(/(\d)\/5/)?.[1] ?? "3", 10)
+    const sevLabel = severityLabel(sevNum)
+
     const newReport = {
       id: crypto.randomUUID(),
       lat: activeLat,
       lon: activeLon,
-      category: step1Result?.category ?? 'other',
+      category: category,
       description: editedReportText,
-      severity: severityLabel(
-        step3Result?.urgencyScore ??
-        step4ResultForUrgency?.urgencyScore ??
-        parseInt(step3Result?.assessment?.match(/(\d)\/5/)?.[1] ?? "3", 10)
-      ),
+      severity: sevLabel,
       report: editedReportText,
       timeAgo: 'Just now',
       status: 'reported' as const,
-      department: step4Result?.report?.department ?? 'Municipal Corporation',
+      department: dept,
       resolutionTimeEstimate: step3Result?.resolutionTimeEstimate ?? undefined,
       createdAt: new Date().toISOString(),
     }
 
+    // Feature 15 — Store confirmed report details for share card
+    setConfirmedReport({
+      category,
+      location: locationName || locationInput || "Hyderabad",
+      severity: String(sevNum),
+      department: dept,
+    })
+
     addConfirmedReport(newReport)
-    setTimeout(() => router.push('/map'), 100)
+    // Feature 2 — Toast on confirm
+    addToast("Report added to map", "success")
+    setTimeout(() => router.push('/map'), 1800)
   }
 
   const handleDiscard = () => {
@@ -285,13 +365,22 @@ export function UploadSection() {
     setImgDims(null)
     setAnalysisError(null)
     setLocationInput("")
+    setLocationName("")
     setActiveLat(DEFAULT_LAT)
     setActiveLon(DEFAULT_LON)
     setLocationConfirmed(false)
     setShowSuggestions(false)
+    setVoiceNote("")
+    setConfirmedReport(null)
+    // Feature 2 — Toast on discard
+    addToast("Report discarded", "info")
   }
 
   const step3Result = analysisSteps.find((s) => s.step === 'severity_assessment')?.result
+
+  // Feature 9 — Confidence check
+  const classifyResult = analysisSteps.find((s) => s.step === 'classify')?.result
+  const confidence = classifyResult?.confidence ?? 1
 
   return (
     <section id="upload" className="mx-auto max-w-3xl px-5 py-20">
@@ -300,7 +389,8 @@ export function UploadSection() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, delay: 0.3, ease: "easeOut" }}
       >
-        <div className="iridescent-border rounded-2xl p-[2px]">
+        {/* Feature 10 — card-hover on upload card */}
+        <div className="iridescent-border rounded-2xl p-[2px] card-hover">
           <div className="rounded-2xl bg-white p-6 md:p-8">
             <h2 className="mt-3 font-display text-3xl font-light text-ink">Show us what needs fixing</h2>
 
@@ -340,16 +430,16 @@ export function UploadSection() {
                 />
                 {(() => {
                   type ClassifyResult = { boundingBox?: { ymin: number; xmin: number; ymax: number; xmax: number }; severity?: number; category?: string };
-                  const classifyResult = analysisSteps.find((s) => s.step === "classify")?.result as ClassifyResult;
-                  const bbox = classifyResult?.boundingBox;
+                  const cr = analysisSteps.find((s) => s.step === "classify")?.result as ClassifyResult;
+                  const bbox = cr?.boundingBox;
                   if (!imgDims || !bbox) return null;
                   return (
                     <BoundingBoxOverlay
                       box={bbox}
                       imageWidth={imgDims.w}
                       imageHeight={imgDims.h}
-                      severity={classifyResult?.severity ?? 3}
-                      category={classifyResult?.category ?? "issue"}
+                      severity={cr?.severity ?? 3}
+                      category={cr?.category ?? "issue"}
                     />
                   );
                 })()}
@@ -373,73 +463,125 @@ export function UploadSection() {
               tabIndex={-1}
               onChange={handleFileChange}
             />
-          </div>
 
-          <div className="mt-5">
-            <label htmlFor="location" className="font-mono text-xs uppercase tracking-[0.15em] text-ink-muted">Location</label>
-            <div className="relative">
-              <input
-                type="text"
-                value={locationInput}
-                onChange={(e) => {
-                  setLocationInput(e.target.value)
-                  setShowSuggestions(true)
-                  setLocationConfirmed(false)
-                  setActiveLat(DEFAULT_LAT)
-                  setActiveLon(DEFAULT_LON)
-                }}
-                onBlur={() => setTimeout(() => setShowSuggestions(false), 150)}
-                onFocus={() => locationInput.length >= 2 && setShowSuggestions(true)}
-                placeholder="Enter area in Hyderabad..."
-                className="w-full rounded-lg border border-[#E6DDCF] bg-white px-4 py-2 font-mono text-sm text-[#1A1208] placeholder-[#5A6A58] focus:border-[#5BBFBF] focus:outline-none focus:ring-1 focus:ring-[#5BBFBF]"
-              />
-              {locationConfirmed && (
-                <p className="mt-1 font-mono text-xs text-[#5BBFBF]">
-                  📍 {locationInput}
+            {/* Feature 9 — Low confidence warning */}
+            <AnimatePresence>
+              {analysisSteps.some((s) => s.step === 'classify') && confidence < 0.70 && (
+                <motion.div
+                  initial={{ opacity: 0, y: 4 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -4 }}
+                  className="flex items-center gap-2 text-xs font-mono text-[#D4AF37] bg-[#D4AF37]/10 border border-[#D4AF37]/30 rounded-lg px-3 py-2 mt-2"
+                >
+                  ⚠ Low confidence ({Math.round(confidence * 100)}%) — try a closer photo with better lighting for more accurate results
+                </motion.div>
+              )}
+            </AnimatePresence>
+
+            {/* Feature 12 — Voice input */}
+            <div className="mt-3 space-y-2">
+              <button
+                type="button"
+                onClick={handleVoiceInput}
+                disabled={isListening}
+                className={`flex items-center gap-2 text-xs font-mono border rounded-full px-4 py-2 w-full justify-center transition-colors ${
+                  isListening
+                    ? "border-[#E8957A] text-[#E8957A] bg-[#E8957A]/10 animate-pulse"
+                    : "border-teal/40 text-teal hover:bg-teal/10"
+                }`}
+              >
+                🎙 {isListening ? "Listening..." : "Describe the issue by voice"}
+              </button>
+              {voiceNote && (
+                <p className="text-xs font-mono text-[#7A6A58] bg-[#FAF7F2] rounded-lg px-3 py-2 border border-[#E8E4DB]">
+                  &ldquo;{voiceNote}&rdquo;
                 </p>
               )}
-              {showSuggestions && locationInput.length >= 2 && (
-                <ul className="absolute z-50 mt-1 w-full rounded-lg border border-[#E6DDCF] bg-white shadow-md max-h-48 overflow-y-auto">
-                  {Object.keys(NEIGHBORHOODS)
-                    .filter((name) =>
-                      name.toLowerCase().includes(locationInput.toLowerCase())
-                    )
-                    .slice(0, 5)
-                    .map((name) => (
-                      <li
-                        key={name}
-                        onMouseDown={() => {
-                          setLocationInput(name)
-                          setActiveLat(NEIGHBORHOODS[name].lat)
-                          setActiveLon(NEIGHBORHOODS[name].lon)
-                          setLocationConfirmed(true)
-                          setShowSuggestions(false)
-                        }}
-                        className="cursor-pointer px-4 py-2 font-mono text-sm text-[#1A1208] hover:bg-[#F0EBE3]"
-                      >
-                        {name}
-                      </li>
-                    ))}
-                </ul>
-              )}
             </div>
+
+            {/* Feature 1 — GPS Location Input */}
+            <div className="mt-5">
+              <label htmlFor="location" className="font-mono text-xs uppercase tracking-[0.15em] text-ink-muted">Location</label>
+              <div className="space-y-3 mt-2">
+                <button
+                  type="button"
+                  onClick={handleGetLocation}
+                  disabled={isGettingLocation}
+                  className="flex items-center gap-2 text-sm font-mono text-teal border border-teal/40 rounded-full px-4 py-2 hover:bg-teal/10 transition-colors w-full justify-center disabled:opacity-60"
+                >
+                  {isGettingLocation ? "Detecting location..." : "📍 Use My Location"}
+                </button>
+                {locationName && (
+                  <p className="text-xs text-[#7A6A58] font-mono text-center">{locationName}</p>
+                )}
+                <p className="text-xs text-[#7A6A58] text-center">or select manually</p>
+                {/* Existing dropdown — manual fallback */}
+                <div className="relative">
+                  <input
+                    id="location"
+                    type="text"
+                    value={locationInput}
+                    onChange={(e) => {
+                      setLocationInput(e.target.value)
+                      setShowSuggestions(true)
+                      setLocationConfirmed(false)
+                      setActiveLat(DEFAULT_LAT)
+                      setActiveLon(DEFAULT_LON)
+                    }}
+                    onBlur={() => setTimeout(() => setShowSuggestions(false), 150)}
+                    onFocus={() => locationInput.length >= 2 && setShowSuggestions(true)}
+                    placeholder="Enter area in Hyderabad..."
+                    className="w-full rounded-lg border border-[#E6DDCF] bg-white px-4 py-2 font-mono text-sm text-[#1A1208] placeholder-[#5A6A58] focus:border-[#5BBFBF] focus:outline-none focus:ring-1 focus:ring-[#5BBFBF]"
+                  />
+                  {locationConfirmed && !locationName && (
+                    <p className="mt-1 font-mono text-xs text-[#5BBFBF]">
+                      📍 {locationInput}
+                    </p>
+                  )}
+                  {showSuggestions && locationInput.length >= 2 && (
+                    <ul className="absolute z-50 mt-1 w-full rounded-lg border border-[#E6DDCF] bg-white shadow-md max-h-48 overflow-y-auto">
+                      {Object.keys(NEIGHBORHOODS)
+                        .filter((name) =>
+                          name.toLowerCase().includes(locationInput.toLowerCase())
+                        )
+                        .slice(0, 5)
+                        .map((name) => (
+                          <li
+                            key={name}
+                            onMouseDown={() => {
+                              setLocationInput(name)
+                              setActiveLat(NEIGHBORHOODS[name].lat)
+                              setActiveLon(NEIGHBORHOODS[name].lon)
+                              setLocationConfirmed(true)
+                              setShowSuggestions(false)
+                            }}
+                            className="cursor-pointer px-4 py-2 font-mono text-sm text-[#1A1208] hover:bg-[#F0EBE3]"
+                          >
+                            {name}
+                          </li>
+                        ))}
+                    </ul>
+                  )}
+                </div>
+              </div>
+            </div>
+
+            <button
+              type="button"
+              onClick={handleAnalyze}
+              disabled={isAnalyzing}
+              suppressHydrationWarning
+              className="shimmer-btn mt-6 w-full rounded-full px-6 py-3 font-sans text-sm font-medium shadow-sm disabled:opacity-60 disabled:cursor-not-allowed"
+            >
+              {isAnalyzing ? "Analyzing…" : "Analyze Issue"}
+            </button>
+
+            {analysisError && (
+              <div className="mt-4 rounded-xl bg-red-50 border border-red-200 px-4 py-3">
+                <p className="font-sans text-sm text-red-700">{analysisError}</p>
+              </div>
+            )}
           </div>
-
-          <button
-            type="button"
-            onClick={handleAnalyze}
-            disabled={isAnalyzing}
-            suppressHydrationWarning
-            className="shimmer-btn mt-6 w-full rounded-full px-6 py-3 font-sans text-sm font-medium shadow-sm disabled:opacity-60 disabled:cursor-not-allowed"
-          >
-            {isAnalyzing ? "Analyzing…" : "Analyze Issue"}
-          </button>
-
-          {analysisError && (
-            <div className="mt-4 rounded-xl bg-red-50 border border-red-200 px-4 py-3">
-              <p className="font-sans text-sm text-red-700">{analysisError}</p>
-            </div>
-          )}
         </div>
       </motion.div>
 
@@ -467,24 +609,23 @@ export function UploadSection() {
                   <span>Department: <strong className="text-[#1A1208]">{analysisSteps.find((s) => s.step === 'final_report')?.result?.report?.department}</strong></span>
                 </div>
 
+                {/* Feature 3 — Department Escalation Pills */}
                 {(() => {
                   const escalationUrgency = parseInt(step3Result?.assessment?.match(/(\d)\/5/)?.[1] ?? "3", 10);
                   const escalationDepartment = analysisSteps.find((s) => s.step === 'final_report')?.result?.report?.department ?? "Municipal Corporation";
                   const escalationEntry = ESCALATION_MAP[escalationDepartment] ?? DEFAULT_ESCALATION;
                   const escalationColor = escalationUrgency >= 4 ? "#E8957A" : "#5BBFBF";
+                  const pills = ["Report", escalationDepartment, escalationEntry.body, ...(escalationUrgency >= 4 ? [escalationEntry.escalation] : [])];
                   return (
-                    <div className="flex items-center gap-1 flex-wrap mt-2 text-xs font-mono">
-                      <span style={{ color: escalationColor }} className="border rounded-full px-2 py-0.5 border-current">Report</span>
-                      <span className="text-[#7A6A58]">→</span>
-                      <span style={{ color: escalationColor }} className="border rounded-full px-2 py-0.5 border-current">{escalationDepartment}</span>
-                      <span className="text-[#7A6A58]">→</span>
-                      <span style={{ color: escalationColor }} className="border rounded-full px-2 py-0.5 border-current">{escalationEntry.body}</span>
-                      {escalationUrgency >= 4 && (
-                        <>
-                          <span className="text-[#7A6A58]">→</span>
-                          <span style={{ color: escalationColor }} className="border rounded-full px-2 py-0.5 border-current font-semibold">{escalationEntry.escalation}</span>
-                        </>
-                      )}
+                    <div className="flex items-center gap-1 flex-wrap mt-2 text-xs font-mono mb-4">
+                      {pills.map((pill, i) => (
+                        <span key={`${pill}-${i}`} className="flex items-center gap-1">
+                          <span style={{ color: escalationColor }} className="border rounded-full px-2 py-0.5 border-current">
+                            {pill}
+                          </span>
+                          {i < pills.length - 1 && <span className="text-[#7A6A58]">→</span>}
+                        </span>
+                      ))}
                     </div>
                   );
                 })()}
@@ -502,7 +643,7 @@ export function UploadSection() {
                 <Textarea
                   value={editedReportText}
                   onChange={(e) => setEditedReportText(e.target.value)}
-                  className="w-full min-h-[120px] mb-4 font-mono text-sm bg-white border-[#C9A84C] focus:ring-[#5BBFBF]"
+                  className="w-full min-h-[120px] mb-4 mt-4 font-mono text-sm bg-white border-[#C9A84C] focus:ring-[#5BBFBF]"
                   placeholder="Edit the AI-drafted report before submitting..."
                 />
 
@@ -522,6 +663,37 @@ export function UploadSection() {
                     Discard
                   </button>
                 </div>
+
+                {/* Feature 15 — Shareable Report Card */}
+                {confirmedReport && (
+                  <div className="mt-4 rounded-xl border border-[#E8E4DB] bg-[#FAF7F2] p-4 space-y-2">
+                    <p className="text-xs font-mono text-[#7A6A58] uppercase tracking-wider">
+                      Share this report
+                    </p>
+                    <div className="flex items-center gap-3">
+                      <div className="flex-1 min-w-0">
+                        <p className="text-sm font-semibold text-[#1A1208] truncate">
+                          {confirmedReport.category} — {confirmedReport.location}
+                        </p>
+                        <p className="text-xs text-[#7A6A58]">
+                          Severity: {confirmedReport.severity}/5 · {confirmedReport.department}
+                        </p>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          navigator.clipboard.writeText(
+                            `I reported a civic issue via CivicPulse: ${confirmedReport.category} at ${confirmedReport.location}. Severity: ${confirmedReport.severity}/5. Routed to ${confirmedReport.department}. #CivicPulse #FixHyderabad`
+                          )
+                          addToast("Copied to clipboard!", "success")
+                        }}
+                        className="text-xs font-mono border border-teal/40 text-teal rounded-full px-3 py-1 hover:bg-teal/10 shrink-0 transition-colors"
+                      >
+                        Copy Link
+                      </button>
+                    </div>
+                  </div>
+                )}
               </div>
             )}
           </>
@@ -539,7 +711,6 @@ export function UploadSection() {
           </ol>
         )}
       </div>
-    </motion.div>
     </section>
   );
 }

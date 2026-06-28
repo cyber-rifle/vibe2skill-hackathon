@@ -6,7 +6,7 @@ import StatCounter from "@/components/StatCounter"
 
 export function Hero() {
   return (
-    <section className="relative overflow-hidden">
+    <section className="relative overflow-hidden hero-grain">
       {/* Iridescent orb decoration */}
       <div
         aria-hidden="true"
@@ -55,7 +55,7 @@ export function Hero() {
             transition={{ duration: 0.6, delay: 0.4, ease: "easeOut" }}
             className="mt-14 flex gap-10 flex-wrap"
           >
-            <StatCounter value={1240} suffix="+" label="Issues Reported" duration={1600} />
+            <StatCounter value={1240} suffix="+" label="Issues Reported" duration={1600} liveReportCount={true} />
             <StatCounter value={89} suffix="%" label="Resolved in 7 Days" duration={1800} />
             <StatCounter value={14} suffix="+" label="Departments Linked" duration={1400} />
           </motion.div>

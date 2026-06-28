@@ -1,5 +1,6 @@
 "use client";
 import { motion, AnimatePresence } from "framer-motion";
+import { useState } from "react";
 
 const STEP_LABELS: Record<string, string> = {
   classify: "Classifying issue...",
@@ -77,7 +78,7 @@ const DuplicateCard = (result: unknown) => {
   );
 };
 
-const SeverityCard = (result: unknown, streamingText?: string) => {
+const SeverityCard = ({ result, streamingText }: { result: unknown; streamingText?: string }) => {
   const assessment = (result as any)?.assessment ?? "";
   const grounded = (result as any)?.grounded ?? false;
   const sources = (result as any)?.sources ?? [];
@@ -85,6 +86,10 @@ const SeverityCard = (result: unknown, streamingText?: string) => {
   const urgency = urgencyMatch ? parseInt(urgencyMatch[1], 10) : 3;
   const resolutionTimeEstimate = (result as any)?.resolutionTimeEstimate ?? null;
   const severityColor = getSeverityColor(urgency);
+  const category = (result as any)?.category ?? "";
+
+  // Feature 16 — Gemini Explain expandable
+  const [expanded, setExpanded] = useState(false);
 
   const getSourceLabel = (source: any) => {
     if (!source?.uri) return source?.title ?? "Unknown";
@@ -157,6 +162,32 @@ const SeverityCard = (result: unknown, streamingText?: string) => {
           ))}
         </div>
       ) : null}
+
+      {/* Feature 16 — Expandable Gemini explain */}
+      <button
+        onClick={() => setExpanded(!expanded)}
+        className="text-xs font-mono text-[#7A6A58] hover:text-[#1A1208] flex items-center gap-1 mt-2 transition-colors"
+      >
+        {expanded ? "▲ Hide reasoning" : "▼ Why this severity?"}
+      </button>
+      <AnimatePresence>
+        {expanded && (
+          <motion.div
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: "auto" }}
+            exit={{ opacity: 0, height: 0 }}
+            className="mt-2 text-xs text-[#7A6A58] font-mono leading-relaxed bg-[#FAF7F2] rounded-lg p-3 border border-[#E8E4DB] overflow-hidden"
+          >
+            <p className="font-semibold text-[#1A1208] mb-1">Factors considered:</p>
+            <ul className="space-y-1 list-none">
+              <li>• Issue type: {category || "civic issue"}</li>
+              <li>• Urgency score: {urgency}/5</li>
+              <li>• Data source: {grounded ? "Google Search (live)" : "Gemini training data"}</li>
+              <li>• Cited sources: {sources?.length ?? 0}</li>
+            </ul>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 };
@@ -183,7 +214,7 @@ const renderStepResult = (step: string, result: unknown, streamingText?: string)
     case "duplicate_check":
       return DuplicateCard(result);
     case "severity_assessment":
-      return SeverityCard(result, streamingText);
+      return <SeverityCard result={result} streamingText={streamingText} />;
     case "final_report":
       return ReportCard(result);
     default:
@@ -218,7 +249,7 @@ export function ReasoningReveal({ steps, streamingText = "" }: { steps: Step[]; 
               initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: i * 0.15, duration: 0.4, ease: "easeOut" }}
-              className="flex items-start gap-4 rounded-xl border border-[#E6DDCF] border-l-4 border-l-[#5BBFBF] bg-[#F2EDE4] px-5 py-4"
+              className="flex items-start gap-4 rounded-xl border border-[#E6DDCF] border-l-4 border-l-[#5BBFBF] bg-[#F2EDE4] px-5 py-4 card-hover"
             >
               <span className="mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-[#E6DDCF] bg-white font-mono text-xs text-[#7A6A58]">
                 {i + 1}

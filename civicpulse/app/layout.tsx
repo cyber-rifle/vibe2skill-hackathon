@@ -1,8 +1,11 @@
 import type { Metadata } from 'next'
 import { Cormorant_Garamond, DM_Sans, JetBrains_Mono } from 'next/font/google'
 import 'leaflet/dist/leaflet.css'
+import 'leaflet.markercluster/dist/MarkerCluster.css'
+import 'leaflet.markercluster/dist/MarkerCluster.Default.css'
 import './globals.css'
 import { ReportProvider } from '@/lib/report-context'
+import { ToastProvider } from '@/components/toast'
 
 const cormorant = Cormorant_Garamond({
   variable: '--font-display',
@@ -37,7 +40,9 @@ export default function RootLayout({
       className={`${cormorant.variable} ${dmSans.variable} ${jetbrainsMono.variable} bg-[#FAF7F2]`}
     >
       <body className="font-sans antialiased">
-        <ReportProvider>{children}</ReportProvider>
+        <ReportProvider>
+          <ToastProvider>{children}</ToastProvider>
+        </ReportProvider>
       </body>
     </html>
   )

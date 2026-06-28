@@ -11,7 +11,7 @@ export function ReportCard({ report, isSelected, onClick }: ReportCardProps) {
   return (
     <div
       onClick={onClick}
-      className={`cursor-pointer rounded-lg border p-4 transition-all hover:shadow-md ${
+      className={`cursor-pointer rounded-lg border p-4 transition-all hover:shadow-md card-hover ${
         isSelected ? 'border-[#C9A84C] bg-[#FAF7F2]' : 'border-[#E8E4DB] bg-white'
       }`}
     >

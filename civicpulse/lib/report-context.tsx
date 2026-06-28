@@ -20,26 +20,31 @@ export type Report = {
   department: string
   timeAgo: string
   report: string
-  status: 'reported' | 'verified' | 'in_progress' | 'resolved'
+  status: 'reported' | 'acknowledged' | 'verified' | 'in_progress' | 'resolved'
   createdAt: string
 }
 
 type ReportContextValue = {
   confirmedReports: Report[]
   addConfirmedReport: (report: Report) => void
+  reportCount: number
 }
 
 const ReportContext = createContext<ReportContextValue | null>(null)
 
 export function ReportProvider({ children }: { children: React.ReactNode }) {
   const [confirmedReports, setConfirmedReports] = useState<Report[]>([])
+  // Feature 4 — Live stat counter initialized to 1240
+  const [reportCount, setReportCount] = useState(1240)
 
   const addConfirmedReport = (report: Report) => {
     setConfirmedReports((prev) => [...prev, report])
+    // Feature 4 — Increment by 1 on each new report
+    setReportCount((prev) => prev + 1)
   }
 
   return (
-    <ReportContext.Provider value={{ confirmedReports, addConfirmedReport }}>
+    <ReportContext.Provider value={{ confirmedReports, addConfirmedReport, reportCount }}>
       {children}
     </ReportContext.Provider>
   )
