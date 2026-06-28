@@ -28,6 +28,19 @@ const NEIGHBORHOODS: Record<string, { lat: number; lon: number }> = {
   "Shamirpet":      { lat: 17.5355, lon: 78.5644 },
 }
 
+const MAX_FILE_SIZE = 10 * 1024 * 1024 // 10MB
+const ALLOWED_TYPES = ["image/jpeg", "image/png", "image/webp"]
+
+function validateFile(file: File): string | null {
+  if (!ALLOWED_TYPES.includes(file.type)) {
+    return "Please upload a JPG, PNG, or WEBP image"
+  }
+  if (file.size > MAX_FILE_SIZE) {
+    return "Image must be under 10MB — try compressing it first"
+  }
+  return null
+}
+
 const DEFAULT_LAT = 17.385
 const DEFAULT_LON = 78.487
 
@@ -98,6 +111,11 @@ export function UploadSection() {
   function handleFileChange(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];
     if (!file) return;
+    const validationError = validateFile(file)
+    if (validationError) {
+      addToast(validationError, "error")
+      return
+    }
     setSelectedFile(file);
     setPreview(URL.createObjectURL(file));
     setAnalysisSteps([]);
@@ -125,9 +143,14 @@ export function UploadSection() {
         }
         setIsGettingLocation(false)
       },
-      () => {
+      (err: GeolocationPositionError) => {
         setIsGettingLocation(false)
-        setLocationName("Location access denied — select manually")
+        const messages: Record<number, string> = {
+          1: "Location access denied — select manually",
+          2: "Location unavailable right now — select manually",
+          3: "Location request timed out — select manually",
+        }
+        setLocationName(messages[err.code] ?? "Could not detect location — select manually")
       }
     )
   }
@@ -309,7 +332,11 @@ export function UploadSection() {
 
       setIsAnalyzing(false)
     } catch (err) {
-      setAnalysisError(String(err))
+      const message = !navigator.onLine
+        ? "You're offline — reconnect and try again"
+        : String(err)
+      setAnalysisError(message)
+      addToast("Analysis failed", "error")
       setIsAnalyzing(false)
     }
   }
@@ -404,6 +431,11 @@ export function UploadSection() {
                 e.stopPropagation();
                 const file = e.dataTransfer.files?.[0];
                 if (!file) return;
+                const validationError = validateFile(file)
+                if (validationError) {
+                  addToast(validationError, "error")
+                  return
+                }
                 setSelectedFile(file);
                 setPreview(URL.createObjectURL(file));
                 setAnalysisSteps([]);

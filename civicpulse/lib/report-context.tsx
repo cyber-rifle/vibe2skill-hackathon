@@ -28,15 +28,19 @@ type ReportContextValue = {
   confirmedReports: Report[]
   addConfirmedReport: (report: Report) => void
   reportCount: number
+  comments: Record<string, { id: string; text: string; createdAt: string }[]>
+  addComment: (reportId: string, text: string) => void
 }
 
 const ReportContext = createContext<ReportContextValue | null>(null)
 
 const STORAGE_KEY = 'civicpulse_confirmed_reports'
+const COMMENTS_STORAGE_KEY = 'civicpulse_comments'
 
 export function ReportProvider({ children }: { children: React.ReactNode }) {
   const [confirmedReports, setConfirmedReports] = useState<Report[]>([])
   const [reportCount, setReportCount] = useState(1240)
+  const [comments, setComments] = useState<Record<string, { id: string; text: string; createdAt: string }[]>>({})
   const [hydrated, setHydrated] = useState(false)
 
   // Load from localStorage on mount only (client-side)
@@ -50,8 +54,14 @@ export function ReportProvider({ children }: { children: React.ReactNode }) {
           setReportCount(1240 + parsed.length)
         }
       }
+      
+      const rawComments = localStorage.getItem(COMMENTS_STORAGE_KEY)
+      if (rawComments) {
+        const parsedComments = JSON.parse(rawComments)
+        setComments(parsedComments)
+      }
     } catch (e) {
-      console.warn('[report-context] failed to load saved reports', e)
+      console.warn('[report-context] failed to load saved data', e)
     }
     setHydrated(true)
   }, [])
@@ -66,13 +76,36 @@ export function ReportProvider({ children }: { children: React.ReactNode }) {
     }
   }, [confirmedReports, hydrated])
 
+  // Persist whenever comments changes, but only after initial hydration
+  useEffect(() => {
+    if (!hydrated) return
+    try {
+      localStorage.setItem(COMMENTS_STORAGE_KEY, JSON.stringify(comments))
+    } catch (e) {
+      console.warn('[report-context] failed to save comments', e)
+    }
+  }, [comments, hydrated])
+
   const addConfirmedReport = (report: Report) => {
     setConfirmedReports((prev) => [...prev, report])
     setReportCount((prev) => prev + 1)
   }
 
+  const addComment = (reportId: string, text: string) => {
+    setComments((prev) => {
+      const existing = prev[reportId] || []
+      return {
+        ...prev,
+        [reportId]: [
+          ...existing,
+          { id: crypto.randomUUID(), text, createdAt: new Date().toISOString() },
+        ],
+      }
+    })
+  }
+
   return (
-    <ReportContext.Provider value={{ confirmedReports, addConfirmedReport, reportCount }}>
+    <ReportContext.Provider value={{ confirmedReports, addConfirmedReport, reportCount, comments, addComment }}>
       {children}
     </ReportContext.Provider>
   )

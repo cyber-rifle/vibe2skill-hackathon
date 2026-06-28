@@ -3,6 +3,7 @@ import { useReports } from "@/lib/report-context"
 import { seedReports } from "@/lib/seed-reports"
 import { Navbar } from "@/components/navbar"
 import { motion } from "framer-motion"
+import { CitizenProfile } from "@/components/citizen-profile"
 
 const CATEGORY_LABELS: Record<string, string> = {
   pothole: "Pothole",
@@ -20,6 +21,7 @@ const SEVERITY_COLORS: Record<string, string> = {
 
 const STATUS_LABELS: Record<string, string> = {
   reported: "Reported",
+  acknowledged: "Acknowledged",
   verified: "Verified",
   in_progress: "In Progress",
   resolved: "Resolved",
@@ -27,6 +29,7 @@ const STATUS_LABELS: Record<string, string> = {
 
 const STATUS_COLORS: Record<string, string> = {
   reported: "#C9A84C",
+  acknowledged: "#5BBFBF",
   verified: "#5BBFBF",
   in_progress: "#D4AF37",
   resolved: "#22c55e",
@@ -39,7 +42,7 @@ export default function DashboardPage() {
   // Aggregate data
   const byCategory: Record<string, number> = {}
   const bySeverity: Record<string, number> = { low: 0, medium: 0, high: 0 }
-  const byStatus: Record<string, number> = { reported: 0, verified: 0, in_progress: 0, resolved: 0 }
+  const byStatus: Record<string, number> = { reported: 0, acknowledged: 0, verified: 0, in_progress: 0, resolved: 0 }
 
   for (const r of allReports) {
     byCategory[r.category] = (byCategory[r.category] ?? 0) + 1
@@ -96,6 +99,10 @@ export default function DashboardPage() {
               </p>
             </motion.div>
           ))}
+        </div>
+
+        <div className="mt-10">
+          <CitizenProfile />
         </div>
 
         <div className="mt-10 grid md:grid-cols-2 gap-8">
