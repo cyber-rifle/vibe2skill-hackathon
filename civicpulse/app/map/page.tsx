@@ -54,17 +54,7 @@ export default function MapPage() {
         if (desktopCard && window.innerWidth >= 768) {
           desktopCard.scrollIntoView({ behavior: 'smooth', block: 'center' })
         }
-        
-        // Try scrolling mobile card using container to avoid window scroll glitches
-        const mobileCard = document.getElementById(`report-card-mobile-${selectedId}`)
-        const container = document.getElementById('mobile-card-container')
-        if (mobileCard && container && window.innerWidth < 768) {
-          container.scrollTo({
-            top: mobileCard.offsetTop - container.offsetTop - 8,
-            behavior: 'smooth'
-          })
-        }
-      }, 350)
+      }, 50)
     }
   }, [selectedId])
 
