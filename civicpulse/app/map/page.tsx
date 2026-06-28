@@ -48,17 +48,19 @@ export default function MapPage() {
 
   useEffect(() => {
     if (selectedId) {
-      // Try scrolling desktop card first
-      const desktopCard = document.getElementById(`report-card-${selectedId}`)
-      if (desktopCard && window.innerWidth >= 768) {
-        desktopCard.scrollIntoView({ behavior: 'smooth', block: 'nearest' })
-      }
-      
-      // Try scrolling mobile card
-      const mobileCard = document.getElementById(`report-card-mobile-${selectedId}`)
-      if (mobileCard && window.innerWidth < 768) {
-        mobileCard.scrollIntoView({ behavior: 'smooth', block: 'nearest' })
-      }
+      setTimeout(() => {
+        // Try scrolling desktop card first
+        const desktopCard = document.getElementById(`report-card-${selectedId}`)
+        if (desktopCard && window.innerWidth >= 768) {
+          desktopCard.scrollIntoView({ behavior: 'smooth', block: 'center' })
+        }
+        
+        // Try scrolling mobile card
+        const mobileCard = document.getElementById(`report-card-mobile-${selectedId}`)
+        if (mobileCard && window.innerWidth < 768) {
+          mobileCard.scrollIntoView({ behavior: 'smooth', block: 'center' })
+        }
+      }, 350)
     }
   }, [selectedId])
 
