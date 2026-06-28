@@ -53,26 +53,26 @@ export default function Page() {
 
             {/* Large card — Step 1 */}
             <motion.div
-              initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }} transition={{ delay: 0.05 }}
+              initial={{ opacity: 0, y: 40, scale: 0.95, rotateX: 5 }} whileInView={{ opacity: 1, y: 0, scale: 1, rotateX: 0 }}
+              viewport={{ once: true, margin: "-50px" }} transition={{ delay: 0.05, duration: 0.7, ease: "easeOut" }}
               className="bento-card depth-card md:col-span-5 md:row-span-2 p-8 flex flex-col justify-between
-              bg-gradient-to-br from-[#0A1628] to-[#0F2137] text-white relative overflow-hidden"
+              bg-white relative overflow-hidden transform-style-3d"
             >
               <div aria-hidden="true" className="ambient-orb absolute -right-8 -top-8
-                h-40 w-40 opacity-[0.35]" />
+                h-40 w-40 opacity-[0.1]" />
               {/* 3. Scan line animation */}
               <div aria-hidden="true" className="absolute left-0 right-0 h-px pointer-events-none"
-                style={{ background: 'linear-gradient(90deg, transparent, rgba(91,191,191,0.3), transparent)', animation: 'scan-line 3s ease-in-out infinite' }} />
-              {/* 4. Gold-sweep step number */}
-              <span className="font-mono text-4xl font-light gold-sweep">01</span>
+                style={{ background: 'linear-gradient(90deg, transparent, rgba(91,191,191,0.5), transparent)', animation: 'scan-line 3s ease-in-out infinite' }} />
+              {/* 4. Step number */}
+              <span className="font-mono text-5xl font-bold text-[#C9A84C]">01</span>
               <div>
                 <p className="font-mono text-xs uppercase tracking-[0.15em] text-[#5BBFBF] mb-2">
                   Classify
                 </p>
-                <h3 className="font-display text-3xl font-light text-white mb-2">
+                <h3 className="font-display text-3xl font-light text-[#1A1208] mb-2">
                   AI reads your photo
                 </h3>
-                <p className="font-sans text-sm leading-relaxed text-white/60">
+                <p className="font-sans text-sm leading-relaxed text-[#3D2E1A]">
                   Gemini 2.5 Flash identifies the issue type — pothole, leaking pipe,
                   broken streetlight — directly from the image. No text description needed.
                 </p>
@@ -81,12 +81,12 @@ export default function Page() {
 
             {/* Step 2 */}
             <motion.div
-              initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }} transition={{ delay: 0.1 }}
-              className="bento-card depth-card md:col-span-4 p-6 flex flex-col justify-between bg-[#FAF7F2]"
+              initial={{ opacity: 0, y: 40, scale: 0.95, rotateX: 5 }} whileInView={{ opacity: 1, y: 0, scale: 1, rotateX: 0 }}
+              viewport={{ once: true, margin: "-50px" }} transition={{ delay: 0.15, duration: 0.7, ease: "easeOut" }}
+              className="bento-card depth-card md:col-span-4 p-6 flex flex-col justify-between bg-[#FAF7F2] transform-style-3d"
             >
-              {/* 4. Gold-sweep step number */}
-              <span className="font-mono text-3xl font-light gold-sweep">02</span>
+              {/* 4. Step number */}
+              <span className="font-mono text-4xl font-bold text-[#C9A84C]">02</span>
               <div>
                 <p className="font-mono text-xs uppercase tracking-[0.15em] text-[#5BBFBF] mb-1">
                   Deduplicate
@@ -102,15 +102,15 @@ export default function Page() {
 
             {/* Step 3 — severity — fixed readability */}
             <motion.div
-              initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }} transition={{ delay: 0.15 }}
+              initial={{ opacity: 0, y: 40, scale: 0.95, rotateX: 5 }} whileInView={{ opacity: 1, y: 0, scale: 1, rotateX: 0 }}
+              viewport={{ once: true, margin: "-50px" }} transition={{ delay: 0.25, duration: 0.7, ease: "easeOut" }}
               className="bento-card depth-card md:col-span-3 p-6 flex flex-col justify-between
-              overflow-hidden relative"
+              overflow-hidden relative transform-style-3d"
               style={{ background: 'linear-gradient(135deg,#5BBFBF15,#D4AF6A15)' }}
             >
               <div className="flex items-center justify-between">
                 {/* 1. Fix step 03 number — readable teal tint */}
-                <span className="font-mono text-3xl font-light gold-sweep">03</span>
+                <span className="font-mono text-4xl font-bold text-[#C9A84C]">03</span>
                 <div className="flex gap-1">
                   {[1,2,3,4,5].map(i => (
                     <div key={i} className="h-6 w-1.5 rounded-full"
@@ -134,12 +134,12 @@ export default function Page() {
 
             {/* Step 4 — route */}
             <motion.div
-              initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }} transition={{ delay: 0.2 }}
-              className="bento-card depth-card md:col-span-4 p-6 flex flex-col justify-between"
+              initial={{ opacity: 0, y: 40, scale: 0.95, rotateX: 5 }} whileInView={{ opacity: 1, y: 0, scale: 1, rotateX: 0 }}
+              viewport={{ once: true, margin: "-50px" }} transition={{ delay: 0.35, duration: 0.7, ease: "easeOut" }}
+              className="bento-card depth-card md:col-span-4 p-6 flex flex-col justify-between transform-style-3d"
             >
-              {/* 4. Gold-sweep step number */}
-              <span className="font-mono text-3xl font-light gold-sweep">04</span>
+              {/* 4. Step number */}
+              <span className="font-mono text-4xl font-bold text-[#C9A84C]">04</span>
               <div>
                 <p className="font-mono text-xs uppercase tracking-[0.15em] text-[#E8957A] mb-1">
                   Route
@@ -155,18 +155,21 @@ export default function Page() {
 
             {/* Wide card — map preview pill — with Live Pulse badge */}
             <motion.div
-              initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }} transition={{ delay: 0.25 }}
+              initial={{ opacity: 0, y: 40, scale: 0.95, rotateX: 5 }} whileInView={{ opacity: 1, y: 0, scale: 1, rotateX: 0 }}
+              viewport={{ once: true, margin: "-50px" }} transition={{ delay: 0.45, duration: 0.7, ease: "easeOut" }}
               className="bento-card depth-card md:col-span-3 p-6 flex flex-col items-start justify-between
-              bg-[#0A1628] text-white"
+              bg-white relative overflow-hidden transform-style-3d group"
             >
+              {/* Subtle map bg element */}
+              <div aria-hidden="true" className="absolute inset-0 opacity-[0.03]" 
+                style={{ backgroundImage: 'radial-gradient(#1A1208 1px, transparent 1px)', backgroundSize: '12px 12px' }} />
               {/* 5. Live Pulse badge */}
-              <div className="flex items-center gap-1.5 mb-3">
+              <div className="flex items-center gap-1.5 mb-3 relative z-10">
                 <span className="h-2 w-2 rounded-full bg-[#5BBFBF] glow-pulse" />
                 <p className="font-mono text-xs uppercase tracking-[0.15em] text-[#5BBFBF]">Live</p>
               </div>
-              <div>
-                <h3 className="font-display text-2xl font-medium text-white mb-2">Community map</h3>
+              <div className="relative z-10">
+                <h3 className="font-display text-2xl font-medium text-[#1A1208] mb-2">Community map</h3>
                 <a href="/map" className="font-mono text-xs text-[#D4AF6A] hover:underline">
                   View all reports →
                 </a>
@@ -177,13 +180,13 @@ export default function Page() {
 
           {/* 6. Impact Stats bar */}
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="mt-16 iridescent-border-animated rounded-2xl"
+            initial={{ opacity: 0, y: 40, scale: 0.95 }}
+            whileInView={{ opacity: 1, y: 0, scale: 1 }}
+            viewport={{ once: true, margin: "-50px" }}
+            transition={{ duration: 0.8, ease: "easeOut", delay: 0.2 }}
+            className="mt-16 iridescent-border-animated rounded-2xl shadow-xl-warm transform-style-3d"
           >
-            <div className="rounded-2xl bg-gradient-to-r from-[#0A1628] to-[#0F2137] p-8 flex flex-col md:flex-row items-center justify-around gap-6 text-white" style={{ borderRadius: '16px' }}>
+            <div className="rounded-2xl p-8 flex flex-col md:flex-row items-center justify-around gap-6 bg-white relative z-10" style={{ borderRadius: '16px' }}>
               {[
                 { num: '< 30s', label: 'Time to submit a report' },
                 { num: '200m', label: 'Deduplication radius' },
@@ -191,8 +194,8 @@ export default function Page() {
                 { num: '89%', label: 'Resolved within 7 days' },
               ].map(({ num, label }) => (
                 <div key={label} className="text-center">
-                  <p className="font-display text-4xl font-light iridescent-text">{num}</p>
-                  <p className="font-mono text-xs text-white/50 mt-1 uppercase tracking-wider">{label}</p>
+                  <p className="font-display text-4xl font-light text-[#5BBFBF] mb-2">{num}</p>
+                  <p className="font-mono text-xs text-[#7A6A58] mt-1 uppercase tracking-wider">{label}</p>
                 </div>
               ))}
             </div>

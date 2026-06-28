@@ -165,6 +165,14 @@
     pointer-events: none;
     background: linear-gradient(135deg, #5BBFBF 0%, #D4AF6A 50%, #E8957A 100%);
     filter: blur(80px);
+    animation: orb-float 20s ease-in-out infinite alternate;
+  }
+
+  @keyframes orb-float {
+    0% { transform: translate(0, 0) scale(1); opacity: 0.15; }
+    33% { transform: translate(30px, -50px) scale(1.1); opacity: 0.25; }
+    66% { transform: translate(-20px, 20px) scale(0.9); opacity: 0.15; }
+    100% { transform: translate(40px, 40px) scale(1.05); opacity: 0.25; }
   }
 
   /* Bento grid card base */
@@ -330,12 +338,12 @@
 
   /* Card depth on hover — richer than current */
   .depth-card {
-    transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1),
-                box-shadow 0.3s ease;
+    transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1),
+                box-shadow 0.4s ease;
   }
   .depth-card:hover {
-    transform: translateY(-4px) rotate3d(1, 0, 0, 1deg);
-    box-shadow: 0 20px 60px rgba(26, 18, 8, 0.14);
+    transform: translateY(-6px) scale(1.01) rotateX(1deg);
+    box-shadow: 0 24px 60px rgba(26, 18, 8, 0.12), 0 8px 20px rgba(91, 191, 191, 0.15);
   }
 
   /* Iridescent border — animated version */
@@ -424,7 +432,16 @@
 /* Scan line — Step 01 card scanning effect */
 @keyframes scan-line {
   0%   { top: 20%; opacity: 0; }
-  10%  { opacity: 1; }
-  90%  { opacity: 1; }
   100% { top: 80%; opacity: 0; }
+}
+
+/* 3D Transform Utilities */
+.transform-style-3d {
+  transform-style: preserve-3d;
+}
+.translate-z-10 {
+  transform: translateZ(10px);
+}
+.translate-z-20 {
+  transform: translateZ(20px);
 }

@@ -60,15 +60,15 @@ export default function ForCitiesPage() {
     <div className="min-h-screen bg-[#FAF7F2]">
       <Navbar />
 
-      {/* Hero — dark navy with gradient fade */}
+      {/* Hero — ivory with soft orbs */}
       <section
-        className="relative overflow-hidden"
-        style={{ background: 'linear-gradient(180deg, #0A1628 0%, #0A1628 70%, #0D1F3C 85%, #FAF7F2 100%)' }}
+        className="relative overflow-hidden bg-white"
+        style={{ borderBottom: '1px solid #E8E4DB' }}
       >
         {/* Ambient orbs */}
-        <div aria-hidden="true" className="pointer-events-none absolute -right-24 top-16 h-[36rem] w-[36rem] rounded-full opacity-[0.15] blur-3xl"
+        <div aria-hidden="true" className="pointer-events-none absolute -right-24 top-16 h-[36rem] w-[36rem] rounded-full opacity-[0.25] blur-3xl"
           style={{ background: 'radial-gradient(circle, #5BBFBF, transparent 70%)' }} />
-        <div aria-hidden="true" className="pointer-events-none absolute left-0 bottom-16 h-80 w-80 rounded-full opacity-[0.10] blur-3xl"
+        <div aria-hidden="true" className="pointer-events-none absolute left-0 bottom-16 h-80 w-80 rounded-full opacity-[0.20] blur-3xl"
           style={{ background: 'radial-gradient(circle, #D4AF37, transparent 70%)' }} />
 
         <div className="mx-auto max-w-5xl px-5 pb-36 pt-24">
@@ -81,10 +81,10 @@ export default function ForCitiesPage() {
               <span className="h-1.5 w-1.5 rounded-full bg-[#5BBFBF] glow-pulse" />
               <p className="font-mono text-xs uppercase tracking-[0.22em] text-[#5BBFBF]">For Municipal Corporations</p>
             </div>
-            <h1 className="font-display text-5xl md:text-[64px] font-light leading-[1.05] tracking-tight text-white text-balance">
+            <h1 className="font-display text-5xl md:text-[64px] font-light leading-[1.05] tracking-tight text-[#1A1208] text-balance">
               Give your city a nervous system.
             </h1>
-            <p className="mt-6 max-w-2xl font-sans text-xl leading-relaxed text-white/60">
+            <p className="mt-6 max-w-2xl font-sans text-xl leading-relaxed text-[#7A6A58]">
               Real-time visibility into every reported infrastructure failure.
               Routed, tracked, resolved.
             </p>
@@ -94,15 +94,15 @@ export default function ForCitiesPage() {
                 Request a Demo
               </a>
               <a href="/dashboard"
-                className="inline-flex items-center gap-2 rounded-full border border-white/20
-                px-8 py-3 font-sans text-sm font-medium text-white/80
-                hover:bg-white/10 transition-colors">
+                className="inline-flex items-center gap-2 rounded-full border border-[#1A1208]
+                px-8 py-3 font-sans text-sm font-medium text-[#1A1208]
+                hover:bg-[#1A1208] hover:text-white transition-colors">
                 See Live Dashboard →
               </a>
               <a href="/#how-it-works"
-                className="inline-flex items-center gap-2 rounded-full border border-white/10
-                px-8 py-3 font-sans text-sm font-medium text-white/50
-                hover:bg-white/5 transition-colors">
+                className="inline-flex items-center gap-2 rounded-full border border-[#E8E4DB]
+                px-8 py-3 font-sans text-sm font-medium text-[#7A6A58]
+                hover:bg-[#FAF7F2] transition-colors">
                 How it works →
               </a>
             </div>
@@ -155,7 +155,7 @@ export default function ForCitiesPage() {
       </section>
 
       {/* Impact stats strip */}
-      <section className="bg-[#0A1628] border-b border-white/10">
+      <section className="bg-white border-b border-[#E8E4DB]">
         <div className="mx-auto max-w-5xl px-5 py-14">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
             {[
@@ -171,8 +171,8 @@ export default function ForCitiesPage() {
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.1 }}
               >
-                <p className="font-display text-4xl font-light iridescent-text mb-1">{s.value}</p>
-                <p className="font-mono text-xs text-white/40">{s.label}</p>
+                <p className="font-display text-4xl font-light text-[#5BBFBF] mb-1">{s.value}</p>
+                <p className="font-mono text-xs text-[#7A6A58]">{s.label}</p>
               </motion.div>
             ))}
           </div>
@@ -214,19 +214,19 @@ export default function ForCitiesPage() {
         </div>
       </section>
 
-      {/* How it works CTA */}
+      {/* How it works CTA — light theme block */}
       <motion.a
         href="/#how-it-works"
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
         transition={{ duration: 0.5 }}
-        className="block bg-[#0F2137] hover:bg-[#0A1628] transition-colors border-b border-white/10 group"
+        className="block bg-white hover:bg-[#FAF7F2] transition-colors border-b border-[#E8E4DB] group"
       >
         <div className="mx-auto max-w-5xl px-5 py-10 flex items-center justify-between">
           <div>
             <p className="font-mono text-xs uppercase tracking-[0.2em] text-[#5BBFBF] mb-1">Try it live</p>
-            <p className="font-display text-2xl font-light text-white">See How It Works →</p>
+            <p className="font-display text-2xl font-light text-[#1A1208]">See How It Works →</p>
           </div>
           <span className="shimmer-btn magnetic-btn rounded-full px-6 py-2.5 text-sm font-medium">
             See How It Works →

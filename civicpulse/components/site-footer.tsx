@@ -23,7 +23,7 @@ export function SiteFooter() {
               <span className="h-1.5 w-1.5 rounded-full bg-[#5BBFBF] glow-pulse" />
               <span className="font-mono text-xs text-[#5BBFBF]">Live reporting active</span>
             </div>
-            <p className="font-mono text-xs text-white/30">Hyderabad, India · 2026</p>
+            <p className="font-mono text-xs text-white/30">India · 2026</p>
           </div>
 
           {/* Col 2: Navigation */}
@@ -85,10 +85,10 @@ export function SiteFooter() {
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
-          className="mt-12 pt-6 border-t border-white/10 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3"
+          className="mt-16 flex flex-col items-center justify-between gap-4 border-t border-white/10 pt-8 sm:flex-row"
         >
-          <p className="font-mono text-[11px] text-white/30">
-            © 2026 CivicPulse · Built for Hyderabad · Google AI Studio Hackathon
+          <p className="font-mono text-xs text-white/40">
+            © 2026 CivicPulse · Built for India · Google AI Studio Hackathon
           </p>
           <p className="font-mono text-[11px] text-white/20">
             MIT License · Open Source

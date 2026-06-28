@@ -97,12 +97,18 @@ export default function BoundingBoxOverlay({
       height={imageHeight}
       viewBox={`0 0 ${imageWidth} ${imageHeight}`}
     >
+      {/* Dark overall overlay to draw attention to the bounding box */}
+      <rect
+        width="100%" height="100%"
+        fill="rgba(0, 0, 0, 0.25)"
+      />
+
       <motion.rect
         x={x}
         y={y}
         width={width}
         height={height}
-        fill="transparent"
+        fill={`${color}33`} /* 20% opacity fill of the severity color */
         stroke={color}
         strokeWidth={2.5}
         rx={4}
@@ -166,6 +172,12 @@ export function MultiBoxOverlay({
       height={imageHeight}
       viewBox={`0 0 ${imageWidth} ${imageHeight}`}
     >
+      {/* Dark overall overlay */}
+      <rect
+        width="100%" height="100%"
+        fill="rgba(0, 0, 0, 0.25)"
+      />
+
       {detections.map((det, index) => {
         const color = getSeverityColor(det.severity);
         const x = (det.boundingBox.xmin / 1000) * imageWidth;
@@ -178,7 +190,8 @@ export function MultiBoxOverlay({
           <g key={index}>
             <motion.rect
               x={x} y={y} width={width} height={height}
-              fill="transparent" stroke={color} strokeWidth={2.5} rx={4}
+              fill={`${color}33`} /* 20% opacity fill */
+              stroke={color} strokeWidth={2.5} rx={4}
               initial={{ strokeDasharray: perimeter, strokeDashoffset: perimeter, opacity: 0 }}
               animate={{ strokeDashoffset: 0, opacity: 1 }}
               transition={{ duration: 0.6, delay: index * 0.2, ease: 'easeOut' }}

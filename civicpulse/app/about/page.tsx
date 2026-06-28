@@ -65,15 +65,15 @@ export default function AboutPage() {
     <div className="min-h-screen bg-[#FAF7F2]">
       <Navbar />
 
-      {/* Hero — dark navy with gradient fade to ivory */}
+      {/* Hero — light theme with soft orbs */}
       <section
-        className="relative overflow-hidden"
-        style={{ background: 'linear-gradient(180deg, #0A1628 0%, #0A1628 70%, #0D1F3C 85%, #FAF7F2 100%)' }}
+        className="relative overflow-hidden bg-white"
+        style={{ borderBottom: '1px solid #E8E4DB' }}
       >
         {/* Ambient orbs */}
-        <div aria-hidden="true" className="pointer-events-none absolute -right-32 top-10 h-96 w-96 rounded-full opacity-[0.18] blur-3xl"
+        <div aria-hidden="true" className="pointer-events-none absolute -right-32 top-10 h-96 w-96 rounded-full opacity-[0.25] blur-3xl"
           style={{ background: 'radial-gradient(circle, #5BBFBF, transparent 70%)' }} />
-        <div aria-hidden="true" className="pointer-events-none absolute -left-24 bottom-20 h-72 w-72 rounded-full opacity-[0.12] blur-3xl"
+        <div aria-hidden="true" className="pointer-events-none absolute -left-24 bottom-20 h-72 w-72 rounded-full opacity-[0.20] blur-3xl"
           style={{ background: 'radial-gradient(circle, #E8957A, transparent 70%)' }} />
 
         <div className="mx-auto max-w-4xl px-5 pb-32 pt-24">
@@ -86,11 +86,11 @@ export default function AboutPage() {
               <span className="h-1.5 w-1.5 rounded-full bg-[#5BBFBF] glow-pulse" />
               <p className="font-mono text-xs uppercase tracking-[0.22em] text-[#5BBFBF]">The Project</p>
             </div>
-            <h1 className="font-display text-5xl md:text-[60px] font-light leading-[1.05] tracking-tight text-white">
+            <h1 className="font-display text-5xl md:text-[60px] font-light leading-[1.05] tracking-tight text-[#1A1208]">
               Built for the city that never stops breaking.
             </h1>
-            <p className="mt-6 max-w-2xl font-sans text-lg leading-relaxed text-white/60">
-              CivicPulse started with a simple observation: Hyderabad's residents have
+            <p className="mt-6 max-w-2xl font-sans text-lg leading-relaxed text-[#7A6A58]">
+              CivicPulse started with a simple observation: India's residents have
               smartphones, but their complaints about infrastructure still disappear into
               WhatsApp groups and ignored emails.
             </p>
@@ -199,7 +199,7 @@ export default function AboutPage() {
       </section>
 
       {/* Impact stats strip */}
-      <section className="bg-[#0A1628] border-b border-white/10">
+      <section className="bg-white border-b border-[#E8E4DB]">
         <div className="mx-auto max-w-5xl px-5 py-14">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
             {[
@@ -215,27 +215,27 @@ export default function AboutPage() {
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.1 }}
               >
-                <p className="font-display text-4xl font-light iridescent-text mb-1">{stat.value}</p>
-                <p className="font-mono text-xs text-white/40">{stat.label}</p>
+                <p className="font-display text-4xl font-light text-[#5BBFBF] mb-1">{stat.value}</p>
+                <p className="font-mono text-xs text-[#7A6A58]">{stat.label}</p>
               </motion.div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* How it works CTA — full-width dark block */}
+      {/* How it works CTA — light theme block */}
       <motion.a
         href="/#how-it-works"
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
         transition={{ duration: 0.5 }}
-        className="block bg-[#0F2137] hover:bg-[#0A1628] transition-colors border-b border-white/10 group"
+        className="block bg-white hover:bg-[#FAF7F2] transition-colors border-b border-[#E8E4DB] group"
       >
         <div className="mx-auto max-w-5xl px-5 py-10 flex items-center justify-between">
           <div>
             <p className="font-mono text-xs uppercase tracking-[0.2em] text-[#5BBFBF] mb-1">See the pipeline</p>
-            <p className="font-display text-2xl font-light text-white">Watch the 4-step AI pipeline run live →</p>
+            <p className="font-display text-2xl font-light text-[#1A1208]">Watch the 4-step AI pipeline run live →</p>
           </div>
           <span className="text-[#5BBFBF] text-3xl group-hover:translate-x-2 transition-transform">→</span>
         </div>

@@ -8,24 +8,20 @@ import { useReports, severityLabel } from "@/lib/report-context";
 import { Textarea } from "@/components/ui/textarea";
 import BoundingBoxOverlay, { MultiBoxOverlay } from "@/components/BoundingBoxOverlay";
 import { SeverityBadge } from "@/components/severity-badge";
+import dynamic from 'next/dynamic';
+
+const MapPicker = dynamic(() => import('@/components/map-picker').then(m => m.MapPicker), { ssr: false });
 import { useToast } from "@/components/toast";
 
 const NEIGHBORHOODS: Record<string, { lat: number; lon: number }> = {
-  "Banjara Hills":  { lat: 17.4156, lon: 78.4480 },
-  "Jubilee Hills":  { lat: 17.4325, lon: 78.4071 },
-  "Hitech City":    { lat: 17.4435, lon: 78.3772 },
-  "Madhapur":       { lat: 17.4418, lon: 78.3912 },
-  "Gachibowli":     { lat: 17.4401, lon: 78.3489 },
-  "Kondapur":       { lat: 17.4600, lon: 78.3615 },
-  "Kukatpally":     { lat: 17.4849, lon: 78.3985 },
-  "Secunderabad":   { lat: 17.4399, lon: 78.4983 },
-  "Ameerpet":       { lat: 17.4374, lon: 78.4487 },
-  "Begumpet":       { lat: 17.4432, lon: 78.4681 },
-  "LB Nagar":       { lat: 17.3483, lon: 78.5468 },
-  "Dilsukhnagar":   { lat: 17.3684, lon: 78.5247 },
-  "Uppal":          { lat: 17.4051, lon: 78.5595 },
-  "Kompally":       { lat: 17.5406, lon: 78.4869 },
-  "Shamirpet":      { lat: 17.5355, lon: 78.5644 },
+  "New Delhi":  { lat: 28.6139, lon: 77.2090 },
+  "Mumbai":     { lat: 19.0760, lon: 72.8777 },
+  "Bangalore":  { lat: 12.9716, lon: 77.5946 },
+  "Chennai":    { lat: 13.0827, lon: 80.2707 },
+  "Kolkata":    { lat: 22.5726, lon: 88.3639 },
+  "Hyderabad":  { lat: 17.3850, lon: 78.4867 },
+  "Pune":       { lat: 18.5204, lon: 73.8567 },
+  "Ahmedabad":  { lat: 23.0225, lon: 72.5714 },
 }
 
 const MAX_FILE_SIZE = 10 * 1024 * 1024 // 10MB
@@ -41,8 +37,8 @@ function validateFile(file: File): string | null {
   return null
 }
 
-const DEFAULT_LAT = 17.385
-const DEFAULT_LON = 78.487
+const DEFAULT_LAT = 21.1458 // Nagpur (Central India)
+const DEFAULT_LON = 79.0882
 
 interface Step { step: string; result: any; }
 
@@ -54,11 +50,11 @@ const PLACEHOLDER_STEPS = [
 ];
 
 const ESCALATION_MAP: Record<string, { body: string; escalation: string }> = {
-  "GHMC Roads Department":      { body: "GHMC",         escalation: "GHMC Commissioner" },
-  "GHMC Electrical Department": { body: "GHMC",         escalation: "GHMC Commissioner" },
-  "Electrical/Streetlighting":  { body: "GHMC",         escalation: "GHMC Commissioner" },
-  "HMWSSB":                     { body: "HMWSSB Board", escalation: "MD HMWSSB" },
-  "GHMC Sanitation":            { body: "GHMC",         escalation: "Zonal Commissioner" },
+  "Municipal Roads Department":  { body: "Municipal Corporation", escalation: "Commissioner of Roads" },
+  "State Water Board":           { body: "State Water Board",     escalation: "MD Water Board" },
+  "Local Electrical Department": { body: "Electricity Board",     escalation: "Chief Engineer" },
+  "Municipal Sanitation":        { body: "Sanitation Dept",       escalation: "Zonal Commissioner" },
+  "General Municipal Corporation": { body: "Municipal Corporation", escalation: "Municipal Commissioner" },
 };
 const DEFAULT_ESCALATION = { body: "Municipal Corporation", escalation: "Commissioner" };
 
@@ -74,7 +70,7 @@ export function UploadSection() {
   const [analysisError, setAnalysisError] = useState<string | null>(null);
   const [editedReportText, setEditedReportText] = useState<string>("");
   const [showConfirmPanel, setShowConfirmPanel] = useState<boolean>(false);
-  const [showARPreview, setShowARPreview] = useState(false);
+  const [showMapPicker, setShowMapPicker] = useState(false)
   const [streamingText, setStreamingText] = useState<string>("");
   const [locationInput, setLocationInput] = useState("")
   const [showSuggestions, setShowSuggestions] = useState(false)
@@ -168,7 +164,20 @@ export function UploadSection() {
     )
   }
 
+  const [recognitionRef, setRecognitionRef] = useState<any>(null);
+
   const handleVoiceInput = () => {
+    // If currently listening, stop it manually
+    if (isListening && recognitionRef) {
+      try {
+        recognitionRef.stop();
+      } catch (e) {
+        // ignore
+      }
+      setIsListening(false);
+      return;
+    }
+
     const SR =
       (window as any).SpeechRecognition ||
       (window as any).webkitSpeechRecognition
@@ -191,12 +200,29 @@ export function UploadSection() {
 
     try {
       const recognition = new SR()
-      recognition.lang = 'en-IN'
-      recognition.continuous = false
-      recognition.interimResults = true  // Changed: show interim results for responsiveness
+      recognition.lang = 'en-US' // Fallback to a universally supported language
+      recognition.continuous = false // Disable continuous to avoid silent timeouts on some platforms
+      recognition.interimResults = true
+
+      setRecognitionRef(recognition)
 
       recognition.onstart = () => {
         setIsListening(true)
+      }
+
+      recognition.onerror = (e: any) => {
+        setIsListening(false)
+        if (e.error === 'no-speech') {
+          addToast('No speech detected. Microphone may be muted by system.', 'error')
+        } else if (e.error === 'not-allowed') {
+          addToast('Microphone access denied. Please allow it in browser settings.', 'error')
+        } else {
+          addToast(`Voice input error: ${e.error}`, 'error')
+        }
+      }
+
+      recognition.onend = () => {
+        setIsListening(false)
       }
 
       recognition.onresult = (e: any) => {
@@ -204,28 +230,9 @@ export function UploadSection() {
           .map((result: any) => result[0].transcript)
           .join('')
         setVoiceNote(transcript)
-        if (e.results[e.results.length - 1].isFinal) {
-          setIsListening(false)
-          addToast('Voice note captured!', 'success')
-        }
       }
 
-      recognition.onerror = (e: any) => {
-        setIsListening(false)
-        const messages: Record<string, string> = {
-          'not-allowed': 'Mic access denied — check browser permissions',
-          'permission-denied': 'Mic access denied — check browser permissions',
-          'no-speech': 'No speech detected — try speaking closer to mic',
-          'network': 'Speech service unavailable — type your description',
-          'service-not-allowed': 'Speech service blocked — try on HTTPS deployment',
-          'audio-capture': 'No microphone found — check your device',
-          'aborted': '',  // Silent: user cancelled
-        }
-        const msg = messages[e.error]
-        if (msg) addToast(msg, e.error.includes('allowed') ? 'error' : 'info')
-      }
 
-      recognition.onend = () => setIsListening(false)
       recognition.start()
     } catch (err) {
       setIsListening(false)
@@ -234,7 +241,10 @@ export function UploadSection() {
   }
 
   async function handleAnalyze() {
-    if (!selectedFile) return;
+    if (!selectedFile) {
+      addToast("Please upload an image first", "error");
+      return;
+    }
     clearPendingTimeouts();
     setIsAnalyzing(true);
     setAnalysisError(null);
@@ -427,7 +437,7 @@ export function UploadSection() {
     // Feature 15 — Store confirmed report details for share card
     setConfirmedReport({
       category,
-      location: locationName || locationInput || "Hyderabad",
+      location: locationName || locationInput || "India",
       severity: String(sevNum),
       department: dept,
     })
@@ -646,14 +656,23 @@ export function UploadSection() {
             <div className="mt-5">
               <label htmlFor="location" className="font-mono text-xs uppercase tracking-[0.15em] text-ink-muted">Location</label>
               <div className="space-y-3 mt-2">
-                <button
-                  type="button"
-                  onClick={handleGetLocation}
-                  disabled={isGettingLocation}
-                  className="flex items-center gap-2 text-sm font-mono text-teal border border-teal/40 rounded-full px-4 py-2 hover:bg-teal/10 transition-colors w-full justify-center disabled:opacity-60"
-                >
-                  {isGettingLocation ? "Detecting location..." : "📍 Use My Location"}
-                </button>
+                <div className="flex gap-2">
+                  <button
+                    type="button"
+                    onClick={handleGetLocation}
+                    disabled={isGettingLocation}
+                    className="flex-1 flex items-center justify-center gap-2 text-sm font-mono text-teal border border-teal/40 rounded-full px-4 py-2 hover:bg-teal/10 transition-colors disabled:opacity-60"
+                  >
+                    {isGettingLocation ? "Detecting location..." : "📍 Use My Location"}
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setShowMapPicker(true)}
+                    className="flex-1 flex items-center justify-center gap-2 text-sm font-mono text-teal border border-teal/40 rounded-full px-4 py-2 hover:bg-teal/10 transition-colors"
+                  >
+                    🗺️ Pick on Map
+                  </button>
+                </div>
                 {locationName && (
                   <p className="text-xs text-[#7A6A58] font-mono text-center">{locationName}</p>
                 )}
@@ -683,7 +702,7 @@ export function UploadSection() {
                           setIsSearchingLocation(true)
                           try {
                             const res = await fetch(
-                              `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(val + ', Hyderabad, India')}&format=json&limit=5&countrycodes=in`,
+                              `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(val + ', India')}&format=json&limit=5&countrycodes=in`,
                               { headers: { 'Accept-Language': 'en' } }
                             )
                             const data = await res.json()
@@ -703,7 +722,7 @@ export function UploadSection() {
                       }, 150)
                     }}
                     onFocus={() => locationInput.length >= 2 && setShowSuggestions(true)}
-                    placeholder="Enter area in Hyderabad..."
+                    placeholder="Enter city or area in India..."
                     className="w-full rounded-lg border border-[#E6DDCF] bg-white px-4 py-2 font-mono text-sm text-[#1A1208] placeholder-[#5A6A58] focus:border-[#5BBFBF] focus:outline-none focus:ring-1 focus:ring-[#5BBFBF]"
                   />
                   {locationConfirmed && !locationName && (
@@ -717,7 +736,7 @@ export function UploadSection() {
                       .slice(0, 3)
                       .map(([name, coords]) => ({
                         label: name,
-                        sublabel: 'Hyderabad neighborhood',
+                        sublabel: 'Suggested location',
                         onSelect: () => {
                           setLocationInput(name)
                           setActiveLat(coords.lat)
@@ -733,7 +752,7 @@ export function UploadSection() {
                       .slice(0, 4)
                       .map((r) => ({
                         label: r.display_name.split(',').slice(0, 2).join(',').trim(),
-                        sublabel: r.display_name.split(',').slice(2, 4).join(',').trim() || 'Hyderabad',
+                        sublabel: r.display_name.split(',').slice(2, 4).join(',').trim() || 'India',
                         onSelect: () => {
                           setLocationInput(r.display_name.split(',')[0].trim())
                           setActiveLat(parseFloat(r.lat))
@@ -793,6 +812,28 @@ export function UploadSection() {
 
       <div className="mt-12">
         <p className="font-mono text-xs uppercase tracking-[0.2em] text-teal">Agent Analysis</p>
+        
+        {showMapPicker && (
+          <MapPicker
+            onClose={() => setShowMapPicker(false)}
+            onLocationSelect={async (lat, lng) => {
+              setActiveLat(lat)
+              setActiveLon(lng)
+              setLocationConfirmed(true)
+              setShowMapPicker(false)
+              try {
+                const res = await fetch(`https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lng}&format=json&accept-language=en`)
+                const data = await res.json()
+                const name = data.address?.suburb || data.address?.neighbourhood || data.address?.city_district || data.address?.city || data.display_name.split(',')[0]
+                setLocationName(name)
+                setLocationInput(name)
+              } catch {
+                setLocationName(`${lat.toFixed(4)}, ${lng.toFixed(4)}`)
+                setLocationInput(`${lat.toFixed(4)}, ${lng.toFixed(4)}`)
+              }
+            }}
+          />
+        )}
         {analysisSteps.length > 0 ? (
           <>
             <ReasoningReveal steps={analysisSteps} streamingText={streamingText} />
@@ -813,7 +854,7 @@ export function UploadSection() {
                     )} />
                   </span>
                   <span>Department: <strong className="text-[#1A1208]">{analysisSteps.find((s) => s.step === 'final_report')?.result?.report?.department}</strong></span>
-                  <span>Location: <strong className="text-[#1A1208]">{locationName || locationInput || 'Hyderabad (default)'}</strong></span>
+                  <span>Location: <strong className="text-[#1A1208]">{locationName || locationInput || 'India (default)'}</strong></span>
                 </div>
 
                 {/* Feature 3 — Department Escalation Pills */}
@@ -870,15 +911,6 @@ export function UploadSection() {
                     Discard
                   </button>
                 </div>
-                
-                <button
-                  type="button"
-                  onClick={() => setShowARPreview(true)}
-                  className="mt-3 w-full flex items-center justify-center gap-2 rounded-xl border border-[#5BBFBF]/40 bg-[#5BBFBF]/5 px-4 py-2.5 font-mono text-xs text-[#5BBFBF] hover:bg-[#5BBFBF]/10 transition-all"
-                >
-                  <span>📱</span>
-                  <span>AR PREVIEW — See how this looks in the field</span>
-                </button>
 
                 {/* Feature 15 — Shareable Report Card */}
                 {confirmedReport && (
@@ -899,7 +931,7 @@ export function UploadSection() {
                         type="button"
                         onClick={() => {
                           navigator.clipboard.writeText(
-                            `I reported a civic issue via CivicPulse: ${confirmedReport.category} at ${confirmedReport.location}. Severity: ${confirmedReport.severity}/5. Routed to ${confirmedReport.department}. #CivicPulse #FixHyderabad`
+                            `I reported a civic issue via CivicPulse: ${confirmedReport.category} at ${confirmedReport.location}. Severity: ${confirmedReport.severity}/5. Routed to ${confirmedReport.department}. #CivicPulse #FixIndia`
                           )
                           addToast("Copied to clipboard!", "success")
                         }}
@@ -952,86 +984,6 @@ export function UploadSection() {
           </div>
         )}
       </div>
-      
-      <AnimatePresence>
-        {showARPreview && preview && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm p-4"
-            onClick={() => setShowARPreview(false)}
-          >
-            <motion.div
-              initial={{ scale: 0.85, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.85, opacity: 0 }}
-              transition={{ type: 'spring', stiffness: 300, damping: 25 }}
-              className="relative bg-[#0A1628] rounded-3xl overflow-hidden shadow-2xl"
-              style={{
-                width: '320px',
-                perspective: '1200px',
-                transform: 'rotateY(-8deg) rotateX(4deg)',
-                boxShadow: '0 40px 80px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.1)',
-              }}
-              onClick={e => e.stopPropagation()}
-            >
-              {/* Phone frame top notch */}
-              <div className="h-6 bg-[#0A1628] flex items-center justify-center">
-                <div className="w-16 h-1.5 bg-white/20 rounded-full" />
-              </div>
-              {/* Photo with overlays */}
-              <div className="relative">
-                <img src={preview} alt="AR Preview" className="w-full object-cover" style={{ maxHeight: '300px' }} />
-                {/* Severity overlay badge */}
-                {(() => {
-                  const cr = analysisSteps.find(s => s.step === 'classify')?.result as any;
-                  const sv = analysisSteps.find(s => s.step === 'severity_assessment')?.result as any;
-                  const finalRep = analysisSteps.find(s => s.step === 'final_report')?.result as any;
-                  if (!cr) return null;
-                  const sev = cr.severity ?? sv?.urgencyScore ?? 3;
-                  const color = sev >= 4 ? '#E8957A' : sev >= 2 ? '#D4AF37' : '#5BBFBF';
-                  const dept = finalRep?.report?.department ?? finalRep?.department ?? '';
-                  return (
-                    <>
-                      <div className="absolute top-3 left-3 flex flex-col gap-1.5">
-                        <div className="flex items-center gap-1.5 bg-black/70 backdrop-blur-sm rounded-full px-3 py-1">
-                          <div className="h-2 w-2 rounded-full animate-pulse" style={{ backgroundColor: color }} />
-                          <span className="font-mono text-[10px] text-white uppercase tracking-wider">{cr.category}</span>
-                        </div>
-                        <div className="flex items-center gap-1 bg-black/70 backdrop-blur-sm rounded-full px-3 py-1">
-                          <span className="font-mono text-[10px]" style={{ color }}>SEV {sev}/5</span>
-                        </div>
-                        {dept && (
-                          <div className="bg-black/70 backdrop-blur-sm rounded-full px-3 py-1">
-                            <span className="font-mono text-[9px] text-white/70">{dept}</span>
-                          </div>
-                        )}
-                      </div>
-                      {/* Crosshair center */}
-                      <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                        <div className="relative h-12 w-12">
-                          <div className="absolute top-0 left-0 w-3 h-3 border-t-2 border-l-2 rounded-tl-sm" style={{ borderColor: color }} />
-                          <div className="absolute top-0 right-0 w-3 h-3 border-t-2 border-r-2 rounded-tr-sm" style={{ borderColor: color }} />
-                          <div className="absolute bottom-0 left-0 w-3 h-3 border-b-2 border-l-2 rounded-bl-sm" style={{ borderColor: color }} />
-                          <div className="absolute bottom-0 right-0 w-3 h-3 border-b-2 border-r-2 rounded-br-sm" style={{ borderColor: color }} />
-                        </div>
-                      </div>
-                    </>
-                  );
-                })()}
-              </div>
-              {/* Phone frame bottom */}
-              <div className="px-4 py-4 bg-[#0A1628]">
-                <p className="font-mono text-[9px] text-white/30 text-center uppercase tracking-widest">CivicPulse AR Field View</p>
-              </div>
-              {/* Close */}
-              <button onClick={() => setShowARPreview(false)}
-                className="absolute top-8 right-3 text-white/60 hover:text-white font-mono text-xs">✕</button>
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
     </section>
   );
 }

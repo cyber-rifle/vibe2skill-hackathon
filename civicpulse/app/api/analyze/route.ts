@@ -246,22 +246,22 @@ Respond ONLY with valid JSON, no markdown, no code blocks, no extra text:
     console.log("[step2] duplicates found:", duplicates.length);
 
     const departmentMap: Record<string, string> = {
-      pothole: "Roads and Infrastructure",
-      water_leakage: "Water Board",
-      streetlight: "Electrical/Streetlighting",
-      waste_management: "Sanitation",
-      other: "Municipal Corporation",
+      pothole: "Municipal Roads Department",
+      water_leakage: "State Water Board",
+      streetlight: "Local Electrical Department",
+      waste_management: "Municipal Sanitation",
+      other: "General Municipal Corporation",
     };
     const department = departmentMap[classification.category] ?? "Municipal Corporation";
 
-    const departmentUrlMap: Record<string, string> = {
-      "Roads and Infrastructure": "https://www.ghmc.gov.in",
-      "Electrical/Streetlighting": "https://www.ghmc.gov.in",
-      "Sanitation": "https://www.ghmc.gov.in",
-      "Water Board": "https://www.hyderabadwater.gov.in",
-      "Municipal Corporation": "https://www.ghmc.gov.in",
+    const searchMap: Record<string, string> = {
+      "Municipal Roads Department": "https://morth.nic.in/",
+      "State Water Board": "https://jalshakti-ddws.gov.in/",
+      "Local Electrical Department": "https://powermin.gov.in/",
+      "Municipal Sanitation": "https://sbm.gov.in/",
+      "General Municipal Corporation": "https://mohua.gov.in/",
     };
-    const officialUrl = departmentUrlMap[department] ?? "https://www.ghmc.gov.in";
+    const officialUrl = searchMap[department] ?? "https://www.india.gov.in";
     const duplicateNote =
       duplicates.length > 0
         ? `${duplicates.length} similar report(s) already exist within 100 metres.`
@@ -280,8 +280,8 @@ Department this will be routed to: ${department}
 Official department portal: ${officialUrl}
 
 Using Google Search and the official department URL above, find:
-1. The current complaint-resolution SLA for ${department} in Hyderabad
-2. Any recent news about ${classification.category} issues in Hyderabad
+1. The current complaint-resolution SLA for ${department} in India
+2. Any recent news about ${classification.category} issues in India
 3. Whether this specific issue type has a published response commitment
 
 Assess urgency on a 1–5 scale (1=minor inconvenience, 5=immediate safety hazard).

@@ -17,8 +17,14 @@ export function Hero() {
     if (!ctx) return;
 
     let animId: number;
-    const particles: { x:number; y:number; vx:number; vy:number; color:string }[] = [];
-    const COLORS = ['rgba(91,191,191,0.5)', 'rgba(212,175,106,0.4)', 'rgba(91,191,191,0.3)'];
+    const particles: { x:number; y:number; vx:number; vy:number; color:string; size:number }[] = [];
+    // Mesmerizing theme colors with varied opacities
+    const COLORS = [
+      'rgba(91,191,191,0.6)', 
+      'rgba(212,175,106,0.6)', 
+      'rgba(232,149,122,0.5)',
+      'rgba(91,191,191,0.3)'
+    ];
 
     const resize = () => {
       canvas.width = canvas.offsetWidth;
@@ -27,12 +33,13 @@ export function Hero() {
 
     const init = () => {
       particles.length = 0;
-      for (let i = 0; i < 85; i++) {
+      for (let i = 0; i < 110; i++) {
         particles.push({
           x: Math.random() * canvas.width,
           y: Math.random() * canvas.height,
-          vx: (Math.random() - 0.5) * 0.4,
-          vy: (Math.random() - 0.5) * 0.4,
+          vx: (Math.random() - 0.5) * 0.3,
+          vy: (Math.random() - 0.5) * 0.3,
+          size: Math.random() * 2 + 0.8,
           color: COLORS[i % COLORS.length],
         });
       }
@@ -51,30 +58,43 @@ export function Hero() {
         const p = particles[i];
         const dx = p.x - mouseX, dy = p.y - mouseY;
         const dist = Math.sqrt(dx*dx + dy*dy);
-        if (dist < 100) {
-          p.vx += (dx / dist) * 0.08;
-          p.vy += (dy / dist) * 0.08;
+        
+        // Organic mouse interaction
+        if (dist < 140 && mouseX !== -999) {
+          const force = (140 - dist) / 140;
+          p.vx += (dx / dist) * force * 0.05;
+          p.vy += (dy / dist) * force * 0.05;
         }
-        p.vx *= 0.99; p.vy *= 0.99;
+        
+        // Swirl physics base
+        p.vx += Math.sin(p.y * 0.01 + Date.now() * 0.001) * 0.01;
+        p.vy += Math.cos(p.x * 0.01 + Date.now() * 0.001) * 0.01;
+
+        p.vx *= 0.985; p.vy *= 0.985;
         p.x += p.vx; p.y += p.vy;
         if (p.x < 0) p.x = canvas.width;
         if (p.x > canvas.width) p.x = 0;
         if (p.y < 0) p.y = canvas.height;
         if (p.y > canvas.height) p.y = 0;
         ctx.beginPath();
-        ctx.arc(p.x, p.y, 1.5, 0, Math.PI * 2);
+        ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
         ctx.fillStyle = p.color;
+        // Subtle glow
+        ctx.shadowBlur = 10;
+        ctx.shadowColor = p.color;
         ctx.fill();
+        ctx.shadowBlur = 0; // Reset for lines
+
         for (let j = i + 1; j < particles.length; j++) {
           const q = particles[j];
           const ddx = p.x - q.x, ddy = p.y - q.y;
           const d = Math.sqrt(ddx*ddx + ddy*ddy);
-          if (d < 120) {
+          if (d < 140) {
             ctx.beginPath();
             ctx.moveTo(p.x, p.y);
             ctx.lineTo(q.x, q.y);
-            ctx.strokeStyle = `rgba(91,191,191,${(1 - d/120) * 0.18})`;
-            ctx.lineWidth = 0.8;
+            ctx.strokeStyle = `rgba(91,191,191,${(1 - d/140) * 0.15})`;
+            ctx.lineWidth = 0.6 + ((1 - d/140) * 0.5);
             ctx.stroke();
           }
         }
@@ -97,7 +117,7 @@ export function Hero() {
 
   return (
     <section className="relative overflow-hidden hero-grain"
-      style={{ background: 'linear-gradient(180deg, #0A1628 0%, #0A1628 70%, #0D1F3C 85%, #FAF7F2 100%)' }}>
+      style={{ background: 'linear-gradient(180deg, #FAF7F2 0%, #FFFFFF 50%, #FAF7F2 100%)' }}>
       
       <canvas
         ref={canvasRef}
@@ -106,12 +126,12 @@ export function Hero() {
         style={{ zIndex: 0 }}
       />
       {/* Top right — teal */}
-      <div aria-hidden="true" className="ambient-orb absolute -right-60 -top-60 h-[50rem] w-[50rem] opacity-[0.18]" />
+      <div aria-hidden="true" className="ambient-orb absolute -right-60 -top-60 h-[50rem] w-[50rem] opacity-[0.25]" />
       {/* Bottom left — coral/gold */}
-      <div aria-hidden="true" className="ambient-orb absolute -left-40 bottom-20 h-[36rem] w-[36rem] opacity-[0.10]"
+      <div aria-hidden="true" className="ambient-orb absolute -left-40 bottom-20 h-[36rem] w-[36rem] opacity-[0.2]"
         style={{ background: 'linear-gradient(135deg,#E8957A,#D4AF6A)' }} />
       {/* Center subtle — teal mid */}
-      <div aria-hidden="true" className="ambient-orb absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 h-[20rem] w-[20rem] opacity-[0.04]"
+      <div aria-hidden="true" className="ambient-orb absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 h-[20rem] w-[20rem] opacity-[0.1]"
         style={{ background: '#5BBFBF' }} />
 
       <div className="relative z-10 mx-auto max-w-6xl px-5 pb-24 pt-24 md:pb-32 md:pt-32">
@@ -121,19 +141,18 @@ export function Hero() {
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.5, delay: 0.1, type: "spring", stiffness: 300 }}
-            className="mb-6 inline-flex items-center gap-2.5 rounded-full border border-white/10
-            bg-white/5 px-4 py-1.5 backdrop-blur-sm"
           >
-            <span className="h-1.5 w-1.5 rounded-full bg-[#5BBFBF] glow-pulse" />
-            <span className="font-mono text-xs uppercase tracking-[0.2em] text-[#5BBFBF]">
-              Powered by Google AI Studio
-            </span>
-            <span className="h-px w-4 bg-white/20" />
-            <span className="font-mono text-xs text-white/40">Hyderabad</span>
+            <div className="flex items-center gap-2 rounded-full border border-[#E8E4DB] bg-white/60 px-4 py-2 backdrop-blur-md shadow-sm-warm hover:bg-white transition-colors cursor-pointer" onClick={() => document.getElementById('upload')?.scrollIntoView({ behavior: 'smooth' })}>
+              <span className="flex h-2 w-2 relative">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#5BBFBF] opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-[#5BBFBF]"></span>
+              </span>
+              <span className="font-mono text-xs text-[#7A6A58]">India</span>
+            </div>
           </motion.div>
 
           {/* Headline */}
-          <h1 className="font-display text-5xl md:text-[80px] lg:text-[96px] font-light leading-[0.95] tracking-tight text-white text-balance">
+          <h1 className="font-display text-5xl md:text-[80px] lg:text-[96px] font-light leading-[0.95] tracking-tight text-[#1A1208] text-balance">
             {words1.map((word, i) => (
               <span key={`w1-${i}`} className="inline-block blur-reveal mr-[0.25em]"
                 style={{ animationDelay: `${0.2 + i * 0.08}s` }}>
@@ -154,7 +173,7 @@ export function Hero() {
             initial={{ opacity:0, y:16 }} 
             animate={{ opacity:1, y:0 }} 
             transition={{ delay:0.75, duration:0.6 }}
-            className="mt-8 max-w-xl font-sans text-lg leading-relaxed text-white/60">
+            className="mt-8 max-w-xl font-sans text-lg leading-relaxed text-[#3D2E1A]">
             Every day, broken streetlights, overflowing drains, and crumbling roads go
             unresolved because reports vanish into the wrong inbox. CivicPulse turns a
             single photo into a routed, actionable case — in under 30 seconds.
@@ -164,9 +183,9 @@ export function Hero() {
             <a href="#upload" className="shimmer-btn magnetic-btn rounded-full px-8 py-3.5 font-sans text-sm font-semibold shadow-lg">
               Report an Issue
             </a>
-            <a href="/map" className="magnetic-btn inline-flex items-center gap-2 rounded-full border border-white/20
-              bg-white/5 px-8 py-3.5 font-sans text-sm font-medium text-white backdrop-blur-sm
-              transition-all hover:bg-white/10 hover:border-white/30">
+            <a href="/map" className="magnetic-btn inline-flex items-center gap-2 rounded-full border border-[#1A1208]
+              bg-transparent px-8 py-3.5 font-sans text-sm font-medium text-[#1A1208] backdrop-blur-sm
+              transition-all hover:bg-[#1A1208] hover:text-white">
               <MapIcon className="h-4 w-4" aria-hidden="true" />
               View the Map
             </a>
@@ -178,33 +197,37 @@ export function Hero() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.5 }}
-          className="mt-20 flex flex-wrap gap-12"
+          className="mt-20 flex flex-wrap gap-12 perspective-[1000px]"
         >
-          <div className="iridescent-border-animated rounded-2xl">
-            <div className="rounded-2xl px-6 py-4" style={{ background: "rgba(10,22,40,0.8)" }}>
+          <motion.div 
+            whileHover={{ scale: 1.05, rotateY: -10, rotateX: 5 }} 
+            className="iridescent-border-animated rounded-2xl transform-style-3d transition-all duration-300"
+          >
+            <div className="rounded-2xl px-6 py-4 bg-white/70 backdrop-blur-md shadow-lg-warm border-white/50 border">
               <StatCounter value={1240} suffix="+" label="Issues Reported"
-                duration={1600} liveReportCount={true} darkMode={true} />
+                duration={1600} liveReportCount={true} darkMode={false} />
             </div>
-          </div>
-          <div className="iridescent-border-animated rounded-2xl">
-            <div className="rounded-2xl px-6 py-4" style={{ background: "rgba(10,22,40,0.8)" }}>
+          </motion.div>
+          <motion.div 
+            whileHover={{ scale: 1.05, rotateY: 0, rotateX: 5 }} 
+            className="iridescent-border-animated rounded-2xl transform-style-3d transition-all duration-300"
+          >
+            <div className="rounded-2xl px-6 py-4 bg-white/70 backdrop-blur-md shadow-lg-warm border-white/50 border">
               <StatCounter value={89} suffix="%" label="Resolved in 7 Days"
-                duration={1800} darkMode={true} />
+                duration={1800} darkMode={false} />
             </div>
-          </div>
-          <div className="iridescent-border-animated rounded-2xl">
-            <div className="rounded-2xl px-6 py-4" style={{ background: "rgba(10,22,40,0.8)" }}>
+          </motion.div>
+          <motion.div 
+            whileHover={{ scale: 1.05, rotateY: 10, rotateX: 5 }} 
+            className="iridescent-border-animated rounded-2xl transform-style-3d transition-all duration-300"
+          >
+            <div className="rounded-2xl px-6 py-4 bg-white/70 backdrop-blur-md shadow-lg-warm border-white/50 border">
               <StatCounter value={14} suffix="+" label="Departments Linked"
-                duration={1400} darkMode={true} />
+                duration={1400} darkMode={false} />
             </div>
-          </div>
+          </motion.div>
         </motion.div>
       </div>
-
-      {/* Bottom gradient bridge to ivory */}
-      <div aria-hidden="true"
-        className="absolute bottom-0 left-0 right-0 h-32 pointer-events-none"
-        style={{ background: 'linear-gradient(to bottom, transparent, #FAF7F2)' }} />
     </section>
   )
 }
