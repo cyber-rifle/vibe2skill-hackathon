@@ -113,7 +113,20 @@ export default function MapPage() {
           ${sheetOpen ? "max-h-[55vh]" : "max-h-[52px]"}
         `}>
           <button
-            onClick={() => setSheetOpen(!sheetOpen)}
+            onClick={() => {
+              setSheetOpen(prev => {
+                const next = !prev;
+                setTimeout(() => {
+                  const mapEl = document.querySelector('.leaflet-container') as any;
+                  if (mapEl?._leaflet_id) {
+                    const map = (window as any).L?.map ? null : null; // skip
+                  }
+                  // Force Leaflet invalidateSize via custom event
+                  window.dispatchEvent(new Event('resize'));
+                }, 350);
+                return next;
+              });
+            }}
             className="flex items-center justify-between px-4 py-3 w-full flex-shrink-0
               border-b border-white/10"
           >

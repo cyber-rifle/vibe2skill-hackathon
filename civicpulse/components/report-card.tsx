@@ -11,7 +11,7 @@ interface ReportCardProps {
   dark?: boolean
 }
 
-export function ReportCard({ report, isSelected, onClick, dark }: ReportCardProps) {
+export function ReportCard({ report, isSelected, onClick, dark = false }: ReportCardProps) {
   const { comments, addComment } = useReports()
   const [commentText, setCommentText] = useState('')
   const reportComments = comments[report.id] || []
@@ -37,7 +37,7 @@ export function ReportCard({ report, isSelected, onClick, dark }: ReportCardProp
         </div>
         <SeverityBadge severity={report.severity} />
       </div>
-      <p className={`mb-2 text-sm leading-relaxed line-clamp-2 ${dark ? 'text-white/50' : 'text-[#1A1208]'}`}>
+      <p className={`mb-2 text-sm leading-relaxed line-clamp-2 ${dark ? 'text-white/80' : 'text-[#1A1208]'}`}>
         {report.description}
       </p>
       <div className="flex items-center justify-between mt-2">
