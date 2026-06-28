@@ -186,9 +186,6 @@ export function CivicMap({ reports, selectedId, onMarkerClick }: CivicMapProps) 
           const isSelected = r.id === selectedId
           const isNewest = r.id === newestId
 
-          // Feature 6 — Pulse class on newest marker
-          const markerClass = isNewest ? 'marker-pulse' : ''
-
           const marker = (L as any).circleMarker([r.lat, r.lon], {
             radius: isSelected ? 14 : 10,
             fillColor: severityColor[r.severity],
@@ -196,7 +193,6 @@ export function CivicMap({ reports, selectedId, onMarkerClick }: CivicMapProps) 
             weight: isSelected ? 3 : 2,
             opacity: 1,
             fillOpacity: 0.9,
-            className: markerClass,
           })
             .bindPopup(
               `<div style="font-family:'DM Sans',sans-serif;min-width:190px;padding:4px 2px">
@@ -217,15 +213,33 @@ export function CivicMap({ reports, selectedId, onMarkerClick }: CivicMapProps) 
 
           marker.on('click', () => onMarkerClickRef.current(r.id))
           markersRef.current[r.id] = marker
-          cluster.addLayer(marker)
 
-          // Feature 6 — Remove pulse class after 3s
           if (isNewest) {
-            setTimeout(() => {
-              const el = marker.getElement?.()
-              if (el) el.classList.remove('marker-pulse')
-            }, 3000)
+            const pulseCircle = (L as any).circle([r.lat, r.lon], {
+              radius: 30,
+              color: severityColor[r.severity],
+              fillColor: severityColor[r.severity],
+              fillOpacity: 0.4,
+              weight: 2,
+              opacity: 0.8,
+            }).addTo(mapRef.current!)
+
+            let frame = 0
+            const pulseInterval = setInterval(() => {
+              frame++
+              const t = (frame % 30) / 30
+              const scale = 1 + t * 2
+              const opacity = 0.5 * (1 - t)
+              pulseCircle.setRadius(30 * scale)
+              pulseCircle.setStyle({ opacity, fillOpacity: opacity * 0.6 })
+              if (frame >= 90) {
+                clearInterval(pulseInterval)
+                pulseCircle.remove()
+              }
+            }, 33)
           }
+
+          cluster.addLayer(marker)
         })
 
         mapRef.current!.addLayer(cluster)

@@ -1,11 +1,16 @@
 import { GoogleGenAI } from "@google/genai";
 import { NextRequest, NextResponse } from "next/server";
 
-if (!process.env.GEMINI_API_KEY) {
-  throw new Error("GEMINI_API_KEY is not set. Add it to .env.local and restart the dev server.");
-}
-
-const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
+  let _ai: GoogleGenAI | null = null;
+  function getAi(): GoogleGenAI {
+    if (!_ai) {
+      if (!process.env.GEMINI_API_KEY) {
+        throw new Error("GEMINI_API_KEY is not set");
+      }
+      _ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
+    }
+    return _ai;
+  }
 const MODEL = "gemini-2.5-flash";
 const FALLBACK_MODELS = [
   "gemini-2.5-flash-lite",
@@ -163,7 +168,7 @@ Respond ONLY with valid JSON, no markdown, no code blocks, no extra text:
 
     let lastErr: unknown = undefined;
     try {
-      const classifyResponse = await ai.models.generateContent({
+      const classifyResponse = await getAi().models.generateContent({
         model: MODEL,
         contents: classifyContents,
         config: { responseMimeType: "application/json" },
@@ -190,7 +195,7 @@ Respond ONLY with valid JSON, no markdown, no code blocks, no extra text:
         console.log(`[step1] trying fallback model: ${fallbackModel}`);
         try {
           const fallbackRes = await withTimeout(
-            ai.models.generateContent({ model: fallbackModel, contents: classifyContents, config: { responseMimeType: "application/json" } }),
+            getAi().models.generateContent({ model: fallbackModel, contents: classifyContents, config: { responseMimeType: "application/json" } }),
             8000,
             `fallback classify call ${fallbackModel}`
           );
@@ -247,6 +252,15 @@ Respond ONLY with valid JSON, no markdown, no code blocks, no extra text:
       other: "Municipal Corporation",
     };
     const department = departmentMap[classification.category] ?? "Municipal Corporation";
+
+    const departmentUrlMap: Record<string, string> = {
+      "Roads and Infrastructure": "https://www.ghmc.gov.in",
+      "Electrical/Streetlighting": "https://www.ghmc.gov.in",
+      "Sanitation": "https://www.ghmc.gov.in",
+      "Water Board": "https://www.hyderabadwater.gov.in",
+      "Municipal Corporation": "https://www.ghmc.gov.in",
+    };
+    const officialUrl = departmentUrlMap[department] ?? "https://www.ghmc.gov.in";
     const duplicateNote =
       duplicates.length > 0
         ? `${duplicates.length} similar report(s) already exist within 100 metres.`
@@ -262,6 +276,7 @@ Respond ONLY with valid JSON, no markdown, no code blocks, no extra text:
   Confidence: ${Math.round(classification.confidence * 100)}%
   Recurrence context: ${duplicateContext}
   Department this will be routed to: ${department}
+  Official department portal for reference: ${officialUrl}
 
   Assess the urgency of this issue on a scale of 1 to 5 where 1 = minor inconvenience and 5 = immediate safety hazard.
   Start your response with exactly "Urgency: X/5" on the first line.
@@ -290,10 +305,10 @@ Respond ONLY with valid JSON, no markdown, no code blocks, no extra text:
           let streamingFullText = "";
           let streamingGroundingChunks: { web?: { uri?: string; title?: string } }[] = [];
           const streamingResponse = await withTimeout(
-            ai.models.generateContentStream({
+            getAi().models.generateContentStream({
               model: MODEL,
               contents: [{ role: "user", parts: [{ text: severityPrompt }] }],
-              config: { tools: [{ googleSearch: {} }] },
+              config: { tools: [{ urlContext: {} }, { googleSearch: {} }] },
             }),
             9000,
             "grounded severity stream"
@@ -332,10 +347,10 @@ Respond ONLY with valid JSON, no markdown, no code blocks, no extra text:
           // First try original model non-streaming
           try {
             const res = await withTimeout(
-              ai.models.generateContent({
+              getAi().models.generateContent({
                 model: MODEL,
                 contents: [{ role: "user", parts: [{ text: severityPrompt }] }],
-                config: { tools: [{ googleSearch: {} }] },
+                config: { tools: [{ urlContext: {} }, { googleSearch: {} }] },
               }),
               9000,
               "non-streaming severity fallback"
@@ -357,7 +372,7 @@ Respond ONLY with valid JSON, no markdown, no code blocks, no extra text:
             for (const fallbackModel of FALLBACK_MODELS) {
               try {
                 const fallbackRes = await withTimeout(
-                  ai.models.generateContent({
+                  getAi().models.generateContent({
                     model: fallbackModel,
                     contents: [{ role: "user", parts: [{ text: severityPrompt }] }],
                     config: { tools: [{ googleSearch: {} }] },
@@ -426,7 +441,7 @@ Respond ONLY with valid JSON, no markdown, no code blocks, no extra text:
         let reportResult: string = "Report generation failed — please retry.";
         let reportDebugError: string | undefined = undefined;
         try {
-          const res = await ai.models.generateContent({
+          const res = await getAi().models.generateContent({
             model: MODEL,
             contents: [{ role: "user", parts: [{ text: reportPrompt }] }],
           });
@@ -449,7 +464,7 @@ Respond ONLY with valid JSON, no markdown, no code blocks, no extra text:
             console.log(`[step4] trying fallback model: ${fallbackModel}`);
             try {
               const fallbackRes = await withTimeout(
-                ai.models.generateContent({ model: fallbackModel, contents: [{ role: "user", parts: [{ text: reportPrompt }] }] }),
+                getAi().models.generateContent({ model: fallbackModel, contents: [{ role: "user", parts: [{ text: reportPrompt }] }] }),
                 5000,
                 `fallback report call ${fallbackModel}`
               );
@@ -489,6 +504,9 @@ Respond ONLY with valid JSON, no markdown, no code blocks, no extra text:
     });
   } catch (err) {
     console.error("[analyze] top-level error:", err);
+    if (String(err).includes("GEMINI_API_KEY")) {
+      return NextResponse.json({ error: "Server is missing its Gemini API key — contact the site admin." }, { status: 500 });
+    }
     return NextResponse.json({ error: String(err) }, { status: 500 });
   }
 }

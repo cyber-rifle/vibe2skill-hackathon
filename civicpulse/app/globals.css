@@ -150,21 +150,6 @@
   margin: 0;
 }
 
-/* Feature 6 — Marker pulse animation */
-@keyframes markerPulse {
-  0% { transform: scale(1); opacity: 1; }
-  50% { transform: scale(2.5); opacity: 0.3; }
-  100% { transform: scale(1); opacity: 0; }
-}
-
-.marker-pulse::after {
-  content: "";
-  position: absolute;
-  inset: -4px;
-  border-radius: 50%;
-  border: 2px solid currentColor;
-  animation: markerPulse 1s ease-out 3;
-}
 
 /* Feature 10 — Card hover depth system */
 .card-hover {

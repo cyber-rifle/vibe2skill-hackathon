@@ -7,6 +7,9 @@ import './globals.css'
 import { ReportProvider } from '@/lib/report-context'
 import { ToastProvider } from '@/components/toast'
 
+import { ErrorBoundary } from '@/components/error-boundary'
+import { OfflineBanner } from '@/components/offline-banner'
+
 const cormorant = Cormorant_Garamond({
   variable: '--font-display',
   weight: ['300', '400', '500'],
@@ -40,9 +43,12 @@ export default function RootLayout({
       className={`${cormorant.variable} ${dmSans.variable} ${jetbrainsMono.variable} bg-[#FAF7F2]`}
     >
       <body className="font-sans antialiased">
-        <ReportProvider>
-          <ToastProvider>{children}</ToastProvider>
-        </ReportProvider>
+        <OfflineBanner />
+        <ErrorBoundary>
+          <ReportProvider>
+            <ToastProvider>{children}</ToastProvider>
+          </ReportProvider>
+        </ErrorBoundary>
       </body>
     </html>
   )

@@ -1,6 +1,6 @@
 "use client"
 
-import React, { createContext, useContext, useState } from 'react'
+import React, { createContext, useContext, useState, useEffect } from 'react'
 
 export type ReportSeverity = 'low' | 'medium' | 'high'
 
@@ -32,14 +32,42 @@ type ReportContextValue = {
 
 const ReportContext = createContext<ReportContextValue | null>(null)
 
+const STORAGE_KEY = 'civicpulse_confirmed_reports'
+
 export function ReportProvider({ children }: { children: React.ReactNode }) {
   const [confirmedReports, setConfirmedReports] = useState<Report[]>([])
-  // Feature 4 — Live stat counter initialized to 1240
   const [reportCount, setReportCount] = useState(1240)
+  const [hydrated, setHydrated] = useState(false)
+
+  // Load from localStorage on mount only (client-side)
+  useEffect(() => {
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY)
+      if (raw) {
+        const parsed = JSON.parse(raw)
+        if (Array.isArray(parsed)) {
+          setConfirmedReports(parsed)
+          setReportCount(1240 + parsed.length)
+        }
+      }
+    } catch (e) {
+      console.warn('[report-context] failed to load saved reports', e)
+    }
+    setHydrated(true)
+  }, [])
+
+  // Persist whenever confirmedReports changes, but only after initial hydration
+  useEffect(() => {
+    if (!hydrated) return
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(confirmedReports))
+    } catch (e) {
+      console.warn('[report-context] failed to save reports', e)
+    }
+  }, [confirmedReports, hydrated])
 
   const addConfirmedReport = (report: Report) => {
     setConfirmedReports((prev) => [...prev, report])
-    // Feature 4 — Increment by 1 on each new report
     setReportCount((prev) => prev + 1)
   }
 
