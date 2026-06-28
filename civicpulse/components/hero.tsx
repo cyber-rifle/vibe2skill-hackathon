@@ -2,15 +2,109 @@
 import { MapIcon } from "lucide-react"
 import { motion } from "framer-motion"
 import StatCounter from "@/components/StatCounter"
+import { useEffect, useRef } from "react";
 
 const words1 = ["Report", "it."]
 const words2 = ["Watch", "it", "act."]
 
 export function Hero() {
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+
+    let animId: number;
+    const particles: { x:number; y:number; vx:number; vy:number; color:string }[] = [];
+    const COLORS = ['rgba(91,191,191,0.5)', 'rgba(212,175,106,0.4)', 'rgba(91,191,191,0.3)'];
+
+    const resize = () => {
+      canvas.width = canvas.offsetWidth;
+      canvas.height = canvas.offsetHeight;
+    };
+
+    const init = () => {
+      particles.length = 0;
+      for (let i = 0; i < 85; i++) {
+        particles.push({
+          x: Math.random() * canvas.width,
+          y: Math.random() * canvas.height,
+          vx: (Math.random() - 0.5) * 0.4,
+          vy: (Math.random() - 0.5) * 0.4,
+          color: COLORS[i % COLORS.length],
+        });
+      }
+    };
+
+    let mouseX = -999, mouseY = -999;
+    const onMouse = (e: MouseEvent) => {
+      const rect = canvas.getBoundingClientRect();
+      mouseX = e.clientX - rect.left;
+      mouseY = e.clientY - rect.top;
+    };
+
+    const draw = () => {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      for (let i = 0; i < particles.length; i++) {
+        const p = particles[i];
+        const dx = p.x - mouseX, dy = p.y - mouseY;
+        const dist = Math.sqrt(dx*dx + dy*dy);
+        if (dist < 100) {
+          p.vx += (dx / dist) * 0.08;
+          p.vy += (dy / dist) * 0.08;
+        }
+        p.vx *= 0.99; p.vy *= 0.99;
+        p.x += p.vx; p.y += p.vy;
+        if (p.x < 0) p.x = canvas.width;
+        if (p.x > canvas.width) p.x = 0;
+        if (p.y < 0) p.y = canvas.height;
+        if (p.y > canvas.height) p.y = 0;
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, 1.5, 0, Math.PI * 2);
+        ctx.fillStyle = p.color;
+        ctx.fill();
+        for (let j = i + 1; j < particles.length; j++) {
+          const q = particles[j];
+          const ddx = p.x - q.x, ddy = p.y - q.y;
+          const d = Math.sqrt(ddx*ddx + ddy*ddy);
+          if (d < 120) {
+            ctx.beginPath();
+            ctx.moveTo(p.x, p.y);
+            ctx.lineTo(q.x, q.y);
+            ctx.strokeStyle = `rgba(91,191,191,${(1 - d/120) * 0.18})`;
+            ctx.lineWidth = 0.8;
+            ctx.stroke();
+          }
+        }
+      }
+      animId = requestAnimationFrame(draw);
+    };
+
+    const ro = new ResizeObserver(() => { resize(); init(); });
+    ro.observe(canvas);
+    resize();
+    init();
+    draw();
+    canvas.addEventListener('mousemove', onMouse);
+    return () => {
+      cancelAnimationFrame(animId);
+      ro.disconnect();
+      canvas.removeEventListener('mousemove', onMouse);
+    };
+  }, []);
+
   return (
     <section className="relative overflow-hidden hero-grain"
       style={{ background: 'linear-gradient(180deg, #0A1628 0%, #0A1628 70%, #0D1F3C 85%, #FAF7F2 100%)' }}>
       
+      <canvas
+        ref={canvasRef}
+        aria-hidden="true"
+        className="absolute inset-0 w-full h-full pointer-events-none"
+        style={{ zIndex: 0 }}
+      />
       {/* Top right — teal */}
       <div aria-hidden="true" className="ambient-orb absolute -right-60 -top-60 h-[50rem] w-[50rem] opacity-[0.18]" />
       {/* Bottom left — coral/gold */}
@@ -20,7 +114,7 @@ export function Hero() {
       <div aria-hidden="true" className="ambient-orb absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 h-[20rem] w-[20rem] opacity-[0.04]"
         style={{ background: '#5BBFBF' }} />
 
-      <div className="relative mx-auto max-w-6xl px-5 pb-24 pt-24 md:pb-32 md:pt-32">
+      <div className="relative z-10 mx-auto max-w-6xl px-5 pb-24 pt-24 md:pb-32 md:pt-32">
         <div className="max-w-4xl">
           {/* Eyebrow */}
           <motion.div

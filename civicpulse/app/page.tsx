@@ -23,7 +23,7 @@ export default function Page() {
       </motion.div>
 
       {/* Bento Features Grid */}
-      <section id="how-it-works" className="relative overflow-hidden bg-white">
+      <section id="how-it-works" className="relative overflow-hidden" style={{ background: 'linear-gradient(180deg, #FAF7F2 0%, #ffffff 60%, #FAF7F2 100%)' }}>
         <div aria-hidden="true" className="ambient-orb absolute right-0 top-1/2 -translate-y-1/2
           h-[40rem] w-[40rem] opacity-[0.06]" />
         <div className="relative mx-auto max-w-6xl px-5 py-20">
@@ -41,7 +41,7 @@ export default function Page() {
                 <p className="font-mono text-xs uppercase tracking-[0.2em] text-[#5BBFBF] mb-3">
                   How it works
                 </p>
-                <h2 className="font-display text-5xl font-light text-[#1A1208]">
+                <h2 className="font-display text-5xl font-bold text-[#1A1208]">
                   Four steps. One photo.
                 </h2>
               </div>
@@ -61,10 +61,8 @@ export default function Page() {
               <div aria-hidden="true" className="ambient-orb absolute -right-8 -top-8
                 h-40 w-40 opacity-[0.35]" />
               {/* 3. Scan line animation */}
-              <div aria-hidden="true" className="absolute inset-0 overflow-hidden pointer-events-none">
-                <div className="absolute left-0 right-0 h-px bg-gradient-to-r from-transparent via-[#5BBFBF]/30 to-transparent"
-                  style={{ animation: 'scan-line 3s ease-in-out infinite', top: '50%' }} />
-              </div>
+              <div aria-hidden="true" className="absolute left-0 right-0 h-px pointer-events-none"
+                style={{ background: 'linear-gradient(90deg, transparent, rgba(91,191,191,0.3), transparent)', animation: 'scan-line 3s ease-in-out infinite' }} />
               {/* 4. Gold-sweep step number */}
               <span className="font-mono text-4xl font-light gold-sweep">01</span>
               <div>
@@ -168,7 +166,7 @@ export default function Page() {
                 <p className="font-mono text-xs uppercase tracking-[0.15em] text-[#5BBFBF]">Live</p>
               </div>
               <div>
-                <h3 className="font-display text-2xl font-light mb-2">Community map</h3>
+                <h3 className="font-display text-2xl font-medium text-white mb-2">Community map</h3>
                 <a href="/map" className="font-mono text-xs text-[#D4AF6A] hover:underline">
                   View all reports →
                 </a>
@@ -183,20 +181,21 @@ export default function Page() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
-            className="mt-16 rounded-2xl bg-gradient-to-r from-[#0A1628] to-[#0F2137]
-            p-8 flex flex-col md:flex-row items-center justify-around gap-6 text-white"
+            className="mt-16 iridescent-border-animated rounded-2xl"
           >
-            {[
-              { num: '< 30s', label: 'Time to submit a report' },
-              { num: '200m', label: 'Deduplication radius' },
-              { num: '14+', label: 'Departments covered' },
-              { num: '89%', label: 'Resolved within 7 days' },
-            ].map(({ num, label }) => (
-              <div key={label} className="text-center">
-                <p className="font-display text-4xl font-light iridescent-text">{num}</p>
-                <p className="font-mono text-xs text-white/50 mt-1 uppercase tracking-wider">{label}</p>
-              </div>
-            ))}
+            <div className="rounded-2xl bg-gradient-to-r from-[#0A1628] to-[#0F2137] p-8 flex flex-col md:flex-row items-center justify-around gap-6 text-white" style={{ borderRadius: '16px' }}>
+              {[
+                { num: '< 30s', label: 'Time to submit a report' },
+                { num: '200m', label: 'Deduplication radius' },
+                { num: '14+', label: 'Departments covered' },
+                { num: '89%', label: 'Resolved within 7 days' },
+              ].map(({ num, label }) => (
+                <div key={label} className="text-center">
+                  <p className="font-display text-4xl font-light iridescent-text">{num}</p>
+                  <p className="font-mono text-xs text-white/50 mt-1 uppercase tracking-wider">{label}</p>
+                </div>
+              ))}
+            </div>
           </motion.div>
 
         </div>
