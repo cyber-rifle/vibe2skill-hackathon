@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useState, useRef } from "react";
-import { useInView, motion, AnimatePresence } from "framer-motion";
+import { useInView, motion } from "framer-motion";
 import { useReports } from "@/lib/report-context";
 
 interface StatCounterProps {
