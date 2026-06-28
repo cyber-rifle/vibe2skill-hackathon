@@ -101,7 +101,7 @@ export default function DashboardPage() {
 
   return (
     // 1. Page background — dark mission control
-    <div className="min-h-screen" style={{ background: 'linear-gradient(135deg, #0A1628 0%, #0F1F38 50%, #0A1628 100%)' }}>
+    <div className="min-h-screen" style={{ background: 'linear-gradient(135deg, #0A1628 0%, #0D1F3C 50%, #0A1628 100%)' }}>
       <Navbar />
 
       {/* 2. Page header — command center style */}
